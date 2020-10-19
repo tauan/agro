@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { TextInput, View, Animated} from 'react-native';
 
@@ -17,22 +14,26 @@ const AnimatedInput = (props) => {
     placeholderColor = '#666',
     secureTextEntry = false,
     borderWidth = 1,
-    borderColor = "#BDBDBD"
+    borderColor = "#BDBDBD",
+    value,
+    onChangeText = ()=>{}
   } = props;
 
   const animation = new Animated.Value(0);
 
-  const animateText = () => {
-    Animated.timing(animation, {
-      toValue: 100,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
+  const animateText = value => {
+    if (value === undefined || value.length === 0) {
+      Animated.timing(animation, {
+        toValue: 100,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    }
   };
   const verifyTextValue = e => {
     if (e.length === 0) {
       Animated.timing(animation, {
-        duration: 100,
+        duration: 200,
         toValue: 0,
         useNativeDriver: false,
       }).start();
@@ -54,10 +55,12 @@ const AnimatedInput = (props) => {
           borderColor
         }}
         keyboardType={keyboardType}
-        onFocus={animateText}
+        onFocus={()=> animateText(value)}
         secureTextEntry={secureTextEntry}
         onEndEditing={(e) => verifyTextValue(e.nativeEvent.text)}
         autoCapitalize="none"
+        value={value}
+        onChangeText={onChangeText}
       />
       <Animated.Text
         style={{

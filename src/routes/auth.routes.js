@@ -6,7 +6,7 @@ import LoginScren from '../pages/Login';
 
 const Stack = createStackNavigator();
 
-const AuthRoutes = (props) => {
+const AuthRoutes = props => {
   return (
     <>
     <StatusBar backgroundColor="#fff" barStyle="dark-content" />

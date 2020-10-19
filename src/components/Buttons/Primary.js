@@ -15,10 +15,10 @@ export default (props) => {
 
   } = props
   return(
-    <View style={{width, height, backgroundColor, borderRadius, marginTop, elevation}}>
-      <TouchableOpacity onPress={()=> {}}  style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <TouchableOpacity onPress={()=> {}}  style={{width, height, backgroundColor, borderRadius, marginTop, elevation}}>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={{color}}>{title}</Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   )
 }

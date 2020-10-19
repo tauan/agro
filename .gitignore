@@ -59,7 +59,7 @@ buck-out/
 /ios/Pods/
 
 # Tauan
-_tests_
+__tests__
 android/
 ios/
 

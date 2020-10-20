@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native'
 import LogoImage from "./assets/logo.png"
 import Contag from "./assets/contag_logo.png"
 
-const { width, height } = Dimensions.get("screen")
+const { width } = Dimensions.get("screen")
 const grid = width - 40
 
 export const App = Styled.View`
@@ -18,6 +18,9 @@ export const App = Styled.View`
 export const Form = Styled.View`
   width: 100%;
 `
+export const Container = Styled.View`
+  width: 100%;
+`
 export const Logo = Styled.Image.attrs({
   source: LogoImage,
   resizeMode: "contain",
@@ -28,9 +31,8 @@ export const Logo = Styled.Image.attrs({
 export const LogoContag = Styled.Image.attrs({
   source: Contag,
   resizeMode: "contain",
-})`
-  width: 15%;
+})`  
+  height: 12%;
   position: absolute;
-  margin-top: ${height - 120};
   bottom: 0;
 `

@@ -58,8 +58,4 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-# Tauan
-__tests__
-android/
-ios/
 

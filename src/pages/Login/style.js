@@ -1,15 +1,16 @@
 import Styled from 'styled-components/native'
 import { Dimensions } from 'react-native'
 import LogoImage from "./assets/logo.png"
+import Contag from "./assets/contag_logo.png"
 
-const width = Dimensions.get("screen").width 
+const { width, height } = Dimensions.get("screen")
 const grid = width - 40
 
 export const App = Styled.View`
   flex: 1;
   width: 100%;
   height: 100%;
-  padding-horizontal: 40px;
+  padding-horizontal: 20px;
   background: #fff;
   justify-content: center;  
   align-items: center
@@ -22,5 +23,14 @@ export const Logo = Styled.Image.attrs({
   resizeMode: "contain",
 })`
   width: 65%;
-  position: relative;
+`
+
+export const LogoContag = Styled.Image.attrs({
+  source: Contag,
+  resizeMode: "contain",
+})`
+  width: 15%;
+  position: absolute;
+  margin-top: ${height - 120};
+  bottom: 0;
 `

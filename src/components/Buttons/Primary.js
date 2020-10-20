@@ -7,7 +7,7 @@ const wDimensions = Dimensions.get('screen').width
 export default (props) => {
   const {
     title,
-    width = wDimensions - 80,
+    width = wDimensions - 60,
     height = 55,
     backgroundColor = "#07AC82",
     borderRadius = 4,

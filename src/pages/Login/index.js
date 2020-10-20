@@ -5,7 +5,7 @@ import InputAnimated from '../../components/InputAnimated'
 import Primary from '../../components/Buttons/Primary'
 import Link from '../../components/Buttons/Link'
 
-import { App, Form, Logo } from './style'
+import { App, Form, Logo, LogoContag } from './style'
 
 
 const LoginScren = props => {
@@ -33,6 +33,7 @@ const LoginScren = props => {
         </Form>
       </KeyboardAvoidingView>
       <Link title='Recuperar senha' />
+      <LogoContag />
     </App>
   )
 }

@@ -9,7 +9,7 @@ const AnimatedInput = (props) => {
     size = 14,
     color = '#333',
     keyboardType = 'default',
-    width = widthDimension - 80,
+    width = widthDimension - 60,
     height = 50,
     borderRadius = 4,
     marginTop = 16,

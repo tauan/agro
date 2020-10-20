@@ -1,5 +1,7 @@
 import React from 'react';
-import { TextInput, View, Animated} from 'react-native';
+import { TextInput, View, Animated, Dimensions} from 'react-native';
+
+const widthDimension = Dimensions.get("screen").width
 
 const AnimatedInput = (props) => {
   const {
@@ -7,7 +9,7 @@ const AnimatedInput = (props) => {
     size = 14,
     color = '#333',
     keyboardType = 'default',
-    width = '100%',
+    width = widthDimension - 80,
     height = 50,
     borderRadius = 4,
     marginTop = 16,

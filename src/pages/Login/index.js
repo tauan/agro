@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
-import {KeyboardAvoidingView} from 'react-native'
+import React, { useState } from 'react'
+import { KeyboardAvoidingView } from 'react-native'
 
 import InputAnimated from '../../components/InputAnimated'
 import Primary from '../../components/Buttons/Primary'
 import Link from '../../components/Buttons/Link'
 
-import {App, Form, Logo} from './style'
+import { App, Form, Logo } from './style'
 
 
 const LoginScren = props => {
@@ -19,13 +19,13 @@ const LoginScren = props => {
           <InputAnimated
             placeholder='Email'
             keyboardType='email-address'
-            onChangeText={text=> setEmail(text)}
+            onChangeText={text => setEmail(text)}
             value={email}
             marginTop={0}
           />
           <InputAnimated
             placeholder='Senha'
-            onChangeText={text=> setPassword(text)}
+            onChangeText={text => setPassword(text)}
             value={password}
             secureTextEntry={true}
           />

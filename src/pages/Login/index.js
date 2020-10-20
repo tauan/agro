@@ -11,6 +11,7 @@ import { App, Form, Logo, LogoContag, Container } from './style'
 const LoginScren = props => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const { navigate } = props.navigation
   return (
     <App>
       <Logo />
@@ -29,7 +30,7 @@ const LoginScren = props => {
             value={password}
             secureTextEntry={true}
           />
-          <Primary title='Login' shadow={2} />
+          <Primary title='Login' shadow={2} onPress={()=>navigate('RegisterScreen')} />
         </Form>
       </KeyboardAvoidingView>
       <Link title='Recuperar senha' />

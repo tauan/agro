@@ -29,8 +29,8 @@ export const LogoContag = Styled.Image.attrs({
   source: Contag,
   resizeMode: "contain",
 })`
-  width: 15%;
+  
+  height: 12%;
   position: absolute;
-  margin-top: ${height - 120};
-  bottom: 0;
+  bottom: 0
 `

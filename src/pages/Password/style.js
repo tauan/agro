@@ -1,5 +1,5 @@
 import Styled from 'styled-components/native'
-import RegisterPhone from "./assets/register_phone.png"
+import Forgot from "./assets/forgot.png"
 
 export const App = Styled.View`
   flex: 1;
@@ -22,8 +22,8 @@ export const Title = Styled.Text`
   textAlign: center;
   color: #07AC82;
 `
-export const ImgRegister = Styled.Image.attrs({
-  source: RegisterPhone,
+export const ImgForgot = Styled.Image.attrs({
+  source: Forgot,
   resizeMode: "contain",
 })`
   width: 200px;

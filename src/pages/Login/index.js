@@ -8,7 +8,6 @@ import Header from '../../components/Header'
 
 import { App, Form, Logo } from './style'
 
-
 export default ({ navigation }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()

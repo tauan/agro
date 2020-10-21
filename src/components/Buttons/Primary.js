@@ -8,7 +8,7 @@ export default (props) => {
   const {
     title,
     width = wDimensions - 60,
-    height = 55,
+    height = 50,
     backgroundColor = "#07AC82",
     borderRadius = 4,
     marginTop = 16,

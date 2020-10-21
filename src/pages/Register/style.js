@@ -13,7 +13,8 @@ export const App = Styled.View`
   padding-horizontal: 20px;
   background: #fff;
   justify-content: center;  
-  align-items: center
+  align-items: center;
+  overflow: hidden
 `;
 export const Form = Styled.View`
   width: 100%;

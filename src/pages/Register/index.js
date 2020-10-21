@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAvoidingView, ScrollView } from 'react-native'
 
 //import Picker from '../../components/Picker'
 import InputAnimated from '../../components/InputAnimated'
@@ -18,37 +18,40 @@ export default ({navigation}) => {
         <>
         <Header title="Registro" navigation={navigation} />
         <App>
-            <KeyboardAvoidingView>
-                <Form>
-                    <ImgRegister />
-                    <Title>Criar Conta</Title>
-                    <InputAnimated
-                        placeholder='Nome'
-                        onChangeText={text => setNome(text)}
-                        value={nome}
-                    />
-                    <InputAnimated
-                        placeholder='CPF/CNPJ'
-                        onChangeText={text => setCPF_CNPJ(text)}
-                        value={cpf_cnpj}
-                    />
+            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+                <ImgRegister />
+                <KeyboardAvoidingView>
+                    <Form>
                     
-                    <InputAnimated
-                        placeholder='Senha'
-                        onChangeText={text => setSenha(text)}
-                        value={senha}
-                        secureTextEntry={true}
-                    />
-                    <InputAnimated
-                        placeholder='Confirmar senha'
-                        onChangeText={text => setConfirmar_Senha(text)}
-                        value={confirmar_senha}
-                        secureTextEntry={true}
-                    />
-                    <Primary title='Enviar' shadow={2} />
-                </Form>
-            </KeyboardAvoidingView>
-            <Link title='Cancelar' />
+                        <Title>Criar Conta</Title>
+                        <InputAnimated
+                            placeholder='Nome'
+                            onChangeText={text => setNome(text)}
+                            value={nome}
+                        />
+                        <InputAnimated
+                            placeholder='CPF/CNPJ'
+                            onChangeText={text => setCPF_CNPJ(text)}
+                            value={cpf_cnpj}
+                        />
+                        
+                        <InputAnimated
+                            placeholder='Senha'
+                            onChangeText={text => setSenha(text)}
+                            value={senha}
+                            secureTextEntry={true}
+                        />
+                        <InputAnimated
+                            placeholder='Confirmar senha'
+                            onChangeText={text => setConfirmar_Senha(text)}
+                            value={confirmar_senha}
+                            secureTextEntry={true}
+                        />
+                        <Primary title='Enviar' shadow={2} />
+                    </Form>
+                </KeyboardAvoidingView>
+                <Link title='Cancelar' />
+            </ScrollView>
         </App>
         </>
     )

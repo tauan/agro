@@ -42,28 +42,9 @@ export default props => {
     }
   };
   return (
-    <View style={{ width, marginTop }}>
-      <TextInput
-        style={{
-          backgroundColor,
-          height,
-          borderRadius,
-          lineHeight: 14,
-          color,
-          padding: 0,
-          paddingHorizontal: 8,
-          paddingTop: 15,
-          borderWidth,
-          borderColor
-        }}
-        keyboardType={keyboardType}
-        onFocus={() => animateText(value)}
-        secureTextEntry={secureTextEntry}
-        onEndEditing={(e) => verifyTextValue(e.nativeEvent.text)}
-        autoCapitalize="none"
-        value={value}
-        onChangeText={onChangeText}
-      />
+    <View style={{ width, marginTop, backgroundColor, height,
+      borderRadius, }}>
+      
       <Animated.Text
         style={{
           position: 'absolute',
@@ -85,6 +66,27 @@ export default props => {
         }}>
         {props.placeholder}
       </Animated.Text>
+      <TextInput
+        style={{
+          backgroundColor: "transparent",
+          height,
+          borderRadius,
+          lineHeight: 14,
+          color,
+          padding: 0,
+          paddingHorizontal: 8,
+          paddingTop: 15,
+          borderWidth,
+          borderColor
+        }}
+        keyboardType={keyboardType}
+        onFocus={() => animateText(value)}
+        secureTextEntry={secureTextEntry}
+        onEndEditing={(e) => verifyTextValue(e.nativeEvent.text)}
+        autoCapitalize="none"
+        value={value}
+        onChangeText={onChangeText}
+      />
     </View>
   );
 };

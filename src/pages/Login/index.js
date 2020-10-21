@@ -4,15 +4,18 @@ import { KeyboardAvoidingView } from 'react-native'
 import InputAnimated from '../../components/InputAnimated'
 import Primary from '../../components/Buttons/Primary'
 import Link from '../../components/Buttons/Link'
+import Header from '../../components/Header'
 
 import { App, Form, Logo, LogoContag, Container } from './style'
 
 
-const LoginScren = props => {
+export default ({navigation}) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  const { navigate } = props.navigation
+  const { navigate } = navigation
   return (
+    <>
+    <Header title="Login" navigation={navigation} />
     <App>
       <Logo />
       <KeyboardAvoidingView>
@@ -34,11 +37,7 @@ const LoginScren = props => {
         </Form>
       </KeyboardAvoidingView>
       <Link title='Recuperar senha' />
-      <Container>
-        <LogoContag />
-      </Container>
     </App>
+    </>
   )
 }
-
-export default LoginScren

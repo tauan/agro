@@ -1,9 +1,9 @@
 import React from 'react';
-import { TextInput, View, Animated, Dimensions} from 'react-native';
+import { TextInput, View, Animated, Dimensions } from 'react-native';
 
 const widthDimension = Dimensions.get("screen").width
 
-const AnimatedInput = (props) => {
+export default props => {
   const {
     backgroundColor = 'transparent',
     size = 14,
@@ -18,7 +18,7 @@ const AnimatedInput = (props) => {
     borderWidth = 1,
     borderColor = "#BDBDBD",
     value,
-    onChangeText = ()=>{}
+    onChangeText = () => { }
   } = props;
 
   const animation = new Animated.Value(0);
@@ -42,7 +42,7 @@ const AnimatedInput = (props) => {
     }
   };
   return (
-    <View style={{width, marginTop}}>
+    <View style={{ width, marginTop }}>
       <TextInput
         style={{
           backgroundColor,
@@ -57,7 +57,7 @@ const AnimatedInput = (props) => {
           borderColor
         }}
         keyboardType={keyboardType}
-        onFocus={()=> animateText(value)}
+        onFocus={() => animateText(value)}
         secureTextEntry={secureTextEntry}
         onEndEditing={(e) => verifyTextValue(e.nativeEvent.text)}
         autoCapitalize="none"
@@ -68,18 +68,18 @@ const AnimatedInput = (props) => {
         style={{
           position: 'absolute',
           fontSize: animation.interpolate({
-            inputRange: [0,100],
+            inputRange: [0, 100],
             outputRange: [size, 11],
           }),
-          color:placeholderColor,
+          color: placeholderColor,
           marginLeft: 8,
           lineHeight: size,
           marginTop: animation.interpolate({
-            inputRange: [0,100],
+            inputRange: [0, 100],
             outputRange: [(height / 2) - (size / 2), 3],
           }),
           opacity: animation.interpolate({
-            inputRange: [0,100],
+            inputRange: [0, 100],
             outputRange: [1, 0.6],
           }),
         }}>
@@ -89,15 +89,13 @@ const AnimatedInput = (props) => {
   );
 };
 const InputAnimated = (props) => {
-  const { AnimatedPlaceholder = true} = props;
+  const { AnimatedPlaceholder = true } = props;
   if (AnimatedPlaceholder) {
     return AnimatedInput(props);
   } else {
     return <></>;
   }
 };
-
-export default InputAnimated;
 
 /*
     animatedPlaceholder: Habilita ou desabilita o texto animado

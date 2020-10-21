@@ -9,8 +9,8 @@ export const App = Styled.View`
   background: #fff;
   justify-content: center;  
   align-items: center;
-  overflow: hidden
-`;
+  overflow: hidden;
+`
 export const Form = Styled.View`
   width: 100%;
 `

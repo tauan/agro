@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const AuthRoutes = props => {
   return (
     <>
-    <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+    <StatusBar backgroundColor="#fff" barStyle="dark-content"  />
     <Stack.Navigator
       headerMode="none"
       screenOptions={{

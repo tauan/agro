@@ -15,7 +15,7 @@ export default ({ navigation }) => {
   const { navigate } = navigation
   return (
     <>
-      <Header title="Login" navigation={navigation} />
+      {/* <Header title="Login" navigation={navigation} /> */}
       <App>
         <Logo />
         <KeyboardAvoidingView>

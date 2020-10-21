@@ -19,7 +19,7 @@ export default ({ navigation }) => {
 
     return (
         <>
-            {/* <Header title="Registro" navigation={navigation} /> */}
+            <Header title="Registro" navigation={navigation} />
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} showsVerticalScrollIndicator={false}>
                 <App>
                     <ImgRegister />

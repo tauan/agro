@@ -7,7 +7,8 @@ import Primary from '../../components/Buttons/Primary'
 import Header from '../../components/Header'
 import Link from '../../components/Buttons/Link'
 
-import { App, Form, Title, ImgRegister } from './style'
+import { App, Form, Title2 } from '../style'
+import { ImgRegister } from './style'
 
 export default ({ navigation }) => {
     const [nome, setNome] = useState()
@@ -26,7 +27,7 @@ export default ({ navigation }) => {
                     <KeyboardAvoidingView>
                         <Form>
 
-                            <Title>Criar Conta</Title>
+                            <Title2>Criar Conta</Title2>
                             <InputAnimated
                                 placeholder='Nome'
                                 onChangeText={text => setNome(text)}

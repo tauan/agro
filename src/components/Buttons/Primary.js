@@ -8,17 +8,18 @@ export default (props) => {
   const {
     title,
     width = wDimensions - 60,
-    height = 55,
+    height = 50,
     backgroundColor = "#07AC82",
     borderRadius = 4,
     marginTop = 16,
     color = "#fff",
+    onPress = () => {}, 
     shadow = 0,
     elevation = shadow
 
   } = props
   return (
-    <RectButton onPress={() => { }} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation }}>
+    <RectButton onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation }}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color }}>{title}</Text>
       </View>

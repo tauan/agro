@@ -3,7 +3,7 @@ import { TextInput, View, Animated, Dimensions } from 'react-native';
 
 const widthDimension = Dimensions.get("screen").width
 
-const AnimatedInput = (props) => {
+export default props => {
   const {
     backgroundColor = 'transparent',
     size = 14,
@@ -42,28 +42,9 @@ const AnimatedInput = (props) => {
     }
   };
   return (
-    <View style={{ width, marginTop }}>
-      <TextInput
-        style={{
-          backgroundColor,
-          height,
-          borderRadius,
-          lineHeight: 14,
-          color,
-          padding: 0,
-          paddingHorizontal: 8,
-          paddingTop: 15,
-          borderWidth,
-          borderColor
-        }}
-        keyboardType={keyboardType}
-        onFocus={() => animateText(value)}
-        secureTextEntry={secureTextEntry}
-        onEndEditing={(e) => verifyTextValue(e.nativeEvent.text)}
-        autoCapitalize="none"
-        value={value}
-        onChangeText={onChangeText}
-      />
+    <View style={{ width, marginTop, backgroundColor, height,
+      borderRadius, }}>
+      
       <Animated.Text
         style={{
           position: 'absolute',
@@ -85,6 +66,27 @@ const AnimatedInput = (props) => {
         }}>
         {props.placeholder}
       </Animated.Text>
+      <TextInput
+        style={{
+          backgroundColor: "transparent",
+          height,
+          borderRadius,
+          lineHeight: 14,
+          color,
+          padding: 0,
+          paddingHorizontal: 8,
+          paddingTop: 15,
+          borderWidth,
+          borderColor
+        }}
+        keyboardType={keyboardType}
+        onFocus={() => animateText(value)}
+        secureTextEntry={secureTextEntry}
+        onEndEditing={(e) => verifyTextValue(e.nativeEvent.text)}
+        autoCapitalize="none"
+        value={value}
+        onChangeText={onChangeText}
+      />
     </View>
   );
 };
@@ -96,8 +98,6 @@ const InputAnimated = (props) => {
     return <></>;
   }
 };
-
-export default InputAnimated;
 
 /*
     animatedPlaceholder: Habilita ou desabilita o texto animado

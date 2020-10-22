@@ -1,6 +1,5 @@
 import Styled from 'styled-components/native'
 import { Dimensions } from 'react-native'
-import IMG from "./images.jpg"
 
 const { width } = Dimensions.get('screen')
 
@@ -10,37 +9,31 @@ align-items: flex-start;
 margin-bottom: 15px;
 `
 export const ContainerIMG = Styled.TouchableOpacity.attrs({
-  activeOpacity: 0.8,
+    activeOpacity: 0.8,
 })`
 width: ${width / 2.4}px;
 height: ${width / 2.4}px;
-border-radius: 30px;
-/*border-radius: 4px;
-border-top-left-radius: 30px;
-border-bottom-right-radius: 30px;*/
-background-color: #07AC82;
+border-radius: 4px;
+background-color: #ccc;
 overflow: hidden;
 justify-content: center;
 align-items: center;
 `
 export const IMGItem = Styled.Image.attrs({
-  // source: IMG,
-  resizeMode: "cover",
-
+    resizeMode: "cover",
 })`
-    width: 100%;
-    height: 100%;
+    width: 120%;
+    height: 120%;
   `
-export const Title = Styled.Text.attrs({
-  numberOfLines: 2,
-})`  
+export const Title = Styled.Text`  
   padding-left: 10px;
   font-size: 16px;
+  text-align: center;
   color: #333;
   font-weight: bold;
 `
 export const Button = Styled.TouchableOpacity.attrs({
-  activeOpacity: 0.5,
+    activeOpacity: 0.5,
 })`  
   padding-left: 10px;
   font-size: 16px;

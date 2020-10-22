@@ -1,6 +1,5 @@
 import Styled from 'styled-components/native'
 import { Dimensions } from 'react-native'
-import IMG from "./images.jpg"
 
 const { width } = Dimensions.get('screen')
 
@@ -15,17 +14,13 @@ export const ContainerIMG = Styled.TouchableOpacity.attrs({
 width: ${width / 2.4}px;
 height: ${width / 2.4}px;
 border-radius: 4px;
-border-top-left-radius: 30px;
-border-bottom-right-radius: 30px;
-background-color: blue;
+background-color: #ccc;
 overflow: hidden;
 justify-content: center;
 align-items: center;
 `
 export const IMGItem = Styled.Image.attrs({
-    source: IMG,
     resizeMode: "cover",
-
 })`
     width: 120%;
     height: 120%;

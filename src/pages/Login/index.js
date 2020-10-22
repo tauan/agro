@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { KeyboardAvoidingView } from 'react-native'
 import AuthContext from '../../contexs/Auth'
+import UserContext from '../../contexs/User'
 import axios from 'axios'
 
 import InputAnimated from '../../components/InputAnimated'
@@ -16,6 +17,7 @@ export default ({ navigation }) => {
   const [activeButton, setActiveButton] = useState(false)
   const {navigate} = navigation
   const {setLoged} = useContext(AuthContext)
+  const {user, setUser} = useContext(UserContext)
 
   const checkForm = () => {
     let controller = true 
@@ -31,6 +33,7 @@ export default ({ navigation }) => {
       username: email,
       senha: password
     })
+    await setUser(data)
     data.error ? showErrorMessage(data.error) : ""
     data.nome ? setLoged(true) : ""
   }

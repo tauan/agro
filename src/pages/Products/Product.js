@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FlatList } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
 import Header from '../../components/Header'
@@ -12,7 +12,7 @@ export default ({ navigation }) => {
         <>
             <Header title="Produtos" navigation={navigation} />
             <App>
-                <Form>
+                <Form style={{ flex: 1 }}>
                     <Container>
                         <HeaderTitle>
                             <Title1>Produtos</Title1>
@@ -22,7 +22,6 @@ export default ({ navigation }) => {
                     </Container>
                     <FlatList
                         data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                        style={{ width: '100%', height: '90%' }}
                         renderItem={({ item }) => <Items />}
                         keyExtractor={(key, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}

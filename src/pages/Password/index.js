@@ -14,6 +14,7 @@ export default ({ navigation }) => {
     const { navigate } = navigation
     return (
         <App>
+            <Header title="Senha" navigation={navigation} />
             <ImgForgot />
             <KeyboardAvoidingView>
                 <Form>

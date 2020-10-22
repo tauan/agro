@@ -33,7 +33,7 @@ export default ({ navigation }) => {
           <Primary title='Login' shadow={2} />
         </Form>
       </KeyboardAvoidingView>
-      <Link title='Recuperar senha' onPress={() => navigate('PasswordScreen')} />
+      <Link title='Recuperar senha' onPress={() => navigate('ProductsScreen')} />
       <Link
         title='Cadastrar'
         backgroundColor='#fff'

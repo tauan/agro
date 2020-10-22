@@ -14,30 +14,29 @@ export const Form = Styled.View`
 `
 export const Title1 = Styled.Text`  
   font-size: 30px;
-  text-align: center;
   color: #07AC82;
   font-weight: bold;
 `
 export const Title2 = Styled.Text`  
   font-size: 24px;
   text-align: center;
-  color: #07AC82;
   font-weight: bold;
 `
 export const Title3 = Styled.Text`  
   font-size: 18px;
-  text-align: center;
   color: #07AC82;
   font-weight: bold;
 `
 export const Title4 = Styled.Text`  
   font-size: 14px;
-  text-align: center;
   color: #07AC82;
   font-weight: bold;
 `
-export const Paragraph = Styled.Text`  
+export const Paragraph1 = Styled.Text`  
   font-size: 14px;
-  text-align: center;
+  color: #333;
+`
+export const Paragraph2 = Styled.Text`  
+  font-size: 18px;
   color: #333;
 `

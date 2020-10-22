@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { Container, ContainerIMG, IMGItem, Title, Button, TextButton } from './style'
 
-import Link from '../../components/Buttons/Link'
-import { Title4 } from '../style'
-import { Container } from './style'
-
-export default ({ navigation }) => {
-    const {
-        data = [],
-        navigation,
-    } = navigation
+export default (props) => {
     return (
         <Container>
-            <Title4>Produtos</Title4>
-            <Link />
+            <ContainerIMG onPress={() => { }}>
+                <IMGItem />
+            </ContainerIMG>
+            <Title color="#33333">Produtos</Title>
+            <Button>
+                <TextButton>Delete</TextButton>
+            </Button>
         </Container>
     )
 }

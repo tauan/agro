@@ -21,7 +21,7 @@ export default props => {
   })
   return (
     <View style={{width: "100%", height, backgroundColor, flexDirection: "row", alignItems:"center", zIndex: 7}}>
-      <View style={{width: 30, height: "100%"}}>
+      <View style={{width: 50, height: "100%"}}>
         {back === true && <RectButton onPress={()=>navigation.goBack()} style={{
           height: "100%",
           alignItems: "center", 
@@ -34,7 +34,7 @@ export default props => {
       
       <Text style={{
         flex: 1,
-        paddingRight: 30,
+        paddingRight: 50,
         fontFamily: "Roboto",
         textAlign,
         color

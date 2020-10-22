@@ -13,8 +13,9 @@ export default ({ navigation }) => {
     const [cpf_cnpj, setCPF_CNPJ] = useState()
     const { navigate } = navigation
     return (
+        <>
+        <Header title="Senha" navigation={navigation} />
         <App>
-            <Header title="Senha" navigation={navigation} />
             <ImgForgot />
             <KeyboardAvoidingView>
                 <Form>
@@ -29,5 +30,6 @@ export default ({ navigation }) => {
             </KeyboardAvoidingView>
             <Link title='Cancelar' onPress={() => navigate('LoginScreen')} />
         </App>
+        </>
     )
 }

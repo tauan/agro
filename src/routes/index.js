@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import AuthRoutes from './auth.routes';
-import {AuthProvider} from '../contexs/Auth'
-//import MainRoutes from './main.routes';
+import AuthContext, {AuthProvider} from '../contexs/Auth'
+import MainRoutes from './main.routes';
 
 export default props => {
+  const { loged } = useContext(AuthContext)
   return (
     <NavigationContainer>
-      <AuthProvider>
-        <AuthRoutes />
-      </AuthProvider>
+        {loged === false && <AuthRoutes />}
+        {loged === true && <MainRoutes />}
     </NavigationContainer>
   );
 };

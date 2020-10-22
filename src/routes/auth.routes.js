@@ -5,7 +5,6 @@ import { StatusBar} from 'react-native'
 import LoginScren from '../pages/Login';
 import RegisterScreen from '../pages/Register';  
 import PasswordScreen from '../pages/Password';  
-import ProductsScreen from '../pages/Products/Product';  
 
 const Stack = createStackNavigator();
 
@@ -19,7 +18,7 @@ const AuthRoutes = props => {
         animationEnabled: false,
       }}>
       <Stack.Screen name="LoginScreen" component={LoginScren} />
-      <Stack.Screen name="ProductsScreen" component={ProductsScreen} />
+      <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
     </Stack.Navigator>
     </>

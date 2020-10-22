@@ -28,11 +28,8 @@ export default ({ navigation }) => {
     console.log("Erro ao conectar: " + message)
   }
   const submitForm = async () => {
-    const { data } = await axios.post("http://localhost:3333/login", {
-      username: email,
-      senha: password
-    })
-    data.error ? (showMessage({
+    const { data } = await axios.get(`http://localhost:3000/users?login=${email}&senha=${password}`)
+    data.length === 0 ? (showMessage({
       message: "Erro ao conectar",
       description: "Não foi possível estabelercer a conexão com o servidor! Verifique sua conexão e tente novamente.",
       type: "danger",
@@ -40,7 +37,7 @@ export default ({ navigation }) => {
       duration: 3000,
     }), Keyboard.dismiss()) : ""
     // data.error ? showErrorMessage(data.error) : ""
-    data.nome ? (Keyboard.dismiss(), setLoged(true)) : ""
+    data.length === 1 ? (Keyboard.dismiss(), setLoged(true)) : ""
   }
   return (
     <App>
@@ -66,7 +63,7 @@ export default ({ navigation }) => {
             value={password}
             secureTextEntry={true}
           />
-          <Primary title='Login' onPress={() => submitForm()} shadow={2} disabled={activeButton}/>
+          <Primary title='Login' onPress={() => submitForm()} shadow={2} disabled={activeButton} />
           {/* {activeButton && <Primary title='Login' onPress={() => submitForm()} shadow={2} />}
           {activeButton === false && <Primary title='Login' backgroundColor="#ccc" shadow={2} />} */}
         </Form>

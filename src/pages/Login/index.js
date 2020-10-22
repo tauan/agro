@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { KeyboardAvoidingView, Text, Keyboard } from 'react-native'
 import AuthContext from '../../contexs/Auth'
 import axios from 'axios'
-import FlashMessage, { showMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 import InputAnimated from '../../components/InputAnimated'
 import Primary from '../../components/Buttons/Primary'
@@ -36,7 +36,6 @@ export default ({ navigation }) => {
       floating: true,
       duration: 3000,
     }), Keyboard.dismiss()) : ""
-    // data.error ? showErrorMessage(data.error) : ""
     data.length === 1 ? (Keyboard.dismiss(), setLoged(true)) : ""
   }
   return (
@@ -63,9 +62,13 @@ export default ({ navigation }) => {
             value={password}
             secureTextEntry={true}
           />
-          <Primary title='Login' onPress={() => submitForm()} shadow={2} disabled={activeButton} />
-          {/* {activeButton && <Primary title='Login' onPress={() => submitForm()} shadow={2} />}
-          {activeButton === false && <Primary title='Login' backgroundColor="#ccc" shadow={2} />} */}
+          <Primary
+            title='Login'
+            backgroundColor={activeButton ? '#07AC82' : '#ccc'}
+            onPress={() =>
+              submitForm()}
+            shadow={2}
+            disabled={activeButton} />
         </Form>
       </KeyboardAvoidingView>
       <Link title='Recuperar senha' onPress={() => navigate('PasswordScreen')} />

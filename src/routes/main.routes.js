@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import { StatusBar} from 'react-native'
 
-import ProductsScreen from '../pages/Products/Product';  
+import HomeScreen from '../pages/Home';  
 
 const Stack = createStackNavigator();
 
@@ -11,11 +11,11 @@ const MainRoutes = props => {
     <>
     <StatusBar backgroundColor="#fff" barStyle="dark-content"  />
     <Stack.Navigator
-      headerMode="none"
+      headerMode="none"      
       screenOptions={{
         animationEnabled: false,
       }}>
-      <Stack.Screen name="ProductsScreen" component={ProductsScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen}  />
     </Stack.Navigator>
     </>
   );

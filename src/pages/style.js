@@ -40,3 +40,11 @@ export const Paragraph2 = Styled.Text`
   font-size: 18px;
   color: #333;
 `
+export const Paragraph3 = Styled.Text`  
+  font-size: 24px;
+  color: #333;
+`
+export const Paragraph4 = Styled.Text`  
+  font-size: 30px;
+  color: #333;
+`

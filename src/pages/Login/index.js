@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAvoidingView, Text, Keyboard } from 'react-native'
 import AuthContext from '../../contexs/Auth'
 import axios from 'axios'
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 import InputAnimated from '../../components/InputAnimated'
 import Primary from '../../components/Buttons/Primary'
@@ -14,11 +15,11 @@ export default ({ navigation }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [activeButton, setActiveButton] = useState(false)
-  const {navigate} = navigation
-  const {setLoged} = useContext(AuthContext)
+  const { navigate } = navigation
+  const { setLoged } = useContext(AuthContext)
 
   const checkForm = () => {
-    let controller = true 
+    let controller = true
     email === "" ? controller = false : ""
     password === "" ? controller = false : ""
     controller ? setActiveButton(true) : setActiveButton(false)
@@ -27,12 +28,19 @@ export default ({ navigation }) => {
     console.log("Erro ao conectar: " + message)
   }
   const submitForm = async () => {
-    const {data} = await axios.post("http://localhost:3333/login", {
+    const { data } = await axios.post("http://localhost:3333/login", {
       username: email,
       senha: password
     })
-    data.error ? showErrorMessage(data.error) : ""
-    data.nome ? setLoged(true) : ""
+    data.error ? (showMessage({
+      message: "Erro ao conectar",
+      description: "Não foi possível estabelercer a conexão com o servidor! Verifique sua conexão e tente novamente.",
+      type: "danger",
+      floating: true,
+      duration: 3000,
+    }), Keyboard.dismiss()) : ""
+    // data.error ? showErrorMessage(data.error) : ""
+    data.nome ? (Keyboard.dismiss(), setLoged(true)) : ""
   }
   return (
     <App>
@@ -43,8 +51,8 @@ export default ({ navigation }) => {
             placeholder='Email'
             keyboardType='email-address'
             onChangeText={text => {
-                setEmail(text)
-                checkForm()
+              setEmail(text)
+              checkForm()
             }}
             value={email}
             marginTop={0}
@@ -58,8 +66,9 @@ export default ({ navigation }) => {
             value={password}
             secureTextEntry={true}
           />
-          {activeButton && <Primary title='Login' onPress={()=>submitForm()} shadow={2} />}
-          {activeButton === false && <Primary title='Login' backgroundColor="#ccc" shadow={2} />}
+          <Primary title='Login' onPress={() => submitForm()} shadow={2} disabled={activeButton}/>
+          {/* {activeButton && <Primary title='Login' onPress={() => submitForm()} shadow={2} />}
+          {activeButton === false && <Primary title='Login' backgroundColor="#ccc" shadow={2} />} */}
         </Form>
       </KeyboardAvoidingView>
       <Link title='Recuperar senha' onPress={() => navigate('PasswordScreen')} />

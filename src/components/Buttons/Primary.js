@@ -6,6 +6,7 @@ const wDimensions = Dimensions.get('screen').width
 
 export default (props) => {
   const {
+    disabled = true,
     title,
     width = wDimensions - 60,
     height = 50,
@@ -19,7 +20,7 @@ export default (props) => {
 
   } = props
   return (
-    <RectButton onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation }}>
+    <RectButton onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation,  }} enabled={disabled}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color }}>{title}</Text>
       </View>

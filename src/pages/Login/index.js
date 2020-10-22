@@ -29,13 +29,8 @@ export default ({ navigation }) => {
     console.log("Erro ao conectar: " + message)
   }
   const submitForm = async () => {
-    const {data} = await axios.post("http://localhost:3333/login", {
-      username: email,
-      senha: password
-    })
-    await setUser(data)
-    data.error ? showErrorMessage(data.error) : ""
-    data.nome ? setLoged(true) : ""
+    const {data} = await axios.get(`http://localhost:3000/users?login=${email}&senha=${password}`)
+    data.length === 1 ? (await setUser(data), setLoged(true)) : showErrorMessage("Informações incorretas")
   }
   return (
     <App>

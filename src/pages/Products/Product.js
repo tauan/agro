@@ -1,4 +1,5 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
+import axios from 'axios'
 import { FlatList } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
 import Header from '../../components/Header'
@@ -7,12 +8,12 @@ import UserContext from '../../contexs/User'
 
 import { App, Form, Title1, Paragraph2 } from '../style'
 import { Container, HeaderTitle } from './style'
-const lista = [
-    {id: 123456, image: "https://raw.githubusercontent.com/tauan/agro/dev/src/components/Items/images.jpg", title: "Abacate"}, 
-    {id: 123123, image: "https://d26lpennugtm8s.cloudfront.net/stores/746/397/products/laranja_ceu1-53852a66aa8037bd7415221636647098-1024-1024.jpg", title: "Laranja"},  
-    {id: 232111, image: "https://static3.tcdn.com.br/img/img_prod/350075/muda_de_uva_sem_sementes_1m_feita_de_enxerto_6043_1_20190521161351.jpg", title: "Uva"}, 
-]
+
 export default ({ navigation }) => {
+    const [lista, setLista] = useState([])
+    useEffect(()=>{
+    axios.get("http://localhost:3000/products").then(({data})=> setLista(data))
+    })
     const {user} = useContext(UserContext)
     return (
         <>

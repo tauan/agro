@@ -35,7 +35,6 @@ export default ({ navigation }) => {
     data.length === 1 ? (await setUser(data), setLoged(true)) : (showMessage({
       message: "Usuário ou senha inválidos!",
       type: "danger",
-      // floating: true,
       style: { justifyContent: 'space-between', alignItems: 'center' },
       titleStyle: { fontSize: 16 },
       icon: { icon: "danger", position: 'right' },

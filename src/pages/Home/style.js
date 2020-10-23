@@ -4,13 +4,18 @@ export const Container = Styled.View`
   flex: 1;
   width: 100%;
   height: 100%;  
-  background: #fff;
+  background: #BDBDBD;
   justify-content: center;  
   align-items: flex-end;
 `;
 export const ContainerIMG = Styled.View`
     width: 70px;
     height: 70px;
+    overflow: hidden;
+    border-radius: 4px;
+    border-radius: 100px;
+    border-width: 2px;
+    border-color: #ffffff;
 `
 export const Body = Styled.View`
     flex: 1;
@@ -25,11 +30,16 @@ export const Footer = Styled.View`
     border-top-right-radius: 20px; 
     margin-top: 34px;
     padding-horizontal: 20px;
+    background: #FFFFFF;
 `
 export const Scroll = Styled.ScrollView.attrs({
     horizontal: true,
-})`
-    
+    contentContainerStyle: {
+        flexGrow: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    }
+})`    
 `
 export const IMGUser = Styled.Image.attrs({
     resizeMode: "contain",

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { KeyboardAvoidingView, Text, Keyboard } from 'react-native'
 import AuthContext from '../../contexs/Auth'
+import UserContext from '../../contexs/User'
 import axios from 'axios'
 import { showMessage } from "react-native-flash-message";
 
@@ -17,6 +18,7 @@ export default ({ navigation }) => {
   const [activeButton, setActiveButton] = useState(false)
   const { navigate } = navigation
   const { setLoged } = useContext(AuthContext)
+  const { user, setUser } = useContext(UserContext)
 
   const checkForm = () => {
     let controller = true
@@ -29,14 +31,16 @@ export default ({ navigation }) => {
   }
   const submitForm = async () => {
     const { data } = await axios.get(`http://localhost:3000/users?login=${email}&senha=${password}`)
-    data.length === 0 ? (showMessage({
-      message: "Erro ao conectar",
-      description: "Não foi possível estabelercer a conexão com o servidor! Verifique sua conexão e tente novamente.",
+    data.length === 1 ? (await setUser(data), setLoged(true)) : (showMessage({
+      message: "Usuário ou senha inválidos!",
       type: "danger",
-      floating: true,
+      // floating: true,
+      style: { justifyContent: 'space-between', alignItems: 'center' },
+      titleStyle: { fontSize: 16 },
+      icon: { icon: "danger", position: 'right' },
+      position: 'top',
       duration: 3000,
-    }), Keyboard.dismiss()) : ""
-    data.length === 1 ? (Keyboard.dismiss(), setLoged(true)) : ""
+    }), Keyboard.dismiss())
   }
   return (
     <App>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { KeyboardAvoidingView, Text, Keyboard } from 'react-native'
 import AuthContext from '../../contexs/Auth'
 import UserContext from '../../contexs/User'
@@ -20,14 +20,15 @@ export default ({ navigation }) => {
   const { setLoged } = useContext(AuthContext)
   const { user, setUser } = useContext(UserContext)
 
+  useEffect(()=>{
+    checkForm()
+  },[email, password])
+
   const checkForm = () => {
     let controller = true
     email === "" ? controller = false : ""
     password === "" ? controller = false : ""
     controller ? setActiveButton(true) : setActiveButton(false)
-  }
-  const showErrorMessage = message => {
-    console.log("Erro ao conectar: " + message)
   }
   const submitForm = async () => {
     const { data } = await axios.get(`http://localhost:3000/users?login=${email}&senha=${password}`)
@@ -50,19 +51,15 @@ export default ({ navigation }) => {
           <InputAnimated
             placeholder='Email'
             keyboardType='email-address'
-            onChangeText={text => {
+            onChangeText={async text => {
               setEmail(text)
-              checkForm()
             }}
             value={email}
             marginTop={0}
           />
           <InputAnimated
             placeholder='Senha'
-            onChangeText={text => {
-              setPassword(text)
-              checkForm()
-            }}
+            onChangeText={ text => setPassword(text)}
             value={password}
             secureTextEntry={true}
           />

@@ -15,7 +15,7 @@ export default ({ navigation }) => {
     const [value, setValue] = useState(undefined)
     useEffect(() => {
         axios.get("http://localhost:3000/products").then(({ data }) => setLista(data))
-    })
+    },[])
     const { user } = useContext(UserContext)
     return (
         <>

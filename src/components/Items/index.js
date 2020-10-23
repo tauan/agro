@@ -1,18 +1,19 @@
 import React from 'react'
-import { Container, ContainerIMG, IMGItem, Title, Button, TextButton } from './style'
+import { AnimatedButton, ContainerIMG, IMGItem, Title, Button, TextButton } from './style'
 
 export default (props) => {
-    const {id, image, title} = props.item
-    const {onPress, deleteFunction} = props
+    const { id, image, title } = props.item
+    const { onPress, deleteFunction } = props
+    
     return (
-        <Container>
+        <AnimatedButton animation={"fadeIn"} duration={1000}>
             <ContainerIMG onPress={onPress}>
-                <IMGItem source={{uri: image}} />
+                <IMGItem source={{ uri: image }} />
             </ContainerIMG>
             <Title color="#33333">{title}</Title>
-            <Button onPress={()=> deleteFunction(id)}>
+            <Button onPress={() => deleteFunction(id)}>
                 <TextButton>Delete</TextButton>
             </Button>
-        </Container>
+        </AnimatedButton>
     )
 }

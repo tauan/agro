@@ -54,7 +54,6 @@ export default ({ navigation }) => {
               setEmail(text)
             }}
             required={true}
-            valid="email"
             value={email}
             marginTop={0}
           />

@@ -30,8 +30,6 @@ export default ({ navigation }) => {
     const { user } = useContext(UserContext)
     const { logout } = useContext(AuthContext)
     const { navigate } = navigation
-        
-    console.log(user)
     return (
         <ImageBackground source={BKG} style={{ flex: 1 }}>
             <LinearGradient colors={['transparent', '#002610', '#002610']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1 }}>

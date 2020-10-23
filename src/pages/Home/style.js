@@ -25,7 +25,7 @@ export const Body = Styled.View`
 `
 export const Footer = Styled.View`
     width: 100%; 
-    height: 145px; 
+    height: 200px; 
     border-top-left-radius: 20px; 
     border-top-right-radius: 20px; 
     margin-top: 34px;
@@ -39,7 +39,8 @@ export const Scroll = Styled.ScrollView.attrs({
         justifyContent: 'space-between',
         alignItems: 'center'
     }
-})`    
+})`
+width: 100%    
 `
 export const IMGUser = Styled.Image.attrs({
     resizeMode: "contain",
@@ -50,9 +51,12 @@ export const IMGUser = Styled.Image.attrs({
 export const ContainerItem = Styled.TouchableOpacity.attrs({
     activityOpacity: 0.8,
 })`
-width: 85px;
-height: 100px;
+width: 30%;
+height: 80%;
 align-items: center;
+background-color: #EDEDED;
+border-radius: 10px;
+justify-content: center;
 `
 export const ContainerItemIcon = Styled.View`
 width: 65px;

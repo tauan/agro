@@ -9,8 +9,22 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import UserContext from '../../contexs/User'
 import AuthContext from '../../contexs/Auth'
 
-import { Title1, Paragraph1, Paragraph3 } from '../style'
-import { IMGUser, ContainerIMG, Body, Footer, Container, Scroll, ContainerItem, ContainerItemIcon } from './style'
+import {
+    Title1,
+    Paragraph1,
+    Paragraph3
+} from '../style'
+
+import {
+    IMGUser,
+    ContainerIMG,
+    Body,
+    Footer,
+    Container,
+    Scroll,
+    ContainerItem,
+    ContainerItemIcon
+} from './style'
 
 export default ({ navigation }) => {
     const { user } = useContext(UserContext)
@@ -28,34 +42,34 @@ export default ({ navigation }) => {
                             <IMGUser source={UserIMG} />
                         </ContainerIMG>
                         <Paragraph3 style={{ color: '#FFFFFF' }}>Seja bem vindo,</Paragraph3>
-                        <Title1>{user[0].nome}</Title1>
-                        <Paragraph1 style={{ color: '#FFFFFF' }}>STR de Vitória da Conquista - BA</Paragraph1>
+                        <Title1 style={{color: '#FFF'}}>{user[0].nome}</Title1>
+                        <Paragraph1 style={{ color: '#FFFFFF' }}><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</Paragraph1>
                         <Primary width='100%' title='Editar perfil' shadow={2} />
                     </Body>
                     <Footer>
                         <Scroll>
-                            <ContainerItem onPress={() => { }}>
+                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => { }}>
                                 <ContainerItemIcon>
-                                    <MaterialIcons name="location-pin" size={40} color="#666666" />
+                                    <MaterialIcons name="location-pin" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700' }}>Loal de produção</Paragraph1>
+                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Local de produção</Paragraph1>
                             </ContainerItem>
-                            <ContainerItem onPress={() => navigate('ProductScreen')} >
+                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('ProductScreen')} >
                                 <ContainerItemIcon>
-                                    <MaterialCommunityIcons name="food-apple" size={40} color="#666666" />
+                                    <MaterialCommunityIcons name="food-apple" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700' }}>Produtos</Paragraph1>
+                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Produtos</Paragraph1>
                             </ContainerItem>
-                            <ContainerItem onPress={() => { }}>
+                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => { }}>
                                 <ContainerItemIcon>
-                                    <MaterialIcons name="qr-code-2" size={40} color="#666666" />
+                                    <MaterialIcons name="qr-code-2" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700' }}>Etiquetas</Paragraph1>
+                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Etiquetas</Paragraph1>
                             </ContainerItem>
                         </Scroll>
                     </Footer>
                 </Container>
-            </LinearGradient>
+            </LinearGradient> 
         </ImageBackground>
     )
 }

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextInput, View, Animated, Dimensions } from 'react-native';
+import Validator from './ultils/validator'
 
 const widthDimension = Dimensions.get("screen").width
 
@@ -18,8 +19,11 @@ export default props => {
     borderWidth = 1,
     borderColor = "#BDBDBD",
     value,
-    onChangeText = () => { }
+    onChangeText = () => { },
+    required = false,
+    valid = "none"
   } = props;
+  const [isValid, setIsValid] = useState(true)
 
   const animation = new Animated.Value(0);
 
@@ -32,6 +36,15 @@ export default props => {
       }).start();
     }
   };
+  const finishEdit = text => {
+    verifyTextValue(text)
+    if(required){
+      text.length === 0 ? setIsValid(false) : setIsValid(true)
+    }
+    if(valid !== "none") 
+      setIsValid(Validator({valid, value}))
+      
+  }
   const verifyTextValue = e => {
     if (e.length === 0) {
       Animated.timing(animation, {
@@ -43,7 +56,7 @@ export default props => {
   };
   return (
     <View style={{ width, marginTop, backgroundColor, height,
-      borderRadius, }}>
+      borderRadius}}>
       
       <Animated.Text
         style={{
@@ -52,7 +65,7 @@ export default props => {
             inputRange: [0, 100],
             outputRange: [size, 11],
           }),
-          color: placeholderColor,
+          color: isValid ? placeholderColor : "#f00",
           marginLeft: 8,
           lineHeight: size,
           marginTop: animation.interpolate({
@@ -77,15 +90,18 @@ export default props => {
           paddingHorizontal: 8,
           paddingTop: 15,
           borderWidth,
-          borderColor
+          borderColor: isValid ? borderColor : "#f00"
         }}
         keyboardType={keyboardType}
         onFocus={() => animateText(value)}
         secureTextEntry={secureTextEntry}
-        onEndEditing={(e) => verifyTextValue(e.nativeEvent.text)}
+        onEndEditing={(e) => finishEdit(e.nativeEvent.text)}
         autoCapitalize="none"
         value={value}
-        onChangeText={onChangeText}
+        onChangeText={e=>{
+          onChangeText(e)
+          e.length === 0 ? setIsValid(false) : setIsValid(true)
+        }}
       />
     </View>
   );

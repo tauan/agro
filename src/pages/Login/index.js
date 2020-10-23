@@ -53,6 +53,8 @@ export default ({ navigation }) => {
             onChangeText={async text => {
               setEmail(text)
             }}
+            required={true}
+            valid="email"
             value={email}
             marginTop={0}
           />
@@ -60,6 +62,7 @@ export default ({ navigation }) => {
             placeholder='Senha'
             onChangeText={ text => setPassword(text)}
             value={password}
+            valid='password'
             secureTextEntry={true}
           />
           <Primary

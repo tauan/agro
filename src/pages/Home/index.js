@@ -11,8 +11,8 @@ import AuthContext from '../../contexs/Auth'
 
 import {
     Title1,
-    Paragraph1,
-    Paragraph3
+    Text1,
+    Text3
 } from '../style'
 
 import {
@@ -39,9 +39,9 @@ export default ({ navigation }) => {
                         <ContainerIMG >
                             <IMGUser source={UserIMG} />
                         </ContainerIMG>
-                        <Paragraph3 style={{ color: '#FFFFFF' }}>Seja bem vindo,</Paragraph3>
+                        <Text3 style={{ color: '#FFFFFF' }}>Seja bem vindo,</Text3>
                         <Title1 style={{color: '#FFF'}}>{user[0].nome}</Title1>
-                        <Paragraph1 style={{ color: '#FFFFFF' }}><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</Paragraph1>
+                        <Text1 style={{ color: '#FFFFFF' }}><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</Text1>
                         <Primary width='100%' title='Editar perfil' shadow={2} />
                     </Body>
                     <Footer>
@@ -50,19 +50,19 @@ export default ({ navigation }) => {
                                 <ContainerItemIcon>
                                     <MaterialIcons name="location-pin" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Local de produção</Paragraph1>
+                                <Text1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Local de produção</Text1>
                             </ContainerItem>
                             <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('ProductScreen')} >
                                 <ContainerItemIcon>
                                     <MaterialCommunityIcons name="food-apple" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Produtos</Paragraph1>
+                                <Text1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Produtos</Text1>
                             </ContainerItem>
                             <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => { }}>
                                 <ContainerItemIcon>
                                     <MaterialIcons name="qr-code-2" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <Paragraph1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Etiquetas</Paragraph1>
+                                <Text1 style={{ textAlign: 'center', fontWeight: '700', color: '#666' }}>Etiquetas</Text1>
                             </ContainerItem>
                         </Scroll>
                     </Footer>

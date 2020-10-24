@@ -32,19 +32,19 @@ export const Title4 = Styled.Text`
   color: #07AC82;
   font-weight: bold;
 `
-export const Paragraph1 = Styled.Text`  
+export const Text1 = Styled.Text`  
   font-size: 14px;
   color: #333;
 `
-export const Paragraph2 = Styled.Text`  
+export const Text2 = Styled.Text`  
   font-size: 18px;
   color: #333;
 `
-export const Paragraph3 = Styled.Text`  
+export const Text3 = Styled.Text`  
   font-size: 24px;
   color: #333;
 `
-export const Paragraph4 = Styled.Text`  
+export const Text4 = Styled.Text`  
   font-size: 30px;
   color: #333;
 `

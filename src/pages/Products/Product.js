@@ -7,15 +7,15 @@ import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
 
-import { App, Form, Title1, Paragraph2 } from '../style'
+import { App, Form, Title1, Text2 } from '../style'
 import { Container, HeaderTitle } from './style'
 
 export default ({ navigation }) => {
     const [lista, setLista] = useState([])
-    const [value, setValue] = useState(undefined)
+    const [value, setValue] = useState('')
     useEffect(() => {
         axios.get("http://localhost:3000/products").then(({ data }) => setLista(data))
-    },[])
+    }, [])
     const { user } = useContext(UserContext)
     return (
         <>
@@ -25,13 +25,13 @@ export default ({ navigation }) => {
                     <Container>
                         <HeaderTitle>
                             <Title1>Produtos</Title1>
-                            <Paragraph2>Cadastrar, excluir e editar produtos</Paragraph2>
+                            <Text2>Cadastrar, excluir e editar produtos</Text2>
                         </HeaderTitle>
                         <Primary title="Cadastrar produto" width={150} onPress={() => console.log(user)} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
-                        data={lista}
+                        data={lista.filter(produto => produto.title.indexOf(value) != -1)}
                         renderItem={({ item }) => <Items item={item} onPress={() => console.log(`Press item: ${item.id}`)} deleteFunction={() => console.log(`Delete item: ${item.id}`)} />}
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}

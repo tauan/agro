@@ -17,7 +17,7 @@ border-radius: 10px;
 overflow: hidden;
 justify-content: center;
 align-items: center;
-border-color: #ccc;
+border-color: rgba(220,220,220,0.5);
 border-width: 1px;
 `
 export const IMGItem = Styled.Image.attrs({

@@ -15,13 +15,15 @@ export default ({ navigation }) => {
     const [lista, setLista] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
+    const [item, setItem] = useState()
+
 
     useEffect(() => {
         axios.get("http://localhost:3000/products").then(({ data }) => setLista(data))
     }, [])
 
     const { user } = useContext(UserContext)
-    
+
     return (
         <>
             <Header title="Produtos" navigation={navigation} />
@@ -40,8 +42,8 @@ export default ({ navigation }) => {
                         renderItem={({ item }) =>
                             <Items
                                 item={item}
-                                onPress={() => setActiveModal(true)}
-                                deleteFunction={() => console.log(`Delete item: ${item.id}`)} />
+                                onPress={() => { }}
+                                deleteFunction={() => { setActiveModal(true); setItem(item) }} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -49,7 +51,16 @@ export default ({ navigation }) => {
                         showsVerticalScrollIndicator={false}
                     />
                 </Form>
-                {activeModal && <ModalMessage active={activeModal} onPress={() => setActiveModal(false)} />}
+                {activeModal &&
+                    <ModalMessage
+                        showMessage={{
+                            title: 'Atenção!',
+                            message: `Deseja realmente deletar o produto ${item.title} da lista?`,
+                            type: 'alert',
+                            icon: true
+                        }}
+                        onPress={() => { setActiveModal(false); }} >
+                    </ModalMessage>}
             </App>
         </>
     )

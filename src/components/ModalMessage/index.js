@@ -1,11 +1,25 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Animated } from "react-native";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { Modal, Container, ContainerMSG, Title, Button, TextButton } from './style'
+import { Modal, Container, BoxMessage, Button, TextButton } from './style'
+import Primary from '../Buttons/Primary'
+import { Title1, Text2 } from '../../pages/style'
 
-export default (props, { children }) => {
-    const { onPress } = props
+export default (props) => {
+    const {
+        onPress,
+        children,
+        showMessage = {
+            icon: false,
+            title: '',
+            message: '',
+            type: '',
+        }
+    } = props
+
     const [visible, setVisible] = useState(true)
+    const [config, setConfig] = useState({})
 
     const anim = useRef(new Animated.Value(0)).current
 
@@ -31,21 +45,43 @@ export default (props, { children }) => {
             }),
         ]).start()
         setTimeout(function () { setVisible(false); onPress(); }, 800)
-    }
+    }    
 
     useEffect(() => {
+        switch (showMessage.type) {
+            case 'alert':
+                setConfig({
+                    color: '#FEBA02',
+                    icon: 'alert-outline'
+                })
+                break;
+
+            default:
+                break;
+        }
         ActiveModal()
     }, [])
+
+    const ChildrenMessage = () => {
+        return (
+            <>
+                {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
+                <Title1 style={{ color: config.color, marginBottom:10 }}>{showMessage.title}</Title1>
+                <Text2>{showMessage.message}</Text2>
+                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} />
+            </>
+        )
+    }
 
     return (
         <Modal visible={visible}>
             <Container>
-                <ContainerMSG as={Animated.View} style={{ transform: [{ scale: anim }] }}>
-                    {children}
+                <BoxMessage as={Animated.View} style={{ transform: [{ scale: anim }] }}>
+                    {children ? children : ChildrenMessage()}
                     <Button onPress={() => desactiveModal()}>
                         <TextButton>Cancelar</TextButton>
                     </Button>
-                </ContainerMSG>
+                </BoxMessage>
             </Container>
         </Modal>
     )

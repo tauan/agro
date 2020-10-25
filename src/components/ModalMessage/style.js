@@ -13,24 +13,25 @@ justify-content: center;
 align-items: center;
 background-color: rgba(255 ,255, 255, 0.9);
 `
-export const ContainerMSG = Styled.View`
+export const BoxMessage = Styled.View`
 width: 90%;
-height: 64%;
 border-radius: 10px;
 overflow: hidden;
 justify-content: center;
 align-items: center;
 background-color: #ffffff;
 box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
+padding: 25px;
+margin-horizontal: 25px;
 elevation: 15;
 `
 
 export const Button = Styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,
 })`  
-  padding-left: 10px;
   font-size: 16px;
   font-weight: bold;
+  padding-Top: 20px;
   `
 export const TextButton = Styled.Text`  
   font-size: 16px;

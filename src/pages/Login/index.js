@@ -20,9 +20,9 @@ export default ({ navigation }) => {
   const { setLoged } = useContext(AuthContext)
   const { user, setUser } = useContext(UserContext)
 
-  useEffect(()=>{
+  useEffect(() => {
     checkForm()
-  },[email, password])
+  }, [email, password])
 
   const checkForm = () => {
     let controller = true
@@ -32,15 +32,17 @@ export default ({ navigation }) => {
   }
   const submitForm = async () => {
     const { data } = await axios.get(`http://localhost:3000/users?login=${email}&senha=${password}`)
-    data.length === 1 ? (await setUser(data), setLoged(true)) : (showMessage({
-      message: "Usuário ou senha inválidos!",
-      type: "danger",
-      style: { justifyContent: 'space-between', alignItems: 'center' },
-      titleStyle: { fontSize: 16 },
-      icon: { icon: "danger", position: 'right' },
-      position: 'top',
-      duration: 3000,
-    }), Keyboard.dismiss())
+    data.length === 1
+      ? (await setUser(data), setLoged(true))
+      : (showMessage({
+        message: "Usuário ou senha inválidos!",
+        type: "danger",
+        style: { justifyContent: 'space-between', alignItems: 'center' },
+        titleStyle: { fontSize: 16 },
+        icon: { icon: "danger", position: 'right' },
+        position: 'top',
+        duration: 3000,
+      }), Keyboard.dismiss())
   }
   return (
     <App>
@@ -59,14 +61,14 @@ export default ({ navigation }) => {
           />
           <InputAnimated
             placeholder='Senha'
-            onChangeText={ text => setPassword(text)}
+            onChangeText={text => setPassword(text)}
             value={password}
             valid='password'
             secureTextEntry={true}
           />
           <Primary
             title='Login'
-            backgroundColor={activeButton ? '#07AC82' : '#ccc'}
+            backgroundColor={activeButton ? '#008b54' : '#ccc'}
             onPress={() =>
               submitForm()}
             shadow={2}
@@ -77,9 +79,9 @@ export default ({ navigation }) => {
       <Link
         title='Cadastrar'
         backgroundColor='#fff'
-        color="#07AC82"
+        color="#008b54"
         borderWidth={1}
-        borderColor="#07AC82"
+        borderColor="#008b54"
         marginTop={50}
         onPress={() => navigate('RegisterScreen')} />
     </App>

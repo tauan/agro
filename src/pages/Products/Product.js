@@ -9,14 +9,19 @@ import UserContext from '../../contexs/User'
 
 import { App, Form, Title1, Text2 } from '../style'
 import { Container, HeaderTitle } from './style'
+import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
     const [lista, setLista] = useState([])
     const [value, setValue] = useState('')
+    const [activeModal, setActiveModal] = useState(false)
+
     useEffect(() => {
         axios.get("http://localhost:3000/products").then(({ data }) => setLista(data))
     }, [])
+
     const { user } = useContext(UserContext)
+    
     return (
         <>
             <Header title="Produtos" navigation={navigation} />
@@ -32,13 +37,19 @@ export default ({ navigation }) => {
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
                         data={lista.filter(produto => produto.title.indexOf(value) != -1)}
-                        renderItem={({ item }) => <Items item={item} onPress={() => console.log(`Press item: ${item.id}`)} deleteFunction={() => console.log(`Delete item: ${item.id}`)} />}
+                        renderItem={({ item }) =>
+                            <Items
+                                item={item}
+                                onPress={() => setActiveModal(true)}
+                                deleteFunction={() => console.log(`Delete item: ${item.id}`)} />
+                        }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
                         numColumns={2}
                         showsVerticalScrollIndicator={false}
                     />
                 </Form>
+                {activeModal && <ModalMessage active={activeModal} onPress={() => setActiveModal(false)} />}
             </App>
         </>
     )

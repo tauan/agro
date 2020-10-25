@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Animated } from "react-native";
 
 import { Container, ContainerIMG, IMGItem, Title, Button, TextButton } from './style'
@@ -7,22 +7,22 @@ export default (props) => {
     const { id, image, title } = props.item
     const { onPress, deleteFunction } = props
 
-    const anim = new Animated.Value(0)
-    const delay = (400 + id * 100)
+    const anim = useRef(new Animated.Value(0)).current
+    const dlay = 100 * id
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         Animated.sequence([
-            Animated.delay(delay),
             Animated.spring(anim, {
                 toValue: 1,
                 friction: 8,
+                delay: dlay,
                 useNativeDriver: true,
             }),
         ]).start()
     }, [])
 
     return (
-        <Container as={Animated.View} style={{  transform: [{ scale: anim }] }}>
+        <Container as={Animated.View} style={{ transform: [{ scale: anim }] }}>
             <ContainerIMG onPress={onPress}>
                 <IMGItem source={{ uri: image }} />
             </ContainerIMG>

@@ -11,7 +11,7 @@ export default (props) => {
     title,
     width = wDimensions - 60,
     height = 50,
-    backgroundColor = "#07AC82",
+    backgroundColor = "#008b54",
     borderRadius = 4,
     marginTop = 16,
     color = "#fff",

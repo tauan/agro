@@ -21,8 +21,6 @@ justify-content: center;
 align-items: center;
 background-color: #ffffff;
 box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
-padding: 25px;
-margin-horizontal: 25px;
 elevation: 15;
 `
 

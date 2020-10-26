@@ -11,3 +11,7 @@ export const Container = Styled.View`
 export const HeaderTitle = Styled.View`
   width:${width / 2}px;  
 `
+export const DetailsContainer = Styled.View`
+  width: 100%;
+  background-color: #ff0;
+`

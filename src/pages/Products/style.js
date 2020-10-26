@@ -13,5 +13,42 @@ export const HeaderTitle = Styled.View`
 `
 export const DetailsContainer = Styled.View`
   width: 100%;
-  background-color: #ff0;
+  justify-content: center;
+  
+`
+export const HeaderCard = Styled.View`
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 25px;
+`
+export const BodyCard = Styled.View`
+  width: 100%;
+`
+export const Column = Styled.View`
+  flex: 1;
+  justify-content: space-evenly;
+`
+export const Item = Styled.View`
+  margin-bottom: 25px
+`
+export const FilterContainer = Styled.View`
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding-horizontal: 15px;
+  padding-vertical: 40px;
+`
+export const Button = Styled.TouchableOpacity`
+  border-radius: 4px;
+  border-width: ${props => props.borderWidth ? props.borderWidth : 0}px;
+  border-color: ${props => props.borderColor ? props.borderColor : 'transparent'};
+  width: ${props => props.size ? props.size : '100%'};
+  justify-content: center;
+  align-items: center;
+  background-color: ${props => props.background ? props.background : '#008b54'};
+  padding: 15px;
+  margin-top: 15px;
+  flex-direction: row;
+`
+export const TextButton = Styled.Text`
+  color: ${props => props.color ? props.color : '#333'};
 `

@@ -45,7 +45,7 @@ export default (props) => {
             }),
         ]).start()
         setTimeout(function () { setVisible(false); onPress(); }, 800)
-    }    
+    }
 
     useEffect(() => {
         console.log(children)
@@ -67,7 +67,7 @@ export default (props) => {
         return (
             <>
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
-                <Title1 style={{ color: config.color, marginBottom:10 }}>{showMessage.title}</Title1>
+                <Title1 style={{ color: config.color, marginBottom: 10 }}>{showMessage.title}</Title1>
                 <Text2>{showMessage.message}</Text2>
                 {/* <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} /> */}
                 <Button onPress={() => desactiveModal()}>
@@ -81,9 +81,24 @@ export default (props) => {
         <Modal visible={visible}>
             <Container>
                 <BoxMessage as={Animated.View} style={{ transform: [{ scale: anim }], padding: 0 }}>
-                    {children ? children : ChildrenMessage()}
+                    {children ? (
+                        <>
+                            {children}
+                            <Button Button
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    position: 'absolute',
+                                    top: 15,
+                                    right: 15,
+                                    padding: 5,
+                                    paddingTop: 0
+                                }}
+                                onPress={(evt) => { desactiveModal(); console.log(evt) }}>
+                                <MaterialCommunityIcons size={20} name='close' color='#fff' />
+                            </Button>
+                        </>) : ChildrenMessage()}
                 </BoxMessage>
             </Container>
-        </Modal>
+        </Modal >
     )
 }

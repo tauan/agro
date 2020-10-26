@@ -34,13 +34,13 @@ export default ({ navigation }) => {
         <ImageBackground source={BKG} style={{ flex: 1 }}>
             <LinearGradient colors={['transparent', '#002610', '#002610']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1 }}>
                 <Container>
-                    <Primary title='Desconectar' marginRight={20} backgroundColor="#F43D3D" onPress={()=>logout()} width={150} shadow={2} />
+                    <Primary title='Desconectar' marginRight={20} backgroundColor="#F43D3D" onPress={() => logout()} width={150} shadow={2} />
                     <Body>
                         <ContainerIMG >
                             <IMGUser source={UserIMG} />
                         </ContainerIMG>
                         <Text3 style={{ color: '#FFFFFF' }}>Seja bem vindo,</Text3>
-                        <Title1 style={{color: '#FFF'}}>{user[0].nome}</Title1>
+                        <Title1 style={{ color: '#FFF' }}>{user[0].nome}</Title1>
                         <Text1 style={{ color: '#FFFFFF' }}><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</Text1>
                         <Primary width='100%' title='Editar perfil' shadow={2} />
                     </Body>
@@ -67,7 +67,7 @@ export default ({ navigation }) => {
                         </Scroll>
                     </Footer>
                 </Container>
-            </LinearGradient> 
+            </LinearGradient>
         </ImageBackground>
     )
 }

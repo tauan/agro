@@ -3,7 +3,6 @@ import Styled from 'styled-components/native'
 export const Modal = Styled.Modal.attrs({
     animationType: "fade",
     transparent: true,
-
 })`
 `
 export const Container = Styled.View`
@@ -23,7 +22,6 @@ background-color: #ffffff;
 box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
 elevation: 15;
 `
-
 export const Button = Styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,
 })`  

@@ -64,6 +64,7 @@ export default ({ navigation }) => {
                     <ModalMessage onPress={() => { setActiveDetails(false); }} >
                         <DetailsContainer>
                             <Text>Teste</Text>
+                            <Primary title="Teste do botao" />
                         </DetailsContainer>
                 </ModalMessage>}
             </App>

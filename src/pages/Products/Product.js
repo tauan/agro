@@ -12,15 +12,13 @@ import { Container, HeaderTitle } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
-    const [lista, setLista] = useState([])
+    const [list, setList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
     const [item, setItem] = useState()
 
-
-    useEffect(() => {
-        axios.get("http://localhost:3000/products").then(({ data }) => setLista(data))
-    }, [])
+    useEffect(() => { getList() }, [])
+    const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))
 
     const { user } = useContext(UserContext)
 
@@ -38,7 +36,7 @@ export default ({ navigation }) => {
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
-                        data={lista.filter(produto => produto.title.indexOf(value) != -1)}
+                        data={list.filter(produto => produto.title.indexOf(value) != -1)}
                         renderItem={({ item }) =>
                             <Items
                                 item={item}

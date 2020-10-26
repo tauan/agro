@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { FlatList } from 'react-native'
+import { FlatList, View, Text } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
 import Header from '../../components/Header'
 import Items from '../../components/Items'
@@ -8,13 +8,14 @@ import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
 
 import { App, Form, Title1, Text2 } from '../style'
-import { Container, HeaderTitle } from './style'
+import { Container, HeaderTitle, DetailsContainer } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
     const [list, setList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
+    const [activeDetails, setActiveDetails] = useState(false)
     const [item, setItem] = useState()
 
     useEffect(() => { getList() }, [])
@@ -37,10 +38,10 @@ export default ({ navigation }) => {
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
                         data={list.filter(produto => produto.title.indexOf(value) != -1)}
-                        renderItem={({ item }) =>
-                            <Items
+                        renderItem={({item, index}) => <Items
                                 item={item}
-                                onPress={() => { }}
+                                index={index }
+                                onPress={() => setActiveDetails(true)}
                                 deleteFunction={() => { setActiveModal(true); setItem(item) }} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
@@ -59,6 +60,12 @@ export default ({ navigation }) => {
                         }}
                         onPress={() => { setActiveModal(false); }} >
                     </ModalMessage>}
+                {activeDetails &&
+                    <ModalMessage onPress={() => { setActiveDetails(false); }} >
+                        <DetailsContainer>
+                            <Text>Teste</Text>
+                        </DetailsContainer>
+                </ModalMessage>}
             </App>
         </>
     )

@@ -5,16 +5,18 @@ import { Container, ContainerIMG, IMGItem, Title, Button, TextButton } from './s
 
 export default (props) => {
     const { id, image, title } = props.item
-    const { onPress, deleteFunction } = props
+    const { onPress, deleteFunction, index } = props
 
     const anim = useRef(new Animated.Value(0)).current
-    const dlay = 100 * id
+    let dlay = 0
+    if(index < 10) dlay = 200 * index 
 
     useEffect(() => {
+        console.log(index, dlay)
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 1,
-                friction: 8,
+                friction: 6,
                 delay: dlay,
                 useNativeDriver: true,
             }),

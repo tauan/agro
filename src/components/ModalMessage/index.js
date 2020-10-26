@@ -3,7 +3,7 @@ import { Animated } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { Modal, Container, BoxMessage, Button, TextButton } from './style'
-import Primary from '../Buttons/Primary'
+//import Primary from '../Buttons/Primary'
 import { Title1, Text2 } from '../../pages/style'
 
 export default (props) => {
@@ -48,6 +48,7 @@ export default (props) => {
     }    
 
     useEffect(() => {
+        console.log(children)
         switch (showMessage.type) {
             case 'alert':
                 setConfig({
@@ -68,7 +69,10 @@ export default (props) => {
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
                 <Title1 style={{ color: config.color, marginBottom:10 }}>{showMessage.title}</Title1>
                 <Text2>{showMessage.message}</Text2>
-                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} />
+                {/* <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} /> */}
+                <Button onPress={() => desactiveModal()}>
+                    <TextButton>Cancelar</TextButton>
+                </Button>
             </>
         )
     }
@@ -76,11 +80,8 @@ export default (props) => {
     return (
         <Modal visible={visible}>
             <Container>
-                <BoxMessage as={Animated.View} style={{ transform: [{ scale: anim }] }}>
+                <BoxMessage as={Animated.View} style={{ transform: [{ scale: anim }], padding: 0 }}>
                     {children ? children : ChildrenMessage()}
-                    <Button onPress={() => desactiveModal()}>
-                        <TextButton>Cancelar</TextButton>
-                    </Button>
                 </BoxMessage>
             </Container>
         </Modal>

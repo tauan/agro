@@ -20,4 +20,5 @@ export const TitleStyle = Styled.Text`
 export const TextStyle = Styled.Text`  
   font-size: ${props => props.fontsize ? props.fontsize : 14}px;
   color: ${props => props.color ? props.color : '#333'};
+  text-align: ${props => props.align ? props.align : 'left'};
 `

@@ -38,30 +38,30 @@ export default ({ navigation }) => {
                         <ContainerIMG >
                             <IMGUser source={UserIMG} />
                         </ContainerIMG>
-                        <TextStyle color="#333">Seja bem vindo,</TextStyle>
+                        <TextStyle color="#fff" fontsize={24}>Seja bem vindo,</TextStyle>
                         <TitleStyle color="#fff">{user[0].nome}</TitleStyle>
-                        <TextStyle color="#333"><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</TextStyle>
+                        <TextStyle color="#fff"><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</TextStyle>
                         <Primary width='100%' title='Editar perfil' shadow={2} />
                     </Body>
                     <Footer>
                         <Scroll>
-                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => { }}>
+                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('PropertyScreen')}>
                                 <ContainerItemIcon>
                                     <MaterialIcons name="location-pin" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <TextStyle color="#333">Local de produção</TextStyle>
+                                <TextStyle align="center" color="#333">Local de produção</TextStyle>
                             </ContainerItem>
                             <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('ProductScreen')} >
                                 <ContainerItemIcon>
                                     <MaterialCommunityIcons name="food-apple" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <TextStyle color="#333">Produtos</TextStyle>
+                                <TextStyle align="center" color="#333">Produtos</TextStyle>
                             </ContainerItem>
-                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => { }}>
+                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('TagsScreen')}>
                                 <ContainerItemIcon>
                                     <MaterialIcons name="qr-code-2" size={60} color="#666666" />
                                 </ContainerItemIcon>
-                                <TextStyle color="#333">Etiquetas</TextStyle>
+                                <TextStyle align="center" color="#333">Etiquetas</TextStyle>
                             </ContainerItem>
                         </Scroll>
                     </Footer>

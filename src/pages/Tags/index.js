@@ -37,15 +37,15 @@ export default ({ navigation }) => {
 
     return (
         <>
-            <Header title="Produtos" navigation={navigation} />
+            <Header title="Etiquetas" navigation={navigation} />
             <App>
                 <Form style={{ flex: 1 }}>
                     <Container>
                         <HeaderTitle>
-                            <TitleStyle>Produtos</TitleStyle>
-                            <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
+                            <TitleStyle>Etiquetas</TitleStyle>
+                            <TextStyle>Cadastrar, excluir e editar etiquetas</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => console.log(user)} />
+                        <Primary title="Criar etiquetas" width={150} onPress={() => console.log(user)} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList

@@ -8,7 +8,7 @@ import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
 
-import { App, Form, Title1, Text2, Text1 } from '../style'
+import { App, Form, TitleStyle, TextStyle } from '../style'
 import { Container, HeaderTitle, DetailsContainer, Column, HeaderCard, BodyCard, FilterContainer, Item, Button, TextButton } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
@@ -31,8 +31,8 @@ export default ({ navigation }) => {
                 <Form style={{ flex: 1 }}>
                     <Container>
                         <HeaderTitle>
-                            <Title1>Produtos</Title1>
-                            <Text2>Cadastrar, excluir e editar produtos</Text2>
+                            <TitleStyle>Produtos</TitleStyle>
+                            <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
                         </HeaderTitle>
                         <Primary title="Cadastrar produto" width={150} onPress={() => console.log(user)} />
                     </Container>
@@ -67,29 +67,29 @@ export default ({ navigation }) => {
                             <ImageBackground style={{ width: '100%' }} source={{ uri: item.image }}>
                                 <FilterContainer>
                                     <HeaderCard>
-                                        <Title1 color="#fff">{item.title}</Title1>
-                                        <Text1 color="#fff"><MaterialIcons name="location-pin" size={13} color="#fff" />{item.property}</Text1>
+                                        <TitleStyle color="#fff" fontsize={42}>{'Nome produto ' + item.title}</TitleStyle>
+                                        <TextStyle color="#fff"><MaterialIcons name="location-pin" size={13} color="#fff" />{item.property}</TextStyle>
                                     </HeaderCard>
                                     <BodyCard style={{ flexDirection: 'row' }}>
                                         <Column>
                                             <Item>
-                                                <Text2 color="#fff">Peso Líquido</Text2>
-                                                <Title1 color="#fff">{item.net_weight_product}<Text2 color="#fff">{item.unit_product}</Text2></Title1>
+                                                <TextStyle color="#fff" fontsize={18}>Peso Líquido</TextStyle>
+                                                <TitleStyle color="#fff">{item.net_weight_product}<TextStyle color="#fff" fontsize={18}>{item.unit_product}</TextStyle></TitleStyle>
                                             </Item>
                                             <Item>
-                                                <Text2 color="#fff">Peso Líquido</Text2>
-                                                <Title1 color="#fff">{item.production}<Text2 color="#fff">{item.unit_production}</Text2></Title1>
+                                                <TextStyle color="#fff" fontsize={18}>Peso Líquido</TextStyle>
+                                                <TitleStyle color="#fff">{item.production}<TextStyle color="#fff" fontsize={18}>{item.unit_production}</TextStyle></TitleStyle>
                                             </Item>
                                             <Item>
-                                                <Text2 color="#fff">Validade</Text2>
-                                                <Title1 color="#fff">{item.production}<Text2 color="#fff">{item.unit_production}</Text2></Title1>
+                                                <TextStyle color="#fff" fontsize={18}>Validade</TextStyle>
+                                                <TitleStyle color="#fff">{item.production}<TextStyle color="#fff" fontsize={18}>{item.unit_production}</TextStyle></TitleStyle>
                                             </Item>
                                         </Column>
                                         <Column style={{ justifyContent: 'flex-end' }}>
                                             <Button>
-                                            <MaterialIcons name="qr-code-2" size={20} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton>
+                                                <MaterialIcons name="qr-code-2" size={20} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton>
                                             </Button>
-                                            <Button background="#ffffff80" borderColor="#fff" borderWidth={1}>
+                                            <Button background="rgba(255, 255, 255, 0.5)" borderColor="#fff" borderWidth={1}>
                                                 <TextButton color="#fff">Editar Produto</TextButton>
                                             </Button>
                                         </Column>

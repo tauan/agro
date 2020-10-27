@@ -19,8 +19,7 @@ overflow: hidden;
 justify-content: center;
 align-items: center;
 background-color: #ffffff;
-box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
-elevation: 15;
+box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.9);
 `
 export const Button = Styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,

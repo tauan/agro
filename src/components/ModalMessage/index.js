@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { Modal, Container, BoxMessage, Button, TextButton } from './style'
 //import Primary from '../Buttons/Primary'
-import { Title1, Text2 } from '../../pages/style'
+import { TitleStyle, TextStyle } from '../../pages/style'
 
 export default (props) => {
     const {
@@ -21,14 +21,14 @@ export default (props) => {
     const [visible, setVisible] = useState(true)
     const [config, setConfig] = useState({})
 
-    const anim = useRef(new Animated.Value(0)).current
+    const anim = new Animated.Value(0);
 
     const ActiveModal = () => {
         setVisible(true)
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 1,
-                friction: 8,
+                friction: 6,
                 delay: 600,
                 useNativeDriver: true,
             }),
@@ -39,7 +39,6 @@ export default (props) => {
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 0,
-                friction: 8,
                 delay: 400,
                 useNativeDriver: true,
             }),
@@ -67,8 +66,8 @@ export default (props) => {
         return (
             <>
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
-                <Title1 style={{ color: config.color, marginBottom: 10 }}>{showMessage.title}</Title1>
-                <Text2>{showMessage.message}</Text2>
+                <TitleStyle style={{ color: config.color, marginBottom: 10 }}>{showMessage.title}</TitleStyle>
+                <TextStyle>{showMessage.message}</TextStyle>
                 {/* <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} /> */}
                 <Button onPress={() => desactiveModal()}>
                     <TextButton>Cancelar</TextButton>

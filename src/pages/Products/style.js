@@ -1,4 +1,5 @@
 import Styled from 'styled-components/native'
+import { RectButton } from 'react-native-gesture-handler'
 import { Dimensions } from 'react-native'
 
 const { width } = Dimensions.get('screen')
@@ -35,12 +36,10 @@ export const FilterContainer = Styled.View`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   padding-horizontal: 15px;
-  padding-vertical: 40px;
+  padding-vertical: 20px;
 `
-export const Button = Styled.TouchableOpacity`
+export const Button = Styled(RectButton)`
   border-radius: 4px;
-  border-width: ${props => props.borderWidth ? props.borderWidth : 0}px;
-  border-color: ${props => props.borderColor ? props.borderColor : 'transparent'};
   width: ${props => props.size ? props.size : '100%'};
   justify-content: center;
   align-items: center;

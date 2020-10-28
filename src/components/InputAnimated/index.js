@@ -38,7 +38,7 @@ export default props => {
   };
   const finishEdit = text => {
     verifyTextValue(text)
-    if(required){
+    if(required!==false){
       text.length === 0 ? setIsValid(false) : setIsValid(true)
     }
     if(valid !== "none") 

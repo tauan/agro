@@ -9,7 +9,7 @@ export default (props) => {
     disabled = true,
     marginRight = 0,
     title,
-    width = wDimensions - 60,
+    width = wDimensions,
     height = 50,
     backgroundColor = "#008b54",
     borderRadius = 4,
@@ -20,7 +20,7 @@ export default (props) => {
     elevation = shadow
   } = props
   return (
-    <RectButton onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={disabled}>
+    <RectButton onPress={onPress} style={{ zIndex: 5,width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={disabled}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color }}>{title}</Text>
       </View>

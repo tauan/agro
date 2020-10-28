@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export default (props) => {
   const {
+    placeholder = "",
     listOptions = [],
     marginTop = 16,
     defaultValue,
@@ -23,7 +24,7 @@ export default (props) => {
   return (
     <DropDownPicker
       items={items}
-      placeholder="Sexo"
+      placeholder={placeholder}
       defaultValue={defaultValue}
       containerStyle={{ height: 50, marginTop }}
       itemStyle={{
@@ -31,7 +32,7 @@ export default (props) => {
       }}
       style={{ backgroundColor: '#fff', borderColor }}
       dropDownStyle={{ backgroundColor: '#ffffff' }}
-      onChangeItem={onChangeItem()}
+      onChangeItem={onChangeItem}
     />
   )
 }

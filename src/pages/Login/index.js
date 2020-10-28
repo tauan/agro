@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { KeyboardAvoidingView, Text, Keyboard } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import AuthContext from '../../contexs/Auth'
 import UserContext from '../../contexs/User'
 import axios from 'axios'
@@ -20,10 +21,29 @@ export default ({ navigation }) => {
   const { setLoged } = useContext(AuthContext)
   const { user, setUser } = useContext(UserContext)
 
+  useEffect(() => { checkSavedUser() },[])
   useEffect(() => {
     checkForm()
   }, [email, password])
 
+  const checkSavedUser = async () => {
+    try {
+      const userJson = await AsyncStorage.getItem('@user')
+      const user = JSON.parse(userJson)
+      await setUser(user)
+      if(userJson !== null) setLoged(true)
+    } catch(e) {
+      console.log(`Identificamos o seguinte erro na checkagem: ${e}`)
+    }
+  }
+  const saveUser = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@user', jsonValue)
+    } catch (e) {
+      console.log(`Identificamos o seguinte erro: ${e}`)
+    }
+  }
   const checkForm = () => {
     let controller = true
     email === "" ? controller = false : ""
@@ -33,7 +53,7 @@ export default ({ navigation }) => {
   const submitForm = async () => {
     const { data } = await axios.get(`http://localhost:3000/users?login=${email}&senha=${password}`)
     data.length === 1
-      ? (await setUser(data), setLoged(true))
+      ? (await setUser(data[0]), saveUser(data[0]), setLoged(true))
       : (showMessage({
         message: "Usuário ou senha inválidos!",
         type: "danger",

@@ -40,6 +40,7 @@ export default ({ navigation }) => {
                             />
                             <Dropdown
                                 defaultValue={sexo}
+                                placeholder="Sexo"
                                 onChangeItem={text => setSexo(text)}
                                 listOptions={['Masculino', 'Feminino']} />
                             <InputAnimated

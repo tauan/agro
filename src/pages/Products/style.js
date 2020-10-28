@@ -15,3 +15,4 @@ export const DetailsContainer = Styled.View`
   width: 100%;
   background-color: #ff0;
 `
+export const Subtitle = Styled.Text``

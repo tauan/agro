@@ -6,6 +6,7 @@ import Header from '../../components/Header'
 import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
+import ProductContext from '../../contexs/ProductContext'
 
 import { App, Form, Title1, Text2 } from '../style'
 import { Container, HeaderTitle, DetailsContainer } from './style'
@@ -17,6 +18,7 @@ export default ({ navigation }) => {
     const [activeModal, setActiveModal] = useState(false)
     const [activeDetails, setActiveDetails] = useState(false)
     const [item, setItem] = useState()
+    const { produto, setActivePage } = useContext(ProductContext)
 
     useEffect(() => { getList() }, [])
     const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))
@@ -41,7 +43,7 @@ export default ({ navigation }) => {
                         renderItem={({item, index}) => <Items
                                 item={item}
                                 index={index }
-                                onPress={() => setActiveDetails(true)}
+                                onPress={() => {setActivePage(1); console.log(produto); navigation.navigate("ProductForm")}}
                                 deleteFunction={() => { setActiveModal(true); setItem(item) }} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
@@ -64,7 +66,6 @@ export default ({ navigation }) => {
                     <ModalMessage onPress={() => { setActiveDetails(false); }} >
                         <DetailsContainer>
                             <Text>Teste</Text>
-                            <Primary title="Teste do botao" />
                         </DetailsContainer>
                 </ModalMessage>}
             </App>

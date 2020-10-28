@@ -9,6 +9,9 @@ export const App = Styled.View`
   justify-content: center;  
   align-items: center
 `;
+export const Grid = Styled.View`
+  padding-horizontal: 20px;
+`
 export const Form = Styled.View`
   width: 100%;
 `
@@ -27,6 +30,11 @@ export const Title3 = Styled.Text`
   font-size: 18px;
   color: #008b54;
   font-weight: bold;
+`
+export const Title3Regular = Styled.Text`  
+  font-size: 18px;
+  color: #008b54;
+  font-weight: normal;
 `
 export const Title4 = Styled.Text`  
   font-size: 14px;

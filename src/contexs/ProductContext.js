@@ -3,6 +3,7 @@ import React, { createContext, useState } from "react";
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
+    const [activePage, setActivePage] = useState(undefined)
     const [produto, setProduto] = useState({
         categoria: "",
         descricao_produto: "",
@@ -28,11 +29,13 @@ export const ProductProvider = ({ children }) => {
     return (
         <ProductContext.Provider
             value={{
+                activePage,
                 produto,
                 producao,
                 propriedades,
                 ingredientes,
                 descricao,
+                setActivePage,
                 setProduto,
                 setProducao,
                 setPropriedades,

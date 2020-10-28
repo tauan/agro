@@ -44,3 +44,4 @@ git log --pretty=format:"%h - %an"
 	%cd - Commiter date, %cr - commiter date relative  
 )   
 git remote set-url origin "url"  
+git rebase master

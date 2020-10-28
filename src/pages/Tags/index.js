@@ -7,7 +7,6 @@ import Header from '../../components/Header'
 import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
-import ProductContext from '../../contexs/ProductContext'
 
 import { App, Form, TitleStyle, TextStyle } from '../style'
 import {
@@ -30,7 +29,6 @@ export default ({ navigation }) => {
     const [activeModal, setActiveModal] = useState(false)
     const [activeDetails, setActiveDetails] = useState(false)
     const [item, setItem] = useState()
-    const { produto, setActivePage } = useContext(ProductContext)
 
     useEffect(() => { getList() }, [])
     const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))
@@ -39,15 +37,15 @@ export default ({ navigation }) => {
 
     return (
         <>
-            <Header title="Produtos" navigation={navigation} />
+            <Header title="Etiquetas" navigation={navigation} />
             <App>
                 <Form style={{ flex: 1 }}>
                     <Container>
                         <HeaderTitle>
-                            <TitleStyle>Produtos</TitleStyle>
-                            <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
+                            <TitleStyle>Etiquetas</TitleStyle>
+                            <TextStyle>Cadastrar, excluir e editar etiquetas</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => console.log(user)} />
+                        <Primary title="Criar etiquetas" width={150} onPress={() => console.log(user)} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList

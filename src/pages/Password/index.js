@@ -6,7 +6,7 @@ import Primary from '../../components/Buttons/Primary'
 import Header from '../../components/Header'
 import Link from '../../components/Buttons/Link'
 
-import { App, Form, Title2 } from '../style'
+import { App, Form, TitleStyle } from '../style'
 import { ImgForgot } from './style'
 
 export default ({ navigation }) => {
@@ -19,7 +19,7 @@ export default ({ navigation }) => {
             <ImgForgot />
             <KeyboardAvoidingView>
                 <Form>
-                    <Title2>Recuperar senha</Title2>
+                    <TitleStyle>Recuperar senha</TitleStyle>
                     <InputAnimated
                         placeholder='CPF/CNPJ'
                         onChangeText={text => setCPF_CNPJ(text)}

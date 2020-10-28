@@ -2,9 +2,16 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Animated } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { Modal, Container, BoxMessage, Button, TextButton } from './style'
-//import Primary from '../Buttons/Primary'
-import { Title1, Text2 } from '../../pages/style'
+import {
+    Modal,
+    Container,
+    BoxMessage,
+    Button,
+    TextButton,
+    DialogBox
+} from './style'
+import Primary from '../Buttons/Primary'
+import { TitleStyle, TextStyle } from '../../pages/style'
 
 export default (props) => {
     const {
@@ -28,7 +35,7 @@ export default (props) => {
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 1,
-                friction: 8,
+                friction: 6,
                 delay: 600,
                 useNativeDriver: true,
             }),
@@ -39,13 +46,12 @@ export default (props) => {
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 0,
-                friction: 8,
                 delay: 400,
                 useNativeDriver: true,
             }),
         ]).start()
         setTimeout(function () { setVisible(false); onPress(); }, 800)
-    }    
+    }
 
     useEffect(() => {
         console.log(children)
@@ -65,15 +71,15 @@ export default (props) => {
 
     const ChildrenMessage = () => {
         return (
-            <>
+            <DialogBox>
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
-                <Title1 style={{ color: config.color, marginBottom:10 }}>{showMessage.title}</Title1>
-                <Text2>{showMessage.message}</Text2>
-                {/* <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} /> */}
+                <TitleStyle color={config.color} >{showMessage.title}</TitleStyle>
+                <TextStyle style={{marginVertical: 15}} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
+                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} />
                 <Button onPress={() => desactiveModal()}>
                     <TextButton>Cancelar</TextButton>
                 </Button>
-            </>
+            </DialogBox>
         )
     }
 
@@ -84,6 +90,6 @@ export default (props) => {
                     {children ? children : ChildrenMessage()}
                 </BoxMessage>
             </Container>
-        </Modal>
+        </Modal >
     )
 }

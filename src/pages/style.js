@@ -15,9 +15,9 @@ export const Grid = Styled.View`
 export const Form = Styled.View`
   width: 100%;
 `
-export const Title1 = Styled.Text`  
-  font-size: 30px;
-  color: #008b54;
+export const TitleStyle = Styled.Text`  
+  font-size: ${props => props.fontsize ? props.fontsize : 32}px;
+  color: ${props => props.color ? props.color : '#008b54'};
   font-weight: bold;
 `
 export const Title2 = Styled.Text`  
@@ -56,4 +56,9 @@ export const Text3 = Styled.Text`
 export const Text4 = Styled.Text`  
   font-size: 30px;
   color: #333;
+`
+export const TextStyle = Styled.Text`  
+  font-size: ${props => props.fontsize ? props.fontsize : 14}px;
+  color: ${props => props.color ? props.color : '#333'};
+  text-align: ${props => props.align ? props.align : 'left'};
 `

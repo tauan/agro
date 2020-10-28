@@ -30,7 +30,7 @@ export const Column = Styled.View`
   justify-content: space-between;
 `
 export const Item = Styled.View`
-  margin-bottom: 15px
+  margin-bottom: 15px;
 `
 export const FilterContainer = Styled.View`
   width: 100%;

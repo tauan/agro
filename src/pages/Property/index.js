@@ -7,9 +7,8 @@ import Header from '../../components/Header'
 import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
-import ProductContext from '../../contexs/ProductContext'
 
-import { App, Form, TitleStyle, TextStyle } from '../style'
+import { App, Form, TitleStyle, TextStyle } from '../style';
 import {
     Container,
     HeaderTitle,
@@ -21,7 +20,7 @@ import {
     Button,
     TextButton,
     CloseButton
-} from './style'
+} from './style';
 import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
@@ -30,7 +29,6 @@ export default ({ navigation }) => {
     const [activeModal, setActiveModal] = useState(false)
     const [activeDetails, setActiveDetails] = useState(false)
     const [item, setItem] = useState()
-    const { produto, setActivePage } = useContext(ProductContext)
 
     useEffect(() => { getList() }, [])
     const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))
@@ -39,15 +37,15 @@ export default ({ navigation }) => {
 
     return (
         <>
-            <Header title="Produtos" navigation={navigation} />
+            <Header title="Locais de produção" navigation={navigation} />
             <App>
                 <Form style={{ flex: 1 }}>
                     <Container>
                         <HeaderTitle>
-                            <TitleStyle>Produtos</TitleStyle>
-                            <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
+                            <TitleStyle>Locais de produção</TitleStyle>
+                            <TextStyle>Cadastrar, excluir e editar locais de produção</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => console.log(user)} />
+                        <Primary title="Local de produção" width={150} onPress={() => console.log(user)} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
@@ -68,7 +66,7 @@ export default ({ navigation }) => {
                     <ModalMessage
                         showMessage={{
                             title: 'Atenção!',
-                            message: `Deseja realmente deletar o produto ${item.title} da lista?`,
+                            message: `Deseja realmente deletar a propriedade ${item.title} da lista?`,
                             type: 'alert',
                             icon: true
                         }}

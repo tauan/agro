@@ -29,7 +29,7 @@ export default ({ navigation }) => {
     const [activeModal, setActiveModal] = useState(false)
     const [activeDetails, setActiveDetails] = useState(false)
     const [item, setItem] = useState()
-    const { produto, setActivePage } = useContext(ProductContext)
+    const { produto, activePage } = useContext(ProductContext)
 
     useEffect(() => { getList() }, [])
     const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))

@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import { StatusBar} from 'react-native'
 
+import SplashScreen from '../pages/Splash'
 import LoginScren from '../pages/Login';
 import RegisterScreen from '../pages/Register';  
 import PasswordScreen from '../pages/Password';  
@@ -17,6 +18,7 @@ const AuthRoutes = props => {
       screenOptions={{
         animationEnabled: false,
       }}>
+      <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScren} />
       <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />

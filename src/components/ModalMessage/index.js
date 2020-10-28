@@ -54,7 +54,6 @@ export default (props) => {
     }
 
     useEffect(() => {
-        console.log(children)
         switch (showMessage.type) {
             case 'alert':
                 setConfig({

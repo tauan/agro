@@ -48,7 +48,7 @@ export default ({navigation}) => {
           <ImageSelect style={{
             width: progress.interpolate({
               inputRange: [0, 50, 100],
-              outputRange: [150, 50, Dimensions.get("window").width - 40],
+              outputRange: [150, 150, Dimensions.get("window").width - 40],
               extrapolate: "clamp"
             }),
             height: progress.interpolate({

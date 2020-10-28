@@ -1,7 +1,7 @@
 import Styled from 'styled-components/native'
 import { Dimensions } from 'react-native'
-import LogoImage from "./assets/logo.png"
-import Contag from "./assets/contag_logo.png"
+import LogoImage from "../../assets/logo.png"
+import Contag from "../../assets/contag_logo.png"
 
 export const Container = Styled.View`
   width: 100%;

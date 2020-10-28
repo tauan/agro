@@ -8,7 +8,6 @@ import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
 import ProductContext from '../../contexs/ProductContext'
-
 import { App, Form, TitleStyle, TextStyle } from '../style'
 import {
     Container,
@@ -34,12 +33,10 @@ export default ({ navigation }) => {
 
     useEffect(() => { getList() }, [])
     const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))
-
     const { user } = useContext(UserContext)
-
     return (
         <>
-            <Header title="Produtos" navigation={navigation} />
+            <Header color="#008b54" navigation={navigation} />
             <App>
                 <Form style={{ flex: 1 }}>
                     <Container>
@@ -47,7 +44,7 @@ export default ({ navigation }) => {
                             <TitleStyle>Produtos</TitleStyle>
                             <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => console.log(user)} />
+                        <Primary title="Cadastrar produto" width={150} onPress={() => navigation.navigate("ProductForm")} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
@@ -102,7 +99,7 @@ export default ({ navigation }) => {
                                             </Item>
                                         </Column>
                                         <Column style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                            <Button background="rgba(255, 255, 255, 0.2)" borderColor="#fff" borderWidth={1}>
+                                            <Button background="rgba(255, 255, 255, 0.2)"  borderColor="#fff" borderWidth={1} onPress={props=>console.log(`Teste: ${props}`)}>
                                                 <TextButton color="#fff">Editar Produto</TextButton>
                                             </Button>
                                             <Button>

@@ -21,21 +21,10 @@ export default ({ navigation }) => {
   const { setLoged } = useContext(AuthContext)
   const { user, setUser } = useContext(UserContext)
 
-  useEffect(() => { checkSavedUser() },[])
   useEffect(() => {
     checkForm()
   }, [email, password])
 
-  const checkSavedUser = async () => {
-    try {
-      const userJson = await AsyncStorage.getItem('@user')
-      const user = JSON.parse(userJson)
-      await setUser(user)
-      if(userJson !== null) setLoged(true)
-    } catch(e) {
-      console.log(`Identificamos o seguinte erro na checkagem: ${e}`)
-    }
-  }
   const saveUser = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)

@@ -11,10 +11,7 @@ import AuthContext from '../../contexs/Auth'
 
 import {
     TitleStyle,
-    TextStyle,
-    Text3,
-    Title1,
-    Text1
+    TextStyle
 } from '../style'
 
 import {
@@ -41,10 +38,10 @@ export default ({ navigation }) => {
                         <ContainerIMG >
                             <IMGUser source={UserIMG} />
                         </ContainerIMG>
-                        <Text3 style={{ color: '#FFFFFF' }}>Seja bem vindo,</Text3>
-                        <Title1 style={{color: '#FFF'}}>{user.nome}</Title1>
-                        <Text1 style={{ color: '#FFFFFF' }}><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</Text1>
-                        <Primary title='Editar perfil' shadow={2} />
+                        <TextStyle color="#fff" fontsize={24}>Seja bem vindo,</TextStyle>
+                        <TitleStyle color="#fff">{user.nome}</TitleStyle>
+                        <TextStyle color="#fff"><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</TextStyle>
+                        <Primary width='100%' title='Editar perfil' shadow={2} />
                     </Body>
                     <Footer>
                         <Scroll>

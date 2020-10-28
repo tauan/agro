@@ -12,7 +12,6 @@ export default (props) => {
     if(index < 10) dlay = 200 * index 
 
     useEffect(() => {
-        console.log(index, dlay)
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 1,

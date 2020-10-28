@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 
 const MainRoutes = props => {
   return (
-    <>
+    <ProductProvider>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <Stack.Navigator
         headerMode="none"
@@ -23,7 +23,7 @@ const MainRoutes = props => {
         <Stack.Screen name="ProductScreen" component={ProductScreen} />
         <Stack.Screen name="TagsScreen" component={TagsScreen} />
       </Stack.Navigator>
-    </>
+    </ProductProvider>
   );
 };
 export default MainRoutes;

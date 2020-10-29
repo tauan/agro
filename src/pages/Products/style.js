@@ -1,4 +1,4 @@
-import { RectButton } from 'react-native-gesture-handler'
+
 import Styled from 'styled-components/native'
 import { Dimensions } from 'react-native'
 
@@ -19,6 +19,7 @@ export const DetailsContainer = Styled.View`
 export const HeaderCard = Styled.View`
   width: 100%;
   justify-content: center;
+  margin-top: 0px;
   margin-Vertical: 25px;
   padding-horizontal: 15px;
 `
@@ -36,8 +37,11 @@ export const Item = Styled.View`
 export const FilterContainer = Styled.View`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
+  align-items: flex-end;
 `
-export const Button = Styled(RectButton)
+export const Button = Styled.Pressable.attrs({
+  android_ripple: { color: '#63636350' }
+})
   `
   border-radius: 0px;
   width: ${props => props.size ? props.size : '50%'};
@@ -46,12 +50,12 @@ export const Button = Styled(RectButton)
   background-color: ${props => props.background ? props.background : '#008b54'};
   padding: 15px;
   flex-direction: row;
+  z-index: 10000;
 `
 export const CloseButton = Styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  position: absolute;
   right: 0px;
 `
 export const TextButton = Styled.Text`

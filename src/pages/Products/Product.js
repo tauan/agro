@@ -13,7 +13,7 @@ import {
     Container,
     HeaderTitle,
     DetailsContainer,
-    Section, 
+    Section,
     HeaderCard,
     BodyCard,
     FilterContainer,
@@ -101,11 +101,11 @@ export default ({ navigation }) => {
                                             </Item>
                                         </Section>
                                         <Section background="#ffffff">
-                                            <Button background="transparent" marginTop={0} borderRadius={10} onPress={() => alert('Ola!!!')}>
+                                            <Button background="transparent" marginTop={0} borderRadius={10} onPress={() => { }}>
                                                 <TextButton >Editar Produto</TextButton>
                                             </Button>
-                                            <Button marginTop={0} borderRadius={10}>
-                                                <MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton>
+                                            <Button marginTop={0} borderRadius={10} onPress={() => { }}>
+                                                <><MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton></>
                                             </Button>
                                         </Section>
                                     </BodyCard>

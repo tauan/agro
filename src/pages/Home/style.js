@@ -4,7 +4,7 @@ export const Container = Styled.View`
     flex: 1;
     width: 100%;
     height: 100%; 
-    background-color: #008b5499;   
+    background-color: #ffd000;   
     justify-content: center;
     align-items: center;
 `
@@ -34,7 +34,7 @@ export const Header = Styled.View`
     align-items: center; 
     margin-bottom: 25px;   
     border-bottom-width: 0.5px;
-    border-color: #008b5499;
+    border-color: #d5d5d5;
     padding-bottom: 25px;
 `
 export const IMGUser = Styled.Image.attrs({
@@ -60,4 +60,5 @@ export const ContainerItem = Styled.TouchableOpacity.attrs({
     background-color: ${props => props.background ? props.background : '#ffffff'};
     border-radius: 10px;
     justify-content: space-evenly;
+    elevation: 10
 `

@@ -4,7 +4,8 @@ import LinearGradient from 'react-native-linear-gradient'
 import Primary from '../../components/Buttons/Primary'
 import Link from '../../components/Buttons/Link'
 import UserIMG from './assets/user.jpg'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'      
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'      
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import UserContext from '../../contexs/User'
 import AuthContext from '../../contexs/Auth'
@@ -48,15 +49,15 @@ export default ({ navigation }) => {
                         </Header>
                         <ContainerButtons direction="row">
                             <ContainerItem background="#008b54" onPress={() => navigate('PropertyScreen')}>
-                                <MaterialIcons name="location-pin" size={60} color="#fff" />
+                                <MaterialCommunityIcons name="home-map-marker" size={60} color="#fff" />
                                 <TextStyle align="center" color="#fff">Local de produção</TextStyle>
                             </ContainerItem>
                             <ContainerItem background="#008b54" onPress={() => navigate('ProductScreen')} >
-                                <MaterialCommunityIcons name="food-apple" size={60} color="#fff" />
+                                <FontAwesome5 name="apple-alt" size={50} color="#fff" />
                                 <TextStyle align="center" color="#fff">Produtos</TextStyle>
                             </ContainerItem>
                             <ContainerItem background="#008b54" onPress={() => navigate('TagsScreen')}>
-                                <MaterialIcons name="qr-code-2" size={60} color="#fff" />
+                                <MaterialIcons name="qr-code-2" size={50} color="#fff" />
                                 <TextStyle align="center" color="#fff">Etiquetas</TextStyle>
                             </ContainerItem>
                         </ContainerButtons>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Dimensions } from 'react-native'
-import { RectButton } from 'react-native-gesture-handler'
+import {TouchableOpacity} from 'react-native'
 
 const wDimensions = Dimensions.get('screen').width
 
@@ -20,10 +20,10 @@ export default (props) => {
     elevation = shadow
   } = props
   return (
-    <RectButton onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={disabled}>
+    <TouchableOpacity onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={disabled}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color }}>{title}</Text>
       </View>
-    </RectButton>
+    </TouchableOpacity>
   )
 }

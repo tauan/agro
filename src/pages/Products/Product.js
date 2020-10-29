@@ -3,6 +3,7 @@ import axios from 'axios'
 import { FlatList, ImageBackground } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Primary from '../../components/Buttons/Primary'
+import PrimaryTouchable from '../../components/Buttons/PrimaryTouchable'
 import Header from '../../components/Header'
 import Items from '../../components/Items'
 import Search from '../../components/Search'
@@ -99,9 +100,12 @@ export default ({ navigation }) => {
                                             </Item>
                                         </Column>
                                         <Column style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                            <Button background="rgba(255, 255, 255, 0.2)"  borderColor="#fff" borderWidth={1} onPress={props=>console.log(`Teste: ${props}`)}>
-                                                <TextButton color="#fff">Editar Produto</TextButton>
-                                            </Button>
+                                            <PrimaryTouchable
+                                                title="Editar Produto"
+                                                width="45%"
+                                                backgroundColor="rgba(255, 255, 255, 0.2)"
+                                                onPress={()=>console.log(`Teste:`)}
+                                            />
                                             <Button>
                                                 <MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton>
                                             </Button>

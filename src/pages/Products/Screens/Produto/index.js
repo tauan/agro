@@ -1,15 +1,31 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {Animated, Dimensions} from 'react-native'
 import Header from '../../../../components/Header'
 import ProductContext from '../../../../contexs/ProductContext'
-import Dropdown from '../../../../components/Dropdown'
 import {App, Title3Regular, Grid} from '../../../style'
-import { Container, Form, HeaderContainer, ImageSelect, Nav, PageScroll, ImgBackground, LoadingProgress, ButtonImageContainer } from './style'
-import InputAnimated from '../../../../components/InputAnimated'
+import { 
+  Container, 
+  HeaderContainer, 
+  ImageSelect, 
+  Nav, 
+  PageScroll, 
+  ImgBackground, 
+  LoadingProgressContainer, 
+  LoadingProgress, 
+  ButtonImageContainer, 
+  CircleStatus ,
+  BarStatusProgress
+} from './style'
 import Primary from '../../../../components/Buttons/Primary'
 import ProgressImage from './assets/load.png' 
 
+import Produto from './Screens/1'
+import Producao from './Screens/2'
+
 export default ({navigation}) => {
+  useEffect(() => {
+    setActivePage(1)
+  },[]);
   const { activePage, produto, setActivePage, setProduto } = useContext(ProductContext)
   let imageHidde = false
   const progress = new Animated.Value(0)
@@ -84,92 +100,28 @@ export default ({navigation}) => {
           </ImageSelect>
           <Nav>
             <Grid>
-              <Title3Regular style={{marginBottom: 10}}>Detalhes do produto</Title3Regular>
-              <LoadingProgress source={ProgressImage} />
+              <Title3Regular style={{marginVertical: 10}}>Detalhes do produto</Title3Regular>
+              <LoadingProgressContainer>
+                <CircleStatus style={{backgroundColor: activePage === 1 ? "#10AC84" : "#E0E0E0"}} />
+                <CircleStatus style={{backgroundColor: activePage === 2 ? "#10AC84" : "#E0E0E0"}} />
+                <CircleStatus style={{backgroundColor: activePage === 3 ? "#10AC84" : "#E0E0E0"}} />
+                <CircleStatus style={{backgroundColor: activePage === 4 ? "#10AC84" : "#E0E0E0"}} />
+                <CircleStatus style={{backgroundColor: activePage === 5 ? "#10AC84" : "#E0E0E0"}} />
+              </LoadingProgressContainer>
+              <BarStatusProgress>
+              </BarStatusProgress>
+              
             </Grid>
             
           </Nav>
         </HeaderContainer>
           <App>
             <PageScroll onScroll={e=>toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              <Form>
-                <InputAnimated
-                    placeholder='Produto'
-                    onChangeText={text => setProduto({...produto, categoria: text})}
-                    value={produto.categoria}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <Dropdown
-                  placeholder="Gluten"
-                  listOptions={['Sim', 'Não']} />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-                <InputAnimated
-                    placeholder='Descrição do produto'
-                    onChangeText={text => setProduto({...produto, descricao_produto: text})}
-                    value={produto.descricao_produto}
-                    width="100%"
-                />
-              </Form>
-              <Primary width="100%" title='Enviar' shadow={2} onPress={()=>closeImage()} />
+              {activePage === 1 && <Produto setActivePage={setActivePage} activePage={activePage} produto={produto} />}
+              {activePage === 2 && <Producao setActivePage={setActivePage} activePage={activePage} produto={produto} />}
             </PageScroll>
-            {/* 
-              categoria: "",
-              descricao_produto: "",
-              gluten: "",
-              unid_medida_produto: "",
-              peso_liquido: "",
-              peso_bruto: "",
-              cod_barras: "",
-              dias_validade: "",
-              foto_produto: "",
-            */}
+            
+            
           </App>
       </Container>
     </>

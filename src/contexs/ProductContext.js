@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
-    const [activePage, setActivePage] = useState(undefined)
+    const [activePage, setActivePage] = useState(1)
     const [produto, setProduto] = useState({
         categoria: "",
         descricao_produto: "",

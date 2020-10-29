@@ -1,69 +1,63 @@
 import Styled from 'styled-components/native'
 
 export const Container = Styled.View`
-  flex: 1;
-  width: 100%;
-  height: 100%;  
-  
-  justify-content: center;  
-  align-items: flex-end;
-`;
-export const ContainerIMG = Styled.View`
-    width: 70px;
-    height: 70px;
-    overflow: hidden;
-    border-radius: 4px;
-    border-radius: 100px;
-    border-width: 2px;
-    border-color: #ffffff;
-`
-export const Body = Styled.View`
     flex: 1;
     width: 100%;
-    justify-content: flex-end;
-    padding-horizontal: 20px;
+    height: 100%; 
+    background-color: #008b5499;   
+    justify-content: center;
+    align-items: center;
 `
-export const Footer = Styled.View`
-    width: 100%; 
-    height: 200px; 
-    border-top-left-radius: 20px; 
-    border-top-right-radius: 20px; 
-    margin-top: 34px;
-    padding-horizontal: 20px;
-    background: #FFFFFF;
+export const ContainerIMG = Styled.View`
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 20px;
+    margin-top: 30px;
 `
-export const Scroll = Styled.ScrollView.attrs({
-    horizontal: true,
-    contentContainerStyle: {
-        flexGrow: 1,
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    }
-})`
-width: 100%    
+export const Body = Styled.View`
+    width: 90%;
+    padding-horizontal: 30px;
+    padding-vertical: 30px;
+    border-radius: 20px;
+    justify-content: center;  
+    align-items: center;
+    background-color: #ffffff; 
+`
+export const ContainerButtons = Styled.View`
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: ${props => props.direction ? props.direction : 'column'};
+    `
+export const Header = Styled.View`
+    width: 100%;
+    align-items: center; 
+    margin-bottom: 25px;   
+    border-bottom-width: 0.5px;
+    border-color: #008b5499;
+    padding-bottom: 25px;
 `
 export const IMGUser = Styled.Image.attrs({
-    resizeMode: "contain",
+    resizeMode: "cover",
 })`
-  width: 100%;
-  height: 100%;  
+    width: 100%;
+    height: 100%;  
+`
+export const Logo = Styled.Image.attrs({
+    resizeMode: "cover",
+})`
+    width: 150px;
+    height: 42.8px;  
+    margin-top: 30px;
 `
 export const ContainerItem = Styled.TouchableOpacity.attrs({
-    activityOpacity: 0.8,
+    activityOpacity: 0.98,
 })`
-width: 30%;
-height: 80%;
-align-items: center;
-background-color: #EDEDED;
-border-radius: 10px;
-justify-content: center;
-`
-export const ContainerItemIcon = Styled.View`
-width: 65px;
-height: 65px;
-justify-content: center;
-align-items: center;
-border-radius: 4px;
-background-color: #EDF1F6;
-margin-bottom: 10px;
+    width: 30%;
+    height: 120px;
+    padding-vertical: 15px;
+    align-items: center;
+    background-color: ${props => props.background ? props.background : '#ffffff'};
+    border-radius: 10px;
+    justify-content: space-evenly;
 `

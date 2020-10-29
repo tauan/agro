@@ -2,12 +2,14 @@ import React, { useContext } from 'react'
 import { ImageBackground } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Primary from '../../components/Buttons/Primary'
+import Link from '../../components/Buttons/Link'
 import UserIMG from './assets/user.jpg'
-import BKG from './assets/background.jpg'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import UserContext from '../../contexs/User'
 import AuthContext from '../../contexs/Auth'
+import BKG from './assets/background.jpg'
+import LogoContag from './assets/logo.png'
 
 import {
     TitleStyle,
@@ -18,11 +20,11 @@ import {
     IMGUser,
     ContainerIMG,
     Body,
-    Footer,
     Container,
-    Scroll,
+    ContainerButtons,
     ContainerItem,
-    ContainerItemIcon
+    Header,
+    Logo
 } from './style'
 
 export default ({ navigation }) => {
@@ -31,42 +33,37 @@ export default ({ navigation }) => {
     const { navigate } = navigation
     return (
         <ImageBackground source={BKG} style={{ flex: 1 }}>
-            <LinearGradient colors={['transparent', '#002610', '#002610']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1 }}>
+            {/* <LinearGradient colors={['#3ae25480', '#00261080']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1 }}> */}
                 <Container>
-                    <Primary title='Desconectar' marginRight={20} backgroundColor="#F43D3D" onPress={() => logout()} width={150} shadow={2} />
-                    <Body>
-                        <ContainerIMG >
-                            <IMGUser source={UserIMG} />
-                        </ContainerIMG>
-                        <TextStyle color="#fff" fontsize={24}>Seja bem vindo,</TextStyle>
-                        <TitleStyle color="#fff">{user[0].nome}</TitleStyle>
-                        <TextStyle color="#fff"><MaterialIcons name="location-pin" size={13} color="#fff" /> STR de Vitória da Conquista - BA</TextStyle>
-                        <Primary width='100%' title='Editar perfil' shadow={2} />
+                    {/* <TextStyle style={{ marginBottom: 25 }} color="#fff" fontsize={18}>Seja bem vindo</TextStyle> */}
+                    <Body >
+                        <Header>
+                        <Logo source={LogoContag} />
+                            <ContainerIMG >
+                                <IMGUser source={UserIMG} />
+                            </ContainerIMG>
+                            <TitleStyle style={{marginTop: 15}} fontsize={28} align="center">{user[0].nome}</TitleStyle>
+                            <TextStyle>STR de Vitória da Conquista - BA</TextStyle>
+                            <Primary width="100%" title='Editar perfil' fontsize={18} />
+                        </Header>
+                        <ContainerButtons direction="row">
+                            <ContainerItem background="#008b54" onPress={() => navigate('PropertyScreen')}>
+                                <MaterialIcons name="location-pin" size={60} color="#fff" />
+                                <TextStyle align="center" color="#fff">Local de produção</TextStyle>
+                            </ContainerItem>
+                            <ContainerItem background="#008b54" onPress={() => navigate('ProductScreen')} >
+                                <MaterialCommunityIcons name="food-apple" size={60} color="#fff" />
+                                <TextStyle align="center" color="#fff">Produtos</TextStyle>
+                            </ContainerItem>
+                            <ContainerItem background="#008b54" onPress={() => navigate('TagsScreen')}>
+                                <MaterialIcons name="qr-code-2" size={60} color="#fff" />
+                                <TextStyle align="center" color="#fff">Etiquetas</TextStyle>
+                            </ContainerItem>
+                        </ContainerButtons>
                     </Body>
-                    <Footer>
-                        <Scroll>
-                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('PropertyScreen')}>
-                                <ContainerItemIcon>
-                                    <MaterialIcons name="location-pin" size={60} color="#666666" />
-                                </ContainerItemIcon>
-                                <TextStyle align="center" color="#333">Local de produção</TextStyle>
-                            </ContainerItem>
-                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('ProductScreen')} >
-                                <ContainerItemIcon>
-                                    <MaterialCommunityIcons name="food-apple" size={60} color="#666666" />
-                                </ContainerItemIcon>
-                                <TextStyle align="center" color="#333">Produtos</TextStyle>
-                            </ContainerItem>
-                            <ContainerItem style={{ backgroundColor: '#EDF1F6' }} onPress={() => navigate('TagsScreen')}>
-                                <ContainerItemIcon>
-                                    <MaterialIcons name="qr-code-2" size={60} color="#666666" />
-                                </ContainerItemIcon>
-                                <TextStyle align="center" color="#333">Etiquetas</TextStyle>
-                            </ContainerItem>
-                        </Scroll>
-                    </Footer>
-                </Container>
-            </LinearGradient>
+                    <Link title='Desconectar' color="#fff" onPress={() => logout()} width={110} />
+                </Container >
+            {/* </LinearGradient> */}
         </ImageBackground>
     )
 }

@@ -37,7 +37,7 @@ export default ({ navigation }) => {
 
     return (
         <>
-            <Header title="Locais de produção" navigation={navigation} />
+            <Header navigation={navigation} />
             <App>
                 <Form style={{ flex: 1 }}>
                     <Container>

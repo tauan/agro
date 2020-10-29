@@ -2,14 +2,14 @@ import React from 'react'
 import { View, Text, Dimensions } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 
-const wDimensions = Dimensions.get('screen').width
+// const wDimensions = Dimensions.get('screen').width
 
 export default (props) => {
   const {
-    disabled = true,
+    enabled = true,
     marginRight = 0,
     title,
-    width = wDimensions - 60,
+    width,
     height = 50,
     backgroundColor = "#008b54",
     borderRadius = 4,
@@ -20,7 +20,7 @@ export default (props) => {
     elevation = shadow
   } = props
   return (
-    <RectButton onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={disabled}>
+    <RectButton onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={enabled}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color }}>{title}</Text>
       </View>

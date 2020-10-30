@@ -6,7 +6,7 @@ import {TouchableOpacity, Animated, Dimensions, TouchableWithoutFeedback} from '
 export default props => {
   const { activePage, pages, setActivePage } = props
   const {width} = Dimensions.get("window")
-
+  // up
   useEffect(() => {
     const atualRoute = pages.find((page, index) => {
       page.index = index 

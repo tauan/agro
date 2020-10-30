@@ -13,7 +13,6 @@ export default props => {
       return page === activePage
     })
     setActivePage(atualRoute)
-    console.log(activePage)
     pages.map((page, key) => {
       page === activePage ? animation((100 / (pages.length - 1)) * key) : ""
     })

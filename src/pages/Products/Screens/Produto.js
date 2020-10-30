@@ -5,7 +5,6 @@ import Dropdown from '../../../components/Dropdown'
 import {Form} from '../style'
 
 export default props => {
-  useEffect(()=> {console.log(props)}, [])
   const {produto,setProduto} = props
   return(
     <Form>

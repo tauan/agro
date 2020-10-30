@@ -1,6 +1,5 @@
 
 import Styled from 'styled-components/native'
-import { RectButton } from 'react-native-gesture-handler'
 import { Dimensions,Animated } from 'react-native'
 
 const { width } = Dimensions.get('screen')

@@ -5,17 +5,36 @@ import Dropdown from '../../../components/Dropdown'
 import {Form} from '../style'
 
 export default props => {
-  useEffect(()=> {console.log(props)}, [])
-  const {produto,setProduto} = props
+  const {produto, setActivePage, activePage} = props
   return(
     <Form>
+      <InputAnimated
+          placeholder='Produto'
+          onChangeText={text => setProduto({...produto, categoria: text})}
+          value={produto.categoria}
+          width="100%"
+      />
       <Dropdown
-        placeholder="Categoria"
-        listOptions={['opção 1', 'Opção 2']}
-        defaltValue={{
-          label: produto.categoria, value: produto.categoria, icon: () => {}
-        }}
-        onChangeItem={({value}) => setProduto({...produto, categoria: value})} />
+        placeholder="Gluten"
+        listOptions={['Sim', 'Não']} />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
       <InputAnimated
           placeholder='Descrição do produto'
           onChangeText={text => setProduto({...produto, descricao_produto: text})}
@@ -24,14 +43,37 @@ export default props => {
       />
       <Dropdown
         placeholder="Gluten"
-        listOptions={['Sim', 'Não']} 
-        onChangeItem={({value}) => setProduto({...produto, gluten: value})}
-        />
-      <Dropdown
-        placeholder="Unidade de medida"
-        listOptions={['Quilo', 'Grama']} 
-        onChangeItem={({value}) => setProduto({...produto, unid_medida_produto: value})}
-        />
+        listOptions={['Sim', 'Não']} />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
+      <InputAnimated
+          placeholder='Descrição do produto'
+          onChangeText={text => setProduto({...produto, descricao_produto: text})}
+          value={produto.descricao_produto}
+          width="100%"
+      />
       
     </Form>
   )

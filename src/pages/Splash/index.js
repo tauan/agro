@@ -7,11 +7,14 @@ import UserContext from '../../contexs/User'
 import AuthContext from '../../contexs/Auth'
 
 export default ({navigation}) => {
-  useEffect(() => { checkSavedUser() },[])
+  useEffect(() => { 
+    const timer = setTimeout(() => checkSavedUser(), 2000);
+    return () => clearTimeout(timer);
+  },[])
   const { user, setUser } = useContext(UserContext)
   const { setLoged } = useContext(AuthContext)
   const checkSavedUser = async () => {
-    try {
+    try { 
       const userJson = await AsyncStorage.getItem('@user')
       const user = JSON.parse(userJson)
       await setUser(user)

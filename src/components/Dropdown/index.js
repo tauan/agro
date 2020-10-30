@@ -15,9 +15,7 @@ export default (props) => {
   const items = listOptions.map(item => {
     return {
       label: item, value: item,
-      icon: () => item === 'Feminino'
-        ? <Icon name="md-female-outline" size={18} color="magenta" />
-        : <Icon name="md-male-outline" size={18} color="blue" />
+      icon: () => {}
     }
   })
 

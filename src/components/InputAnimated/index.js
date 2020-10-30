@@ -6,7 +6,7 @@ const widthDimension = Dimensions.get("screen").width
 
 export default props => {
   const {
-    backgroundColor = 'transparent',
+    backgroundColor = '#fff',
     size = 14,
     color = '#333',
     keyboardType = 'default',

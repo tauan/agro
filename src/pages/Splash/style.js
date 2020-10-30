@@ -9,13 +9,14 @@ export const Container = Styled.View`
 `
 export const LogoContainer = Styled.View`
   width: 200px;
-  height: 300px;
+  height: 200px;
+  align-items: center
 `
 export const LogoImage = Styled.Image.attrs({
   source: Logo
 })`
-  height: 100%;
-  width: 200px
+  height: 190px;
+  width: 128.3px
 `
 export const StatusContainer = Styled.View`
   margin-top: 30px;

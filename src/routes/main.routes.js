@@ -4,8 +4,8 @@ import { StatusBar } from 'react-native'
 import { ProductProvider } from '../contexs/ProductContext'
 import HomeScreen from '../pages/Home';
 import PropertyScreen from '../pages/Property/';  
-import ProductScreen from '../pages/Products/Product';
-import ProductForm from '../pages/Products/Screens/Produto';
+import ProductScreen from '../pages/Products/index';
+import ProductForm from '../pages/Products/Product';
 import TagsScreen from '../pages/Tags';
 
 const Stack = createStackNavigator();

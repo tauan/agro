@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { StatusBar} from 'react-native'
 
 import HomeScreen from '../pages/Home';  
-import ProductScreen from '../pages/Products/Product';  
+import ProductScreen from '../pages/Products';  
 
 const Stack = createStackNavigator();
 

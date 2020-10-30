@@ -1,119 +1,147 @@
-import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
-import { FlatList, ImageBackground } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import React, {useContext, useState, useEffect} from 'react'
+import {Animated, Dimensions, View, KeyboardAvoidingView} from 'react-native'
+import Header from '../../components/Header'
+import ProductContext from '../../contexs/ProductContext'
+import {App, Grid} from '../style'
+import { 
+  HeaderContainer, 
+  ImageSelect, 
+  PageScroll, 
+  ImgBackground, 
+  ButtonImageContainer, 
+  CleanContainer,
+  FixedButtonContainer
+} from './style'
 import Primary from '../../components/Buttons/Primary'
 import PrimaryTouchable from '../../components/Buttons/PrimaryTouchable'
-import Header from '../../components/Header'
-import Items from '../../components/Items'
-import Search from '../../components/Search'
-import UserContext from '../../contexs/User'
-import ProductContext from '../../contexs/ProductContext'
-import { App, Form, TitleStyle, TextStyle } from '../style'
-import {
-    Container,
-    HeaderTitle,
-    DetailsContainer,
-    Section,
-    HeaderCard,
-    BodyCard,
-    FilterContainer,
-    Item,
-    Button,
-    TextButton,
-    CloseButton
-} from './style'
-import ModalMessage from '../../components/ModalMessage'
 
-export default ({ navigation }) => {
-    const [list, setList] = useState([])
-    const [value, setValue] = useState('')
-    const [activeModal, setActiveModal] = useState(false)
-    const [activeDetails, setActiveDetails] = useState(false)
-    const [item, setItem] = useState()
-    const { produto, activePage } = useContext(ProductContext)
+import Produto from './Screens/Produto'
+import Producao from './Screens/Producao'
+import Propriedades from './Screens/Propriedades'
+import Ingredientes from './Screens/Ingredientes'
+import Descricao from './Screens/Descricao'
+import AnimatedProgress from '../../components/AnimatedProgress'
 
-    useEffect(() => { getList() }, [])
-    const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))
-    const { user } = useContext(UserContext)
-    return (
-        <>
-            <Header navigation={navigation} />
-            <App>
-                <Form style={{ flex: 1 }}>
-                    <Container>
-                        <HeaderTitle>
-                            <TitleStyle>Produtos</TitleStyle>
-                            <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
-                        </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => navigation.navigate("ProductForm")} />
-                    </Container>
-                    <Search value={value} onChangeText={text => setValue(text)} />
-                    <FlatList
-                        data={list.filter(produto => produto.title.indexOf(value) != -1)}
-                        renderItem={({ item, index }) => <Items
-                            item={item}
-                            index={index}
-                            onPress={() => { setActiveDetails(true); setItem(item) }}
-                            deleteFunction={() => { setActiveModal(true); setItem(item) }} />
-                        }
-                        keyExtractor={(keyExtractor, index) => String(index)}
-                        columnWrapperStyle={{ justifyContent: "space-between" }}
-                        numColumns={2}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </Form>
-                {activeModal &&
-                    <ModalMessage
-                        showMessage={{
-                            title: 'Atenção!',
-                            message: `Deseja realmente deletar o produto ${item.title} da lista?`,
-                            type: 'alert',
-                            icon: true
-                        }}
-                        onPress={() => { setActiveModal(false); }} >
-                    </ModalMessage>}
-                {activeDetails &&
-                    <ModalMessage onPress={() => { setActiveDetails(false); }} >
-                        <DetailsContainer>
-                            <ImageBackground style={{ width: '100%' }} source={{ uri: item.image }}>
-                                <FilterContainer>
-                                    <CloseButton onPress={() => setActiveDetails(false)}>
-                                        <MaterialIcons size={24} name='close' color='#fff' />
-                                    </CloseButton>
-                                    <HeaderCard>
-                                        <TitleStyle color="#fff" fontsize={36}>{item.title}</TitleStyle>
-                                        <TextStyle color="#fff">{item.property}</TextStyle>
-                                    </HeaderCard>
-                                    <BodyCard>
-                                        <Section style={{ paddingHorizontal: 15 }}>
-                                            <Item>
-                                                <TextStyle color="#fff" fontsize={16}>Peso Líquido</TextStyle>
-                                                <TitleStyle color="#fff" fontsize={36}>{item.net_weight_product}<TextStyle color="#fff" fontsize={18}>{item.unit_product}</TextStyle></TitleStyle>
-                                            </Item>
-                                            <Item>
-                                                <TextStyle color="#fff" fontsize={16}>Produção</TextStyle>
-                                                <TitleStyle color="#fff" fontsize={36}>{item.production}<TextStyle color="#fff" fontsize={18}>{item.unit_production}</TextStyle></TitleStyle>
-                                            </Item>
-                                            <Item>
-                                                <TextStyle color="#fff" fontsize={16}>Validade</TextStyle>
-                                                <TitleStyle color="#fff" fontsize={36}>{item.production}<TextStyle color="#fff" fontsize={18}> dias</TextStyle></TitleStyle>
-                                            </Item>
-                                        </Section>
-                                        <Section background="#ffffff">
-                                            <Button background="transparent" marginTop={0} borderRadius={10} onPress={() => { }}>
-                                                <TextButton >Editar Produto</TextButton>
-                                            </Button>
-                                            <Button marginTop={0} borderRadius={10} onPress={() => { }}>
-                                                <><MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton></>
-                                            </Button>
-                                        </Section>
-                                    </BodyCard>
-                                </FilterContainer>
-                            </ImageBackground>
-                        </DetailsContainer>
-                    </ModalMessage>}
-            </App >
-        </>
-    )
+export default ({navigation}) => {
+  useEffect(() => {
+    pages[0] !== undefined ? setActivePage(pages[0]) : ""
+  },[pages]);
+  const { activePage, produto, setActivePage, setProduto } = useContext(ProductContext)
+  const [pages, setPages] = useState([{
+    route: "Produto",
+    textHeader: "Detalhes do produto",
+    component: Produto
+  }, {
+    route: "Producao",
+    textHeader: "Detalhes da produção",
+    component: Producao
+  }, 
+  {
+    route: "Propriedade",
+    textHeader: "Detalhes da propriedade",
+    component: Propriedades
+  }, 
+  {
+    route: "Ingredientes",
+    textHeader: "Ingredientes",
+    component: Ingredientes
+  }, 
+  {
+    route: "Descricao",
+    textHeader: "Descrição",
+    component: Descricao
+  }])
+  const nextPage = () => {
+    if(activePage !== undefined && activePage.index !== pages.length - 1)
+      setActivePage(pages[activePage.index + 1])
+  }
+  let imageHidde = false
+  const progress = new Animated.Value(0)
+  const closeImage =  () => {
+    Animated.timing(progress, {
+      toValue: 100,
+      duration: 1000,
+      useNativeDriver: false
+    }).start()
+  }
+  const openImage = () => {
+    Animated.timing(progress, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: false
+    }).start()
+  }
+  const toggleAnimation = velocity => {
+    if(velocity > 1.5 || velocity < -1.5){
+      if(velocity > 1.5 && imageHidde === false) {
+        closeImage()
+        imageHidde = true
+      }
+      if(velocity < 1.5 && imageHidde === true) {
+        console.log("abrir imagem")
+        openImage()
+        imageHidde = false
+      }
+    }
+  }
+  return(
+    <>
+      <Header title="Produtos" color="#07AC82" navigation={navigation} />
+      <App>
+        <HeaderContainer>
+          <ImageSelect style={{
+            width: progress.interpolate({
+              inputRange: [0, 50, 100],
+              outputRange: [150, 150, Dimensions.get("window").width - 40],
+              extrapolate: "clamp"
+            }),
+            height: progress.interpolate({
+              inputRange: [0, 50, 100],
+              outputRange: [150, 50, 50],
+              extrapolate: "clamp"
+            }),
+            borderRadius: progress.interpolate({
+              inputRange: [0, 50, 100],
+              outputRange: [150, 150, 4],
+              extrapolate: "clamp"
+            }),
+          }}>
+            <ImgBackground
+            source={{uri: "https://conteudo.imguol.com.br/c/entretenimento/3e/2017/09/01/tomate-1504283166629_v2_1920x1276.jpg"}} 
+            style={{
+              opacity: progress.interpolate({
+                inputRange: [0, 50, 100],
+                outputRange: [1, 1, .15],
+                extrapolate: "clamp"
+              }),
+            }}
+            />
+            <ButtonImageContainer style={{transform: [{
+              translateY: progress.interpolate({
+                inputRange: [0, 50, 100],
+                outputRange: [0, 0, -50],
+                extrapolate: "clamp"
+              })
+            }]}}>
+              <Primary width="100%" title='Alterar imagem' shadow={2} onPress={()=>openImage()} backgroundColor="transparent"  marginTop={0} />
+            </ButtonImageContainer>
+          </ImageSelect>
+          <AnimatedProgress activePage={activePage} setActivePage={setActivePage} pages={pages} />
+        </HeaderContainer>
+          <CleanContainer>
+            <KeyboardAvoidingView style={{flex: 1}}>
+            <PageScroll onScroll={e=>toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
+              { activePage !== undefined && <activePage.component produto={produto} setProduto={setProduto} /> }
+            </PageScroll>
+            </KeyboardAvoidingView>
+          </CleanContainer>
+      </App>
+      <FixedButtonContainer  
+        style={{ transform: [{ translateY: Dimensions.get("window").height - 74 - 10 }] }}>
+        <Grid>
+          <Primary marginTop={0} width="100%" title='Proxima etapa' shadow={2} onPress={()=> nextPage() } />
+        </Grid>
+      </FixedButtonContainer>
+    </>
+  )
 }

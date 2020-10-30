@@ -7,6 +7,10 @@ export const App = Styled.View`
   justify-content: center;  
   align-items: center
 `;
+export const CleanContainer = Styled.View`
+  flex: 1;
+  width: 100%;
+` 
 export const Grid = Styled.View`
   padding-horizontal: 20px;
 `

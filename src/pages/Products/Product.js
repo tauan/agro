@@ -14,7 +14,8 @@ import {
     Container,
     HeaderTitle,
     DetailsContainer,
-    Column, HeaderCard,
+    Section,
+    HeaderCard,
     BodyCard,
     FilterContainer,
     Item,
@@ -37,7 +38,7 @@ export default ({ navigation }) => {
     const { user } = useContext(UserContext)
     return (
         <>
-            <Header color="#008b54" navigation={navigation} />
+            <Header navigation={navigation} />
             <App>
                 <Form style={{ flex: 1 }}>
                     <Container>
@@ -85,7 +86,7 @@ export default ({ navigation }) => {
                                         <TextStyle color="#fff">{item.property}</TextStyle>
                                     </HeaderCard>
                                     <BodyCard>
-                                        <Column style={{ flexDirection: 'row' }}>
+                                        <Section style={{ paddingHorizontal: 15 }}>
                                             <Item>
                                                 <TextStyle color="#fff" fontsize={16}>Peso Líquido</TextStyle>
                                                 <TitleStyle color="#fff" fontsize={36}>{item.net_weight_product}<TextStyle color="#fff" fontsize={18}>{item.unit_product}</TextStyle></TitleStyle>
@@ -98,18 +99,15 @@ export default ({ navigation }) => {
                                                 <TextStyle color="#fff" fontsize={16}>Validade</TextStyle>
                                                 <TitleStyle color="#fff" fontsize={36}>{item.production}<TextStyle color="#fff" fontsize={18}> dias</TextStyle></TitleStyle>
                                             </Item>
-                                        </Column>
-                                        <Column style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                            <PrimaryTouchable
-                                                title="Editar Produto"
-                                                width="45%"
-                                                backgroundColor="rgba(255, 255, 255, 0.2)"
-                                                onPress={()=>console.log(`Teste:`)}
-                                            />
-                                            <Button>
-                                                <MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton>
+                                        </Section>
+                                        <Section background="#ffffff">
+                                            <Button background="transparent" marginTop={0} borderRadius={10} onPress={() => { }}>
+                                                <TextButton >Editar Produto</TextButton>
                                             </Button>
-                                        </Column>
+                                            <Button marginTop={0} borderRadius={10} onPress={() => { }}>
+                                                <><MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton></>
+                                            </Button>
+                                        </Section>
                                     </BodyCard>
                                 </FilterContainer>
                             </ImageBackground>

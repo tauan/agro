@@ -1,96 +1,126 @@
 import React, {useEffect, useState} from 'react'
 import InputAnimated from '../../../components/InputAnimated'
-import Dropdown from '../../../components/Dropdown'
 import {Form, Row} from '../style'
 import axios from 'axios'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default props => {
-  const {produto,setProduto} = props
+  const {produto,setProduto, user} = props
   const [listCategoria, setListCategoria] = useState([])
+  const [unidadeMedida, setUnidadeMedida] = useState([])
+  const [productList, setProductList] = useState([])
+
   useEffect(()=>{
-    axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS').then(resp => {
-      const list = resp.data.map(item => {  return item.descricao })
+    getCategorias()
+    getUnidadeMedida()
+  },[])
+  
+  const getProdutoBase = id => {
+    axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers : { authorization: user.token }})
+    .then(async resp => {
+      const { data } = resp
+
+      const list = []
+      await data.map(item => {
+        if(item.id_categoria == id)  {
+          list.push({ label: item.descricao, value: item.id_produto_base })
+        }  
+        return
+      })
       setProductList(list)
     })
-    axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS")
-    .then(({data}) => Array.isArray(data) ? setListCategoria(data): setListCategoria([data]))
-  },[])
-  const [productList, setProductList] = useState([' '])
+  }
+
+  const getCategorias = () => {
+    axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers : { authorization: user.token }})
+    .then(async resp => {
+      const list = await resp.data.map(item => {
+        return { label: item.descricao, value: item.id_categoria } 
+      })
+      setListCategoria(list)
+    })
+
+  }
+  const getUnidadeMedida = () => {
+    axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers : { authorization: user.token }})
+    .then(async resp => {
+      const list = await resp.data.map(item => {
+        return { label: item.descricao, value: item.id_unidade } 
+      })
+      setUnidadeMedida(list)
+    })
+  }
+
   return(
     <Form>
-      <AnimatedDropDown list={listCategoria} />
-      <Dropdown
-        placeholder="Categoria"
-        listOptions={['categoria 1', 'categoria 2']}
-        defaltValue={{
-          label: produto.descricao_produto, value: produto.descricao_produto, icon: () => {}
-        }}
-        onChangeItem={({value}) => setProduto({...produto, categoria: value})} />
-      <Dropdown
-        placeholder="Produto"
-        listOptions={productList}
-        defaltValue={{
-          label: produto.categoria, value: produto.categoria, icon: () => {}
-        }}
-        onChangeItem={({value}) => setProduto({...produto, categoria: value})} />
-      <Row>
-        <Dropdown
-          placeholder="Gluten"
-          listOptions={['Sim', 'Não']} 
-          onChangeItem={({value}) => setProduto({...produto, gluten: value})}
-          width="48%"
+      {/* categoria */}
+      <AnimatedDropDown
+          placeholder="Categoria"
+          listOptions={listCategoria} 
+          onChangeItem={response => {
+            setProduto({...produto, id_categoria: response }); 
+            getProdutoBase(response)
+          }}
+          width="100%"
+        />
+        {/* produto */}
+        <AnimatedDropDown
+          placeholder="Produto base"
+          listOptions={productList} 
+          onChangeItem={response => {
+            setProduto({...produto, id_produto_base: response }); 
+            getProdutoBase(response)
+          }}
+          width="100%"
+        />
+        <Row>
+          <AnimatedDropDown
+            placeholder="Glutem"
+            listOptions={[{label: "Sim", value: "Sim"}, {label: "Não", value: "Não"}]} 
+            onChangeItem={response => {
+              setProduto({...produto, glutem: response }); 
+            }}
+            width="48%"
           />
-        <Dropdown
-          placeholder="Unidade de medida"
-          listOptions={['Quilo', 'Grama']} 
-          onChangeItem={({value}) => setProduto({...produto, unid_medida_produto: value})}
-          width="48%"
-        />
-        <InputAnimated
-          placeholder='Peso liquido'
-          onChangeText={text => setProduto({...produto, peso_liquido: text})}
-          value={produto.peso_liquido}
-          width="100%"
-          keyboardType="numeric"
-        />
-        <InputAnimated
-          placeholder='Peso bruto'
-          onChangeText={text => setProduto({...produto, peso_bruto: text})}
-          value={produto.peso_bruto}
-          width="100%"
-          keyboardType="numeric"
-        />
-        <InputAnimated
-          placeholder='Dias de validade'
-          onChangeText={text => setProduto({...produto, dias_validade: text})}
-          value={produto.dias_validade}
-          width="100%"
-          keyboardType="numeric"
-        />
-        <InputAnimated
-          placeholder='Codigo de barras'
-          onChangeText={text => setProduto({...produto, cod_barras: text})}
-          value={produto.cod_barras}
-          width="100%"
-          keyboardType="numeric"
-        />
+          <InputAnimated
+            placeholder='Dias de validade'
+            onChangeText={text => setProduto({ ...produto, dias_validade: text })}
+            value={`${produto.dias_validade}`}
+            width="48%"
+            keyboardType="numeric"
+          />
+          <AnimatedDropDown
+            placeholder="Unidade de medida"
+            listOptions={unidadeMedida} 
+            onChangeItem={response => {
+              setProduto({...produto, glutem: response }); 
+            }}
+          />
+          <InputAnimated
+            placeholder='Peso liquido'
+            onChangeText={text => setProduto({ ...produto, peso_liquido: text })}
+            value={`${produto.peso_liquido}`}
+            width="48%"
+            keyboardType="numeric"
+          />
+          <InputAnimated
+            placeholder='Peso bruto'
+            onChangeText={text => setProduto({ ...produto, peso_bruto: text })}
+            value={`${produto.peso_bruto}`}
+            width="48%"
+            keyboardType="numeric"
+          />
+          <InputAnimated
+            placeholder='Codigo de barras'
+            onChangeText={text => setProduto({ ...produto, codigo_barras: text })}
+            value={`${produto.codigo_barras}`}
+            width="100%"
+            keyboardType="numeric"
+          />
+        </Row>
         
-      </Row>
-      
+        
     </Form>
   )
 }
-
-{/* 
-              categoria: "",
-              descricao_produto: "",
-              gluten: "",
-              unid_medida_produto: "",
-              peso_liquido: "",
-              peso_bruto: "",
-              cod_barras: "",
-              dias_validade: "",
-              foto_produto: "",
-            */}

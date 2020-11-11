@@ -25,25 +25,36 @@ import {
 import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
-    const [list, setList] = useState([])
+    const [productsList, setProductsList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
     const [activeDetails, setActiveDetails] = useState(false)
-    const [item, setItem] = useState()
-    const { produto, activePage } = useContext(ProductContext)
-
-    useEffect(() => { getList() }, [])
-    const idAgricultor = "36"
-    const getList = async (id) => { 
-        axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%2036%20%7D", {
-            headers: {
-                authorization: user.token
-            }
-        }).then(({ data }) => {
-            console.log(data)
-            setList(data)})
-    }
+    const { produto, setProduto, activePage } = useContext(ProductContext)
     const { user } = useContext(UserContext)
+    
+
+    useEffect(() => { getProductList() }, [])
+
+    const getProductList = async (id) => { 
+        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token }})
+            .then(({ data }) => {
+            const produtoBase = []
+            if(Array.isArray(data)) {
+                data.map(async item => {
+                    if(item.foto === "" || item.foto === undefined) {
+                        const {id_produto_base} = item
+                        const result = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
+                        
+                        if(Array.isArray(result.data)) {
+                            await result.data.map(obj => { obj.id_produto_base === id_produto_base ? item.foto = obj.url : ""})
+                        }
+                    }
+                    produtoBase.push(item)
+                    if(produtoBase.length === data.length) setProductsList(produtoBase) 
+                })
+            }
+        })
+    }
     return (
         <>
             <Header color="#008b54" navigation={navigation} />
@@ -58,12 +69,9 @@ export default ({ navigation }) => {
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
-                        data={list.filter(produto => produto.descricao.indexOf(value) != -1)}
-                        renderItem={({ item, index }) => <Items
-                            item={item}
-                            index={index}
-                            onPress={() => { setActiveDetails(true); setItem(item) }}
-                            deleteFunction={() => { setActiveModal(true); setItem(item) }} />
+                        data={productsList.filter(produto => produto.descricao.indexOf(value) != -1)}
+                        renderItem={({ item, index }) => 
+                            <Items item={item} index={index} onPress={() => { setProduto(item); navigation.navigate("ProductForm")}} deleteFunction={() => { setActiveModal(true); setItem(item) }} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -81,50 +89,7 @@ export default ({ navigation }) => {
                         }}
                         onPress={() => { setActiveModal(false); }} >
                     </ModalMessage>}
-                {activeDetails &&
-                    // <ModalMessage onPress={() => { setActiveDetails(false); }} >
-                    //     <DetailsContainer>
-                    //         <ImageBackground style={{ width: '100%' }} source={{ uri: item.foto }}>
-                    //             <FilterContainer>
-                    //                 <CloseButton onPress={() => setActiveDetails(false)}>
-                    //                     <MaterialIcons size={24} name='close' color='#fff' />
-                    //                 </CloseButton>
-                    //                 <HeaderCard>
-                    //                     <TitleStyle color="#fff" fontsize={36}>{item.descricao}</TitleStyle>
-                    //                     <TextStyle color="#fff">{item.property}</TextStyle>
-                    //                 </HeaderCard>
-                    //                 <BodyCard>
-                    //                     <Column style={{ flexDirection: 'row' }}>
-                    //                         <Item>
-                    //                             <TextStyle color="#fff" fontsize={16}>Peso Líquido</TextStyle>
-                    //                             <TitleStyle color="#fff" fontsize={36}>{item.net_weight_product}<TextStyle color="#fff" fontsize={18}>{item.unit_product}</TextStyle></TitleStyle>
-                    //                         </Item>
-                    //                         <Item>
-                    //                             <TextStyle color="#fff" fontsize={16}>Produção</TextStyle>
-                    //                             <TitleStyle color="#fff" fontsize={36}>{item.production}<TextStyle color="#fff" fontsize={18}>{item.unit_production}</TextStyle></TitleStyle>
-                    //                         </Item>
-                    //                         <Item>
-                    //                             <TextStyle color="#fff" fontsize={16}>Validade</TextStyle>
-                    //                             <TitleStyle color="#fff" fontsize={36}>{item.production}<TextStyle color="#fff" fontsize={18}> dias</TextStyle></TitleStyle>
-                    //                         </Item>
-                    //                     </Column>
-                    //                     <Column style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                    //                         <PrimaryTouchable
-                    //                             title="Editar Produto"
-                    //                             width="45%"
-                    //                             backgroundColor="rgba(255, 255, 255, 0.2)"
-                    //                             onPress={()=>console.log(`Teste:`)}
-                    //                         />
-                    //                         <Button>
-                    //                             <MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton>
-                    //                         </Button>
-                    //                     </Column>
-                    //                 </BodyCard>
-                    //             </FilterContainer>
-                    //         </ImageBackground>
-                    //     </DetailsContainer>
-                    // </ModalMessage>
-                <></>}
+                
             </App >
         </>
     )

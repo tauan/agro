@@ -1,31 +1,33 @@
 import React, {useState, useEffect} from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
+import {View, Text} from 'react-native'
 
 export default props => {
   const [listItems, setListItems] = useState([])
   const {
-    list, 
-    activeItem = "", 
-    onChangeItem = () => {} 
+    listOptions = [], 
+    defaultValue = [""], 
+    onChangeItem = () => {} ,
+    backgroundColor = "#fff",
+    placeholder = "",
+    marginTop = 15,
+    width = "100%"
   } = props
   
-  useEffect(()=> {
-    checkList()
-  },[])
-
-  const checkList = () => { list ? (Array.isArray(list) ? setListItems(list) : setListItems([list])) : setListItems([{label: 'Incorrect', value: 'incorrect', icon: () => {}}]) }
 
   return (
     <DropDownPicker
-      items={listItems}
-      defaultValue={activeItem}
-      containerStyle={{height: 50}}
-      style={{backgroundColor: '#fafafa'}}
-      itemStyle={{
-          justifyContent: 'flex-start'
-      }}
-      dropDownStyle={{backgroundColor: '#fafafa'}}
-      onChangeItem={item => onChangeItem(item.value) }
-    />
+        items={listOptions}
+        
+        containerStyle={{height: 50, marginTop, width}}
+        style={{backgroundColor: 'transparent'}}
+        itemStyle={{
+            justifyContent: 'flex-start'
+        }}
+        dropDownStyle={{backgroundColor: '#fafafa'}}
+        onChangeItem={item => onChangeItem(item.value) }
+        placeholder={placeholder}
+      />
+    
 )
 }

@@ -27,7 +27,7 @@ export default props => {
           value={tempIngrediente}
           width="80%"
         />
-        <Primary width="18%" title='+' shadow={2} onPress={()=> {setIngredientes([...ingredientes, tempIngrediente]); setTempIngrediente("") } } />
+        <Primary width="18%" title='+' shadow={2} onPress={()=> { tempIngrediente !== "" ? (setIngredientes([...ingredientes, tempIngrediente]), setTempIngrediente("")): "" } } />
       </Row>
       <ContainerList>
         {ingredientes.length === 0 && <Subtitle>Nenhum item para ser exibido </Subtitle>}

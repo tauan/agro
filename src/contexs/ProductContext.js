@@ -5,42 +5,38 @@ const ProductContext = createContext();
 export const ProductProvider = ({ children }) => {
     const [activePage, setActivePage] = useState()
     const [produto, setProduto] = useState({
-        categoria: "",
-        descricao_produto: "",
+        id_produto: undefined,
+        id_agricultor: undefined,
+        id_categoria: "",
+        descricao: "",
         gluten: "",
-        unid_medida_produto: "",
         peso_liquido: "",
         peso_bruto: "",
-        cod_barras: "",
+        codigo_barras: "",
         dias_validade: "",
-        foto_produto: "",
-    });
-    const [producao, setProducao] = useState({
-        inicio_safra: "",
-        termino_safra: "",
-        producao: "",
-        unidade_medida_producao: "",
-        qtde_producao: "",
+        foto: "",
+        observacao: "",
+        id_produto_base: undefined,
+        mes_inicial_plantio: "",
+        mes_final_plantio: "",
+        tipo_producao: "",
+        unidade_medida_1: "",
+        unidade_medida_2: "",
+        quantidade_producao: "",
     });
     const [propriedades, setPropriedades] = useState(undefined);
     const [ingredientes, setIngredientes] = useState([]);
-    const [descricao, setDescricao] = useState(undefined);
-
     return (
         <ProductContext.Provider
             value={{
                 activePage,
                 produto,
-                producao,
                 propriedades,
                 ingredientes,
-                descricao,
                 setActivePage,
                 setProduto,
-                setProducao,
                 setPropriedades,
                 setIngredientes,
-                setDescricao,
             }}
         >
             {children}

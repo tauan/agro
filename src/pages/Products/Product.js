@@ -4,6 +4,7 @@ import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import ProductContext from '../../contexs/ProductContext'
 import {App, Grid} from '../style'
+import UserContext from '../../contexs/User'
 import { 
   HeaderContainer, 
   ImageSelect, 
@@ -29,6 +30,7 @@ export default ({navigation}) => {
   },[pages]);
   const { activePage, produto, producao, propriedades, descricao, ingredientes,  setActivePage, setProduto, setProducao, setPropriedades, setDescricao, setIngredientes } = useContext(ProductContext)
   const [image, setImage] = useState(undefined)
+  const { user } = useContext(UserContext)
   const [pages, setPages] = useState([{
     route: "Produto",
     textHeader: "Detalhes do produto",
@@ -150,7 +152,7 @@ export default ({navigation}) => {
           <CleanContainer>
             <KeyboardAvoidingView style={{flex: 1}}>
             <PageScroll onScroll={e=>toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              { activePage !== undefined && <activePage.component produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} /> }
+              { activePage !== undefined && <activePage.component user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} /> }
             </PageScroll>
             </KeyboardAvoidingView>
           </CleanContainer>

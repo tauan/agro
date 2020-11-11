@@ -15,10 +15,18 @@ export default (props) => {
   } = props;
 
   const items = listOptions.map(item => {
-    return {
-      label: item, value: item,
-      icon: () => {}
+    //console.log(item)
+    if(item.label && item.value) {
+      console.log(item)
+      return {
+        label: item.label, value: item.value,
+        icon: () => item.icon ? <Icon name={item.icon} size={18} color="#900" /> : {}
+      }
+    }else {
+      //console.log(`O picker encontrou problemas ao receber o array no item: ${item}`)
+      return { label: "checkConsole", value: "checkConsole", icon: () => {} }
     }
+    
   })
 
   return (

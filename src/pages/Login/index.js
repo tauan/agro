@@ -40,18 +40,26 @@ export default ({ navigation }) => {
     controller ? setActiveButton(true) : setActiveButton(false)
   }
   const submitForm = async () => {
-    const { data } = await axios.get(`http://localhost:3000/users?login=${email}&senha=${password}`)
-    data.length === 1
-      ? (await setUser(data[0]), saveUser(data[0]), setLoged(true))
-      : (showMessage({
-        message: "Usuário ou senha inválidos!",
-        type: "danger",
-        style: { justifyContent: 'space-between', alignItems: 'center' },
-        titleStyle: { fontSize: 16 },
-        icon: { icon: "danger", position: 'right' },
-        position: 'top',
-        duration: 3000,
-      }), Keyboard.dismiss())
+    axios.post("http://dev.renovetecnologia.org:8049/webrunstudio/WS_LOGIN.rule?sys=SIS", {
+      usuario: email,
+      senha: password
+    }).then(async ({data}) => {
+      if(data.erro) { 
+        showMessage({
+          message: data.erro,
+          type: "danger",
+          style: { justifyContent: 'space-between', alignItems: 'center' },
+          titleStyle: { fontSize: 16 },
+          icon: { icon: "danger", position: 'right' },
+          position: 'top',
+          duration: 3000,
+        }), Keyboard.dismiss()
+        return
+      }
+      await setUser(data)
+      saveUser(data)
+      setLoged(true)
+    }).catch(err=>console.log(err))
   }
   return (
     <App>

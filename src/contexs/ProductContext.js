@@ -23,7 +23,7 @@ export const ProductProvider = ({ children }) => {
         qtde_producao: "",
     });
     const [propriedades, setPropriedades] = useState(undefined);
-    const [ingredientes, setIngredientes] = useState(undefined);
+    const [ingredientes, setIngredientes] = useState([]);
     const [descricao, setDescricao] = useState(undefined);
 
     return (

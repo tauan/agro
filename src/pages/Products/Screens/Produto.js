@@ -1,36 +1,83 @@
-import React, {useEffect} from 'react'
-import Primary from '../../../components/Buttons/Primary'
+import React, {useEffect, useState} from 'react'
 import InputAnimated from '../../../components/InputAnimated'
 import Dropdown from '../../../components/Dropdown'
-import {Form} from '../style'
+import {Form, Row} from '../style'
+import axios from 'axios'
+import AnimatedDropDown from '../../../components/AnimatedDropDown'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default props => {
   const {produto,setProduto} = props
+  const [listCategoria, setListCategoria] = useState([])
+  useEffect(()=>{
+    axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS').then(resp => {
+      const list = resp.data.map(item => {  return item.descricao })
+      setProductList(list)
+    })
+    axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS")
+    .then(({data}) => Array.isArray(data) ? setListCategoria(data): setListCategoria([data]))
+  },[])
+  const [productList, setProductList] = useState([' '])
   return(
     <Form>
+      <AnimatedDropDown list={listCategoria} />
       <Dropdown
         placeholder="Categoria"
-        listOptions={['opção 1', 'Opção 2']}
+        listOptions={['categoria 1', 'categoria 2']}
+        defaltValue={{
+          label: produto.descricao_produto, value: produto.descricao_produto, icon: () => {}
+        }}
+        onChangeItem={({value}) => setProduto({...produto, categoria: value})} />
+      <Dropdown
+        placeholder="Produto"
+        listOptions={productList}
         defaltValue={{
           label: produto.categoria, value: produto.categoria, icon: () => {}
         }}
         onChangeItem={({value}) => setProduto({...produto, categoria: value})} />
-      <InputAnimated
-          placeholder='Descrição do produto'
-          onChangeText={text => setProduto({...produto, descricao_produto: text})}
-          value={produto.descricao_produto}
+      <Row>
+        <Dropdown
+          placeholder="Gluten"
+          listOptions={['Sim', 'Não']} 
+          onChangeItem={({value}) => setProduto({...produto, gluten: value})}
+          width="48%"
+          />
+        <Dropdown
+          placeholder="Unidade de medida"
+          listOptions={['Quilo', 'Grama']} 
+          onChangeItem={({value}) => setProduto({...produto, unid_medida_produto: value})}
+          width="48%"
+        />
+        <InputAnimated
+          placeholder='Peso liquido'
+          onChangeText={text => setProduto({...produto, peso_liquido: text})}
+          value={produto.peso_liquido}
           width="100%"
-      />
-      <Dropdown
-        placeholder="Gluten"
-        listOptions={['Sim', 'Não']} 
-        onChangeItem={({value}) => setProduto({...produto, gluten: value})}
+          keyboardType="numeric"
         />
-      <Dropdown
-        placeholder="Unidade de medida"
-        listOptions={['Quilo', 'Grama']} 
-        onChangeItem={({value}) => setProduto({...produto, unid_medida_produto: value})}
+        <InputAnimated
+          placeholder='Peso bruto'
+          onChangeText={text => setProduto({...produto, peso_bruto: text})}
+          value={produto.peso_bruto}
+          width="100%"
+          keyboardType="numeric"
         />
+        <InputAnimated
+          placeholder='Dias de validade'
+          onChangeText={text => setProduto({...produto, dias_validade: text})}
+          value={produto.dias_validade}
+          width="100%"
+          keyboardType="numeric"
+        />
+        <InputAnimated
+          placeholder='Codigo de barras'
+          onChangeText={text => setProduto({...produto, cod_barras: text})}
+          value={produto.cod_barras}
+          width="100%"
+          keyboardType="numeric"
+        />
+        
+      </Row>
       
     </Form>
   )

@@ -52,6 +52,7 @@ export default (props) => {
         ]).start()
         setTimeout(function () { setVisible(false); onPress(); }, 800)
     }
+    
 
     useEffect(() => {
         switch (showMessage.type) {
@@ -74,7 +75,7 @@ export default (props) => {
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
                 <TitleStyle color={config.color} >{showMessage.title}</TitleStyle>
                 <TextStyle style={{marginVertical: 15}} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
-                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => console.log(user)} />
+                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => desactiveModal()} />
                 <Button onPress={() => desactiveModal()}>
                     <TextButton>Cancelar</TextButton>
                 </Button>

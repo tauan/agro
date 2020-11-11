@@ -21,11 +21,12 @@ export default props => {
     value,
     onChangeText = () => { },
     required = false,
-    valid = "none"
+    valid = "none",
+    multiline = false
   } = props;
   const [isValid, setIsValid] = useState(true)
 
-  const animation = new Animated.Value(0);
+  const animation = new Animated.Value(value === undefined ? 0 : (value.length === 0 ? 0 : 100));
 
   const animateText = value => {
     if (value === undefined || value.length === 0) {
@@ -98,6 +99,7 @@ export default props => {
         onEndEditing={(e) => finishEdit(e.nativeEvent.text)}
         autoCapitalize="none"
         value={value}
+        multiline={multiline}
         onChangeText={e=>{
           onChangeText(e)
           e.length === 0 ? setIsValid(false) : setIsValid(true)

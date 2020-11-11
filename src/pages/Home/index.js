@@ -43,7 +43,7 @@ export default ({ navigation }) => {
                             <ContainerIMG >
                                 <IMGUser source={UserIMG} />
                             </ContainerIMG>
-                            <TitleStyle style={{marginTop: 15}} fontsize={28} align="center">{user.nome}</TitleStyle>
+                            <TitleStyle style={{marginTop: 15}} fontsize={28} align="center">{user.usr_nome}</TitleStyle>
                             <TextStyle>STR de Vitória da Conquista - BA</TextStyle>
                             <Primary width="100%" title='Editar perfil' fontsize={18} />
                         </Header>

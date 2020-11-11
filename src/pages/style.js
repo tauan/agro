@@ -30,7 +30,7 @@ export const Title2 = Styled.Text`
   font-weight: bold;
 `
 export const Title3 = Styled.Text`  
-  font-size: 18px;
+  font-size: 20px;
   color: #008b54;
   font-weight: bold;
 `

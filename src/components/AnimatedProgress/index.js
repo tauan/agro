@@ -1,6 +1,6 @@
 import React, { useEffect, useRef} from 'react'
 import {Nav, LoadingProgressContainer, CircleStatus,BarStatusProgress } from './style'
-import { Grid, Title3Regular, CleanContainer } from '../../pages/style'
+import { Grid, Title3, Title3Regular, CleanContainer } from '../../pages/style'
 import {TouchableOpacity, Animated, Dimensions, TouchableWithoutFeedback} from 'react-native'
 
 export default props => {
@@ -30,7 +30,7 @@ export default props => {
   return(
     <Nav>
       <CleanContainer>
-      <Title3Regular style={{marginVertical: 10}}>{activePage !== undefined ? activePage.textHeader : " "}</Title3Regular>
+      <Title3 style={{marginVertical: 20}}>{activePage !== undefined ? activePage.textHeader : " "}</Title3>
         <LoadingProgressContainer>
           {
             pages.map((item, key)=>{

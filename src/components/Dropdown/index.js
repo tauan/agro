@@ -5,11 +5,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export default (props) => {
   const {
     placeholder = "",
+    width = "100%",
     listOptions = [],
     marginTop = 16,
     defaultValue,
     borderColor = "#BDBDBD",
-    onChangeItem = function () { }
+    onChangeItem = function () { },
+    color = "#666"
   } = props;
 
   const items = listOptions.map(item => {
@@ -24,13 +26,14 @@ export default (props) => {
       items={items}
       placeholder={placeholder}
       defaultValue={defaultValue}
-      containerStyle={{ height: 50, marginTop }}
+      containerStyle={{ height: 50, marginTop, width }}
       itemStyle={{
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
       }}
-      style={{ backgroundColor: '#fff', borderColor }}
+      style={{ backgroundColor: '#fff', borderColor, paddingLeft: 4 }}
       dropDownStyle={{ backgroundColor: '#ffffff' }}
       onChangeItem={onChangeItem}
+      labelStyle={{color}}
     />
   )
 }

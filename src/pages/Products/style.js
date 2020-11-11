@@ -102,11 +102,11 @@ export const PageScroll = Styled.ScrollView.attrs({
 })`
   padding-bottom: 5px;
   width: 100%;
-  height: 1000px;
   flex: 1;
 `
 export const Form = Styled.View`
-  padding-bottom: 85px;
+  flex: 1;
+  padding-bottom: 75px
 `
 export const Subtitle = Styled.Text``
 export const LoadingProgressContainer = Styled.View`
@@ -143,3 +143,39 @@ export const FixedButtonContainer = Styled(Animated.View)`
   width: 100%;
   height: 50px;
 `
+export const Row = Styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap
+  
+`
+export const ContainerList = Styled.View`
+  margin-top: 16px
+`
+export const ItemContainer = Styled.View`
+  width: 99%;
+  margin-horizontal: .5%;
+  height: 40px;
+  elevation: 3;
+  background: #fff;
+  margin-bottom: 16px;
+  flex-direction: row;
+  border-radius: 4px;
+`
+
+export const ItemText = Styled.Text`
+  background: #fff;
+  height: 100%;
+  line-height: 35px;
+  padding-left: 8px;
+  flex: 1;
+  color: #333
+`
+export const DeleteButton = Styled.TouchableOpacity`
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  align-items: center;
+  justify-content: center
+`
+

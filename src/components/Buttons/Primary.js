@@ -8,7 +8,7 @@ export default (props) => {
     title,
     width,
     height = 50,
-    backgroundColor = "#008b54",
+    backgroundColor = "#55cb93",
     borderRadius = 4,
     marginTop = 16,
     color = "#fff",

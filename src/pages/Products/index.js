@@ -13,14 +13,6 @@ import { App, Form, TitleStyle, TextStyle } from '../style'
 import {
     Container,
     HeaderTitle,
-    DetailsContainer,
-    Column, HeaderCard,
-    BodyCard,
-    FilterContainer,
-    Item,
-    Button,
-    TextButton,
-    CloseButton
 } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
@@ -28,32 +20,31 @@ export default ({ navigation }) => {
     const [productsList, setProductsList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
-    const [activeDetails, setActiveDetails] = useState(false)
-    const { produto, setProduto, activePage } = useContext(ProductContext)
+    const { setProduto } = useContext(ProductContext)
     const { user } = useContext(UserContext)
-    
+
 
     useEffect(() => { getProductList() }, [])
 
-    const getProductList = async (id) => { 
-        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token }})
+    const getProductList = async (id) => {
+        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => {
-            const produtoBase = []
-            if(Array.isArray(data)) {
-                data.map(async item => {
-                    if(item.foto === "" || item.foto === undefined) {
-                        const {id_produto_base} = item
-                        const result = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
-                        
-                        if(Array.isArray(result.data)) {
-                            await result.data.map(obj => { obj.id_produto_base === id_produto_base ? item.foto = obj.url : ""})
+                const produtoBase = []
+                if (Array.isArray(data)) {
+                    data.map(async item => {
+                        if (item.foto === "" || item.foto === undefined) {
+                            const { id_produto_base } = item
+                            const result = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
+
+                            if (Array.isArray(result.data)) {
+                                await result.data.map(obj => { obj.id_produto_base === id_produto_base ? item.foto = item.url_imagem == '' ? obj.url : item.url_imagem : "" })
+                            }
                         }
-                    }
-                    produtoBase.push(item)
-                    if(produtoBase.length === data.length) setProductsList(produtoBase) 
-                })
-            }
-        })
+                        produtoBase.push(item)
+                        if (produtoBase.length === data.length) setProductsList(produtoBase)
+                    })
+                }
+            })
     }
     return (
         <>
@@ -65,13 +56,13 @@ export default ({ navigation }) => {
                             <TitleStyle>Produtos</TitleStyle>
                             <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => navigation.navigate("ProductForm")} />
+                        <Primary title="Cadastrar produto" width={150} onPress={() => { setProduto({}); navigation.navigate("ProductForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
                         data={productsList.filter(produto => produto.descricao.indexOf(value) != -1)}
-                        renderItem={({ item, index }) => 
-                            <Items item={item} index={index} onPress={() => { setProduto(item); navigation.navigate("ProductForm")}} deleteFunction={() => { setActiveModal(true); setItem(item) }} />
+                        renderItem={({ item, index }) =>
+                            <Items item={item} index={index} onPress={() => { setProduto(item); navigation.navigate("ProductForm") }} deleteFunction={() => { setActiveModal(true); setItem(item) }} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -89,7 +80,7 @@ export default ({ navigation }) => {
                         }}
                         onPress={() => { setActiveModal(false); }} >
                     </ModalMessage>}
-                
+
             </App >
         </>
     )

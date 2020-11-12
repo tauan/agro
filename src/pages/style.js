@@ -19,29 +19,29 @@ export const Form = Styled.View`
 `
 export const TitleStyle = Styled.Text`  
   font-size: ${props => props.fontsize ? props.fontsize : 32}px;
-  color: ${props => props.color ? props.color : '#008b54'};
+  color: ${props => props.color ? props.color : '#55cb93'};
   font-weight: bold;
   text-align: ${props => props.align ? props.align : 'left'};
 `
 export const Title2 = Styled.Text`  
   font-size: 24px;
-  color: #008b54;
+  color: #55cb93;
   text-align: center;
   font-weight: bold;
 `
 export const Title3 = Styled.Text`  
   font-size: 20px;
-  color: #008b54;
+  color: #55cb93;
   font-weight: bold;
 `
 export const Title3Regular = Styled.Text`  
   font-size: 18px;
-  color: #008b54;
+  color: #55cb93;
   font-weight: normal;
 `
 export const Title4 = Styled.Text`  
   font-size: 14px;
-  color: #008b54;
+  color: #55cb93;
   font-weight: bold;
 `
 export const Text1 = Styled.Text`  

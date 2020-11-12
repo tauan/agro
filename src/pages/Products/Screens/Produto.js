@@ -22,24 +22,21 @@ export default props => {
         const list = await resp.data.map(item => {
           return { label: item.descricao, value: item.id_categoria }
         })
-        setListCategoria(list)
+        setListCategoria(list)        
+        setProductList([{ label: '', value: '', url: ''}])
       })
 
   }
 
-  const getProdutoBase = id => {
-    axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
-      .then(async resp => {
+  const getProdutoBase = async id => {
+    await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
+      .then(resp => {
         const { data } = resp
-
         const list = []
-        await data.map(item => {
-          if (item.id_categoria == id) {
-            list.push({ label: item.descricao, value: item.id_produto_base, url: item.url })
-          }
-          return
+        data.filter(categoria => categoria.id_categoria === id).map(item => {
+          list.push({ label: item.descricao, value: item.id_produto_base, url: item.url })
+          setProductList(list)
         })
-        setProductList(list)
       })
   }
 

@@ -1,33 +1,29 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
-import {View, Text} from 'react-native'
+import { View, Text } from 'react-native'
 
 export default props => {
-  const [listItems, setListItems] = useState([])
   const {
-    listOptions = [], 
-    defaultValue = [""], 
-    onChangeItem = () => {} ,
-    backgroundColor = "#fff",
+    listOptions = [],
+    onChangeItem = () => { },
     placeholder = "",
     marginTop = 15,
-    width = "100%"
+    width = "100%",
   } = props
-  
 
   return (
     <DropDownPicker
-        items={listOptions}
-        
-        containerStyle={{height: 50, marginTop, width}}
-        style={{backgroundColor: 'transparent'}}
-        itemStyle={{
-            justifyContent: 'flex-start'
-        }}
-        dropDownStyle={{backgroundColor: '#fafafa'}}
-        onChangeItem={item => onChangeItem(item.value) }
-        placeholder={placeholder}
-      />
-    
-)
+      items={listOptions}
+      defaultValue={''}
+      containerStyle={{ height: 50, marginTop, width }}
+      style={{ backgroundColor: '#fff'}}
+      itemStyle={{
+        justifyContent: 'flex-start'
+      }}
+      dropDownStyle={{ backgroundColor: '#fafafa' }}
+      onChangeItem={item => onChangeItem(item.value)}
+      placeholder={placeholder}
+    />
+
+  )
 }

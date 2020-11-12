@@ -24,7 +24,7 @@ export default (props) => {
             type: '',
         }
     } = props
-    
+
     const [config, setConfig] = useState({})
 
     const anim = useRef(new Animated.Value(0)).current
@@ -40,7 +40,7 @@ export default (props) => {
         ]).start()
     }
 
-    const DesactiveModal = (value) => {
+    const DesactiveModal = () => {
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 0,
@@ -72,7 +72,7 @@ export default (props) => {
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
                 <TitleStyle color={config.color} >{showMessage.title}</TitleStyle>
                 <TextStyle style={{ marginVertical: 15 }} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
-                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => { DesactiveModal(); props.onPress(false) }} />
+                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => { DesactiveModal(); props.onPressPrimaryButton(false) }} />
                 <Button onPress={() => { DesactiveModal(); props.onPressCancelButton(false) }}>
                     <TextButton>Cancelar</TextButton>
                 </Button>

@@ -35,7 +35,7 @@ export default props => {
           <ItemContainer key={index}>
             <ItemText>{item}</ItemText>
             <DeleteButton>
-              <Icon style={{padding: 10}} name="delete" color="#666666" size={20} onPress={() => { setItem({ item, index }); setActiveModal(true); }} />
+              <Icon style={{ padding: 10 }} name="delete" color="#666666" size={20} onPress={() => { setItem({ item, index }); setActiveModal(true); }} />
             </DeleteButton>
           </ItemContainer>
         ))}
@@ -48,7 +48,7 @@ export default props => {
             type: 'alert',
             icon: true
           }}
-          onPress={(value) => {
+          onPressPrimaryButton={(value) => {
             deleteIngrediente(item.index);
             setTimeout(function () { setActiveModal(value); }, 800)
           }}

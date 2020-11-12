@@ -1,16 +1,16 @@
-import React, {useContext, useState, useEffect} from 'react'
-import {Animated, Dimensions, View, KeyboardAvoidingView, Platform, TouchableOpacity} from 'react-native'
+import React, { useContext, useState, useEffect } from 'react'
+import { Animated, Dimensions, View, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import ProductContext from '../../contexs/ProductContext'
-import {App, Grid} from '../style'
+import { App, Grid } from '../style'
 import UserContext from '../../contexs/User'
-import { 
-  HeaderContainer, 
-  ImageSelect, 
-  PageScroll, 
-  ImgBackground, 
-  ButtonImageContainer, 
+import {
+  HeaderContainer,
+  ImageSelect,
+  PageScroll,
+  ImgBackground,
+  ButtonImageContainer,
   CleanContainer,
   FixedButtonContainer
 } from './style'
@@ -24,11 +24,11 @@ import Ingredientes from './Screens/Ingredientes'
 import Descricao from './Screens/Descricao'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
-export default ({navigation}) => {
+export default ({ navigation }) => {
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
-  },[pages]);
-  const { activePage, produto, producao, propriedades, descricao, ingredientes,  setActivePage, setProduto, setProducao, setPropriedades, setDescricao, setIngredientes } = useContext(ProductContext)
+  }, [pages]);
+  const { activePage, produto, producao, propriedades, descricao, ingredientes, setActivePage, setProduto, setProducao, setPropriedades, setDescricao, setIngredientes } = useContext(ProductContext)
   const [image, setImage] = useState(undefined)
   const { user } = useContext(UserContext)
   const [pages, setPages] = useState([{
@@ -39,29 +39,29 @@ export default ({navigation}) => {
     route: "Producao",
     textHeader: "Detalhes da produção",
     component: Producao
-  }, 
+  },
   {
     route: "Propriedade",
     textHeader: "Detalhes da propriedade",
     component: Propriedades
-  }, 
+  },
   {
     route: "Ingredientes",
     textHeader: "Ingredientes",
     component: Ingredientes
-  }, 
+  },
   {
     route: "Descricao",
     textHeader: "Descrição",
     component: Descricao
   }])
   const nextPage = () => {
-    if(activePage !== undefined && activePage.index !== pages.length - 1)
+    if (activePage !== undefined && activePage.index !== pages.length - 1)
       setActivePage(pages[activePage.index + 1])
   }
   let imageHidde = false
   const progress = new Animated.Value(0)
-  const closeImage =  () => {
+  const closeImage = () => {
     Animated.timing(progress, {
       toValue: 100,
       duration: 1000,
@@ -76,12 +76,12 @@ export default ({navigation}) => {
     }).start()
   }
   const toggleAnimation = velocity => {
-    if(velocity > 1.5 || velocity < -1.5){
-      if(velocity > 1.5 && imageHidde === false) {
+    if (velocity > 1.5 || velocity < -1.5) {
+      if (velocity > 1.5 && imageHidde === false) {
         closeImage()
         imageHidde = true
       }
-      if(velocity < 1.5 && imageHidde === true) {
+      if (velocity < 1.5 && imageHidde === true) {
         console.log("abrir imagem")
         openImage()
         imageHidde = false
@@ -100,15 +100,15 @@ export default ({navigation}) => {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         setImage(response)
-       };      
+      };
     })
   }
-  return(
+  return (
     <>
       <Header color="#07AC82" navigation={navigation} />
       <App>
         <HeaderContainer>
-          <TouchableOpacity onPress={pickerImage}> 
+          <TouchableOpacity onPress={pickerImage}>
             <ImageSelect style={{
               width: progress.interpolate({
                 inputRange: [0, 50, 100],
@@ -126,41 +126,44 @@ export default ({navigation}) => {
                 extrapolate: "clamp"
               }),
             }}>
-            <ImgBackground
-            source={image===undefined ? {uri: "https://conteudo.imguol.com.br/c/entretenimento/3e/2017/09/01/tomate-1504283166629_v2_1920x1276.jpg"} : {uri: image.uri}} 
-            style={{
-              opacity: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [1, 1, .15],
-                extrapolate: "clamp"
-              }),
-            }}
-            />
-            <ButtonImageContainer style={{transform: [{
-              translateY: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [0, 0, -50],
-                extrapolate: "clamp"
-              })
-            }]}}>
-              <Primary width="100%" title='Alterar imagem' shadow={2} onPress={pickerImage} backgroundColor="transparent"  marginTop={0} />
-            </ButtonImageContainer>
-          </ImageSelect>
+              <ImgBackground
+                resizeMode="cover"
+                source={{ uri: produto.foto ? produto.foto : 'https://freeiconshop.com/wp-content/uploads/edd/camera-flat.png' }}
+                style={{
+                  opacity: progress.interpolate({
+                    inputRange: [0, 50, 100],
+                    outputRange: [1, 1, .15],
+                    extrapolate: "clamp"
+                  }),
+                }}
+              />
+              <ButtonImageContainer style={{
+                transform: [{
+                  translateY: progress.interpolate({
+                    inputRange: [0, 50, 100],
+                    outputRange: [0, 0, -50],
+                    extrapolate: "clamp"
+                  })
+                }]
+              }}>
+                <Primary width="100%" title='Alterar imagem' shadow={2} onPress={pickerImage} backgroundColor="transparent" marginTop={0} />
+              </ButtonImageContainer>
+            </ImageSelect>
           </TouchableOpacity>
           <AnimatedProgress activePage={activePage} setActivePage={setActivePage} pages={pages} />
         </HeaderContainer>
-          <CleanContainer>
-            <KeyboardAvoidingView style={{flex: 1}}>
-            <PageScroll onScroll={e=>toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              { activePage !== undefined && <activePage.component user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} /> }
+        <CleanContainer>
+          <KeyboardAvoidingView style={{ flex: 1 }}>
+            <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
+              {activePage !== undefined && <activePage.component user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} />}
             </PageScroll>
-            </KeyboardAvoidingView>
-          </CleanContainer>
+          </KeyboardAvoidingView>
+        </CleanContainer>
       </App>
-      <FixedButtonContainer  
+      <FixedButtonContainer
         style={{ transform: [{ translateY: Dimensions.get("window").height - 74 - 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title='Proxima etapa' shadow={2} onPress={()=> nextPage() } />
+          <Primary marginTop={0} width="100%" title='Proxima etapa' shadow={2} onPress={() => nextPage()} />
         </Grid>
       </FixedButtonContainer>
     </>

@@ -1,0 +1,31 @@
+- botao da imagem, alterar imagem, gostaria de voltar ao estado inicial
+- colocar botão de etapa anterior em produto 
+- colcoar apadding bottom nas paginas de formulario
+- label
+- imagem esta estatica
+- deletar
+- cadastro do usuario
+- criar botão com 2 onpress
+- no obj produto o {
+    "codigo_barras": "1234567890321",
+    "descricao": "AMORA",
+    "dias_validade": 30,
+    "glutem": "Não",
+    "id_agricultor": 36,
+    "id_categoria": 365,
+    "id_produto": 16,
+    "id_produto_base": 253,
+    "mes_final_plantio": "SETEMBRO",
+    "mes_inicial_plantio": "JUNHO",
+    "observacao": "AMORA DELÍCIA",
+    "peso_bruto": "20",
+    "peso_liquido": "20",
+    "quantidade_producao": "600",
+    "tipo_producao": "Mensal",
+    "unidade_medida_1": 1,
+    "unidade_medida_2": 1,
+    "url_imagem": "http://dev.renovetecnologia.org:8049/imagens/0FC0721D-E803-4631-9E60-38502FB17EE6.jpg"
+  }  "unidade_medida_1": 1, é unidade de medida do produto
+    "unidade_medida_2": 1, é unidade de medida de produção
+
+- no piker de data pegar o mes e colocar em portugues

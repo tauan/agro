@@ -17,7 +17,7 @@ export default props => {
   },[])
   
   const getProdutoBase = id => {
-    axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers : { authorization: user.token }})
+    axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers : { authorization: user.token }})
     .then(async resp => {
       const { data } = resp
 

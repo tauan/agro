@@ -10,7 +10,7 @@ import {
     TextButton,
     DialogBox
 } from './style'
-import Primary from '../Buttons/Primary'
+import Primary from '../Buttons/PrimaryTouchable'
 import { TitleStyle, TextStyle } from '../../pages/style'
 
 export default (props) => {
@@ -50,7 +50,7 @@ export default (props) => {
                 useNativeDriver: true,
             }),
         ]).start()
-        setTimeout(function () { setVisible(false); onPress(); }, 800)
+        setTimeout(function () { setVisible(false); }, 800)
     }
     
 
@@ -75,7 +75,7 @@ export default (props) => {
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
                 <TitleStyle color={config.color} >{showMessage.title}</TitleStyle>
                 <TextStyle style={{marginVertical: 15}} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
-                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => desactiveModal()} />
+                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => { desactiveModal(); onPress() }} />
                 <Button onPress={() => desactiveModal()}>
                     <TextButton>Cancelar</TextButton>
                 </Button>

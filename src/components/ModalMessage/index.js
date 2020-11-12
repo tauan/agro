@@ -15,7 +15,7 @@ import { TitleStyle, TextStyle } from '../../pages/style'
 
 export default (props) => {
     const {
-        onPress,
+        visible,
         children,
         showMessage = {
             icon: false,
@@ -24,14 +24,12 @@ export default (props) => {
             type: '',
         }
     } = props
-
-    const [visible, setVisible] = useState(true)
+    
     const [config, setConfig] = useState({})
 
     const anim = useRef(new Animated.Value(0)).current
 
     const ActiveModal = () => {
-        setVisible(true)
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 1,
@@ -42,7 +40,7 @@ export default (props) => {
         ]).start()
     }
 
-    const desactiveModal = () => {
+    const DesactiveModal = (value) => {
         Animated.sequence([
             Animated.spring(anim, {
                 toValue: 0,
@@ -50,9 +48,8 @@ export default (props) => {
                 useNativeDriver: true,
             }),
         ]).start()
-        setTimeout(function () { setVisible(false); onPress(); }, 800)
     }
-    
+
 
     useEffect(() => {
         switch (showMessage.type) {
@@ -74,9 +71,9 @@ export default (props) => {
             <DialogBox>
                 {showMessage.icon && <MaterialCommunityIcons size={70} name={config.icon} color={config.color} />}
                 <TitleStyle color={config.color} >{showMessage.title}</TitleStyle>
-                <TextStyle style={{marginVertical: 15}} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
-                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => desactiveModal()} />
-                <Button onPress={() => desactiveModal()}>
+                <TextStyle style={{ marginVertical: 15 }} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
+                <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => { DesactiveModal(); props.onPress(false) }} />
+                <Button onPress={() => { DesactiveModal(); props.onPressCancelButton(false) }}>
                     <TextButton>Cancelar</TextButton>
                 </Button>
             </DialogBox>

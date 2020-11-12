@@ -172,8 +172,6 @@ export const ItemText = Styled.Text`
   color: #333
 `
 export const DeleteButton = Styled.TouchableOpacity`
-  width: 40px;
-  height: 40px;
   background: #fff;
   align-items: center;
   justify-content: center

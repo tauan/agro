@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import InputAnimated from '../../../components/InputAnimated'
 import Primary from '../../../components/Buttons/PrimaryTouchable'
-import {Form, Row, ContainerList, Subtitle, ItemContainer, ItemText, DeleteButton} from '../style'
+import { Form, Row, ContainerList, Subtitle, ItemContainer, ItemText, DeleteButton } from '../style'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import ModalMessage from '../../../components/ModalMessage'
 
 export default props => {
-  useEffect(()=>{},[ingredientes])
-  const {ingredientes, setIngredientes} = props
+  useEffect(() => { }, [ingredientes])
+  const { ingredientes, setIngredientes } = props
   const [tempIngrediente, setTempIngrediente] = useState("")
   const [activeModal, setActiveModal] = useState(false)
   const [update, setUpdate] = useState(false)
@@ -18,7 +18,7 @@ export default props => {
     setIngredientes(list)
     setUpdate(update ? false : true)
   }
-  return(
+  return (
     <Form>
       <Row>
         <InputAnimated
@@ -27,7 +27,7 @@ export default props => {
           value={tempIngrediente}
           width="80%"
         />
-        <Primary width="18%" title='+' shadow={2} onPress={()=> { tempIngrediente !== "" ? (setIngredientes([...ingredientes, tempIngrediente]), setTempIngrediente("")): "" } } />
+        <Primary width="18%" title='+' shadow={2} onPress={() => { tempIngrediente !== "" ? (setIngredientes([...ingredientes, tempIngrediente]), setTempIngrediente("")) : "" }} />
       </Row>
       <ContainerList>
         {ingredientes.length === 0 && <Subtitle>Nenhum item para ser exibido </Subtitle>}
@@ -35,22 +35,27 @@ export default props => {
           <ItemContainer key={index}>
             <ItemText>{item}</ItemText>
             <DeleteButton>
-              <Icon name="delete" color="#666666" size={20} onPress={()=> {setItem({item, index}); setActiveModal(true);}} />
+              <Icon style={{padding: 10}} name="delete" color="#666666" size={20} onPress={() => { setItem({ item, index }); setActiveModal(true); }} />
             </DeleteButton>
           </ItemContainer>
         ))}
       </ContainerList>
       { activeModal &&
-      <ModalMessage
+        <ModalMessage
           showMessage={{
-              title: 'Atenção!',
-              message: `Deseja realmente deletar o produto ${item.item} da lista?`,
-              type: 'alert',
-              icon: true
+            title: 'Atenção!',
+            message: `Deseja realmente deletar o produto ${item.item} da lista?`,
+            type: 'alert',
+            icon: true
           }}
-          onPress={() => {  deleteIngrediente(item.index);setActiveModal(false); }} >
-      </ModalMessage>}
-    </Form>
-     
+          onPress={(value) => {
+            deleteIngrediente(item.index);
+            setTimeout(function () { setActiveModal(value); }, 800)
+          }}
+          onPressCancelButton={(value) => setTimeout(function () { setActiveModal(value); }, 800)}
+          visible={activeModal} >
+        </ModalMessage>}
+    </Form >
+
   )
 }

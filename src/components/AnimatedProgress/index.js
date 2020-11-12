@@ -36,7 +36,7 @@ export default props => {
             pages.map((item, key)=>{
               return ( 
                 <TouchableOpacity key={key} onPress={()=>setActivePage(item)}>
-                  <CircleStatus style={{backgroundColor: activePage !== undefined ? (activePage.index >= key ? "#55cb93" : "#E0E0E0") : "#E0E0E0" }} />
+                  <CircleStatus style={{backgroundColor: activePage !== undefined ? (activePage.index >= key ? "#008b54" : "#E0E0E0") : "#E0E0E0" }} />
                 </TouchableOpacity> 
               )
             }) 
@@ -46,7 +46,7 @@ export default props => {
           <Animated.View style={{
             borderRadius: 5,
             height: "100%",
-            backgroundColor: "#55cb93",
+            backgroundColor: "#008b54",
             width: animationProgress.interpolate({
               inputRange: [0, 100],
               outputRange: [0, width - 40],

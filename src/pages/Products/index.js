@@ -23,7 +23,6 @@ export default ({ navigation }) => {
     const { setProduto } = useContext(ProductContext)
     const { user } = useContext(UserContext)
 
-
     useEffect(() => { getProductList() }, [])
 
     const getProductList = async (id) => {
@@ -37,7 +36,10 @@ export default ({ navigation }) => {
                             const result = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
 
                             if (Array.isArray(result.data)) {
-                                await result.data.map(obj => { obj.id_produto_base === id_produto_base ? item.foto = item.url_imagem == '' ? obj.url : item.url_imagem : "" })
+                                await result.data
+                                    .filter(pBase => pBase.id_produto_base === id_produto_base)
+                                    .map(obj => { item.foto = item.url_imagem == '' ? item.foto = obj.url : item.foto = item.url_imagem })
+                                item.foto === '' && (item.foto = 'http://dev.renovetecnologia.org:8049/imagens/image.jpg')
                             }
                         }
                         produtoBase.push(item)
@@ -62,7 +64,7 @@ export default ({ navigation }) => {
                     <FlatList
                         data={productsList.filter(produto => produto.descricao.indexOf(value) != -1)}
                         renderItem={({ item, index }) =>
-                            <Items item={item} index={index} onPress={() => { setProduto(item); navigation.navigate("ProductForm") }} deleteFunction={() => { setActiveModal(true); setItem(item) }} />
+                            <Items item={item} index={index} onPress={() => { setProduto(item); navigation.navigate("ProductForm") }} deleteFunction={() => setActiveModal(true)} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -74,11 +76,11 @@ export default ({ navigation }) => {
                     <ModalMessage
                         showMessage={{
                             title: 'Atenção!',
-                            message: `Deseja realmente deletar o produto ${item.descricao} da lista?`,
+                            message: `Deseja realmente deletar o produto da lista?`,
                             type: 'alert',
                             icon: true
                         }}
-                        onPress={() => { setActiveModal(false); }} >
+                        onPressCancelButton={(value) => setTimeout(function () { setActiveModal(value); }, 800)} >
                     </ModalMessage>}
 
             </App >

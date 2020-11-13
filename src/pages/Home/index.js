@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ImageBackground } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Primary from '../../components/Buttons/Primary'
@@ -11,6 +11,7 @@ import UserContext from '../../contexs/User'
 import AuthContext from '../../contexs/Auth'
 import BKG from './assets/background.jpg'
 import LogoContag from './assets/logo.png'
+import CheckSession from '../../utils/CheckSession'
 
 import {
     TitleStyle,
@@ -30,8 +31,11 @@ import {
 
 export default ({ navigation }) => {
     const { user } = useContext(UserContext)
-    const { logout } = useContext(AuthContext)
+    const { logout, logoutWithoutAuthorization } = useContext(AuthContext)
     const { navigate } = navigation
+
+    useEffect(() => { CheckSession(user.token, logoutWithoutAuthorization) },[]) 
+
     return (
         <ImageBackground source={BKG} style={{ flex: 1 }}>
             {/* <LinearGradient colors={['#3ae25480', '#00261080']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1 }}> */}

@@ -14,8 +14,7 @@ import {
   CleanContainer,
   FixedButtonContainer
 } from './style'
-import Primary from '../../components/Buttons/Primary'
-import PrimaryTouchable from '../../components/Buttons/PrimaryTouchable'
+import Primary from '../../components/Buttons/PrimaryTouchable'
 
 import Produto from './Screens/Produto'
 import Producao from './Screens/Producao'
@@ -25,12 +24,11 @@ import Descricao from './Screens/Descricao'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
 export default ({ navigation }) => {
-  useEffect(() => {
-    pages[0] !== undefined ? setActivePage(pages[0]) : ""
-  }, [pages]);
   const { activePage, produto, producao, propriedades, descricao, ingredientes, setActivePage, setProduto, setProducao, setPropriedades, setDescricao, setIngredientes } = useContext(ProductContext)
-  const [image, setImage] = useState(undefined)
   const { user } = useContext(UserContext)
+  const [image, setImage] = useState(undefined)
+  const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage()})
+  const [validation, setValidation] = useState(false)
   const [pages, setPages] = useState([{
     route: "Produto",
     textHeader: "Detalhes do produto",
@@ -55,12 +53,22 @@ export default ({ navigation }) => {
     textHeader: "Descrição",
     component: Descricao
   }])
+
+  useEffect(() => {
+    pages[0] !== undefined ? setActivePage(pages[0]) : ""
+  }, [pages]);
+
+  let imageHidde = false
+
   const nextPage = () => {
     if (activePage !== undefined && activePage.index !== pages.length - 1)
       setActivePage(pages[activePage.index + 1])
   }
-  let imageHidde = false
+
+  const submitForm = () => {}
+    
   const progress = new Animated.Value(0)
+  
   const closeImage = () => {
     Animated.timing(progress, {
       toValue: 100,
@@ -68,6 +76,8 @@ export default ({ navigation }) => {
       useNativeDriver: false
     }).start()
   }
+  
+  
   const openImage = () => {
     Animated.timing(progress, {
       toValue: 0,
@@ -75,6 +85,7 @@ export default ({ navigation }) => {
       useNativeDriver: false
     }).start()
   }
+  
   const toggleAnimation = velocity => {
     if (velocity > 1.5 || velocity < -1.5) {
       if (velocity > 1.5 && imageHidde === false) {
@@ -88,6 +99,7 @@ export default ({ navigation }) => {
       }
     }
   }
+  
   const pickerImage = async () => {
     ImagePicker.launchImageLibrary({
       includeBase64: true
@@ -155,15 +167,17 @@ export default ({ navigation }) => {
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              {activePage !== undefined && <activePage.component user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} />}
+              {activePage !== undefined && <activePage.component setValidation={setValidation} user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} />}
             </PageScroll>
           </KeyboardAvoidingView>
         </CleanContainer>
       </App>
       <FixedButtonContainer
-        style={{ transform: [{ translateY: Dimensions.get("window").height - 74 - 10 }] }}>
+        style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title='Proxima etapa' shadow={2} onPress={() => nextPage()} />
+          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => {
+            activePage.index !== (pages.length - 1) ? nextPage() : submitForm()
+          }} />
         </Grid>
       </FixedButtonContainer>
     </>

@@ -3,19 +3,37 @@ import InputAnimated from '../../../components/InputAnimated'
 import { Form, Row } from '../style'
 import axios from 'axios'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
-import Icon from 'react-native-vector-icons/Ionicons';
 
 export default props => {
-  const { produto, setProduto, user } = props
+  const { produto, setProduto, user, setValidation } = props
   const [listCategoria, setListCategoria] = useState([])
   const [unidadeMedida, setUnidadeMedida] = useState([])
   const [productList, setProductList] = useState([])
   const [disabled, setDisabled] = useState(false)
 
   useEffect(() => {
+    setValidation(false)
     getCategorias()
     getUnidadeMedida()
   }, [])
+
+  useEffect(() => {
+    validateForm()
+  }, [produto.id_categoria, produto.id_produto_base, produto.dias_validade ])
+
+  const validateForm = () => {
+    const validations = []
+    validations.push(produto.id_categoria)
+    validations.push(produto.id_produto_base)
+    validations.push(produto.dias_validade)
+    validations.push(produto.unidade_medida_1)
+    validations.push(produto.peso_liquido)
+    validations.push(produto.peso_bruto)
+    validations.push(produto.codigo_barras)
+  
+    const validForm = validations.reduce((t,a) => t && a )
+    validForm ? setValidation(true) : setValidation(false)
+  }
 
   const getCategorias = () => {
     axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
@@ -27,7 +45,7 @@ export default props => {
       })
 
   }
-  console.log(productList)
+
   const getProdutoBase = async id => {
     const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
     const list = []
@@ -52,7 +70,9 @@ export default props => {
       {/* categoria */}
       <AnimatedDropDown
         controll={true}
-        placeholder="Categoria"
+        placeholder={listCategoria[0] !== undefined ? listCategoria.map(item => {
+          if(item.value === produto.id_categoria)  return (item.label) 
+        }) : ""}
         listOptions={listCategoria}
         onChangeItem={response => {
           setProductList([])
@@ -91,8 +111,9 @@ export default props => {
         <AnimatedDropDown
           placeholder="Unidade de medida"
           listOptions={unidadeMedida}
+          defaultValue={produto.unidade_medida_1}
           onChangeItem={response => {
-            setProduto({ ...produto, glutem: response });
+            setProduto({ ...produto, unidade_medida_1: response });
           }}
         />
         <InputAnimated

@@ -22,7 +22,7 @@ export default props => {
   useEffect(()=>{ checkValue() },[])
   const [showCalendar, setShowCalendar] = useState(false)
   const [date, setDate] = useState(new Date())
-
+  const months = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"]
   const checkValue = () => {
     value !== "" ? (animatePlaceholder(100)): animatePlaceholder(0)
   }
@@ -35,10 +35,12 @@ export default props => {
   }
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || value;
-    const shortDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
+    // retorna 01/01/2000 por exemplo
+    // const shortDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
+    const onlyMonth = months[currentDate.getMonth()] //retorna o mes em maiusculo
     setShowCalendar(Platform.OS === 'ios')
     setDate(currentDate)
-    onChangeDate(shortDate)
+    onChangeDate(onlyMonth)
   }
 
   return (

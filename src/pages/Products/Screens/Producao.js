@@ -31,7 +31,7 @@ export default props => {
   return(
     <Form>
       <Row>
-        <InputDate value={produto.mes_inicial_plantio} placeholder="Inicio da safra" width="48%" onChangeDate={text => setProduto({ ...produto, mes_inicial_plantio : text })} />
+        <InputDate value={produto.mes_inicial_plantio} placeholder="Inicio da safra" width="48%" onChangeDate={text => setProduto({ ...produto, mes_inicial_plantio : text }) } />
         <InputDate value={produto.mes_final_plantio} placeholder="Termino da safra" width="48%" onChangeDate={text => setProduto({ ...produto, mes_final_plantio: text })} />
       
         <Dropdown

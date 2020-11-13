@@ -6,18 +6,27 @@ export default props => {
   const {
     listOptions = [],
     onChangeItem = () => { },
+    defaultValue = null,
     disabled = false,
     placeholder = "",
     marginTop = 15,
     width = "100%",
   } = props
-  let textInput = React.createRef();
+
+  let dropDown = createRef();
+  let controller;
+
+  useEffect(()=>{
+    // controller.selectItem(defaultValue)
+  },[])
+
   return (
     <DropDownPicker
-      ref={textInput}
+      ref={dropDown}
+      controller={instance => controller = instance}
       disabled={disabled}
       items={listOptions}
-      defaultValue={''}
+      defaultValue={defaultValue}
       containerStyle={{ height: 50, marginTop, width }}
       style={{ backgroundColor: disabled ? '#F2F2F2' : '#fff', borderColor: '#BDBDBD' }}
       itemStyle={{

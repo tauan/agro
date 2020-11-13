@@ -15,24 +15,25 @@ export default props => {
   useEffect(() => {
     getCategorias()
     getUnidadeMedida()
+    getProdutoBase()
   }, [])
 
   const getCategorias = () => {
     axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
       .then(async resp => {
-        const list = await resp.data.map(item => {
-          return { label: item.descricao, value: item.id_categoria }
-        })
+        const list = await resp.data
+          .map(item => {
+            return { label: item.descricao, value: item.id_categoria}
+          })
         setListCategoria(list)
       })
 
   }
-  console.log(productList)
   const getProdutoBase = async id => {
     const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
     const list = []
-    data.filter(categoria => categoria.id_categoria === id).map(item => {
-      list.push({ label: item.descricao, value: item.id_produto_base, url: item.url })
+    data.filter(categoria => categoria.id_categoria === id || categoria.id_categoria == produto.id_categoria).map(item => {
+      list.push({ label: item.descricao, value: item.id_produto_base, url: item.url,  })
     })
     setProductList(list)
   }
@@ -41,21 +42,25 @@ export default props => {
     axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
       .then(async resp => {
         const list = await resp.data.map(item => {
-          return { label: item.descricao, value: item.id_unidade }
+          console.log('unidade: ', resp.data[0].id_unidade )
+          return {
+            label: item.descricao,
+            value: item.id_unidade,
+          }
         })
         setUnidadeMedida(list)
       })
   }
-
+  console.log(produto)
   return (
     <Form>
       {/* categoria */}
       <AnimatedDropDown
-        controll={true}
-        placeholder="Categoria"
+        disabled={produto.id_produto != undefined ? true : false}
+        defaultValue={listCategoria.filter(item => item.value == produto.id_categoria).map(item => item.value)[0]}
+        placeholder={"Categoria"}
         listOptions={listCategoria}
         onChangeItem={response => {
-          setProductList([])
           response === 365 ? setDisabled(true) : setDisabled(false)
           setProduto({ ...produto, id_categoria: response, id_produto_base: undefined });
           getProdutoBase(response)
@@ -64,6 +69,8 @@ export default props => {
       />
       {/* produto */}
       <AnimatedDropDown
+        disabled={produto.id_produto != undefined ? true : false}
+        defaultValue={productList.filter(item => item.value == produto.id_produto_base).map(item => item.value)[0]}
         placeholder="Produto base"
         listOptions={productList}
         onChangeItem={response => {
@@ -73,11 +80,19 @@ export default props => {
       />
       <Row>
         <AnimatedDropDown
+          defaultValue={produto.gluten}
           disabled={disabled}
           placeholder="Glutem"
-          listOptions={[{ label: "Sim", value: "Sim" }, { label: "Não", value: "Não" }]}
+          listOptions={[{
+            label: "Sim",
+            value: "Sim",
+          },
+          {
+            label: "Não",
+            value: "Não",
+          }]}
           onChangeItem={response => {
-            setProduto({ ...produto, glutem: response });
+            setProduto({ ...produto, gluten: response });
           }}
           width="48%"
         />
@@ -89,6 +104,7 @@ export default props => {
           keyboardType="numeric"
         />
         <AnimatedDropDown
+          defaultValue={unidadeMedida.filter(item => item.value == produto.unidade_medida_1).map(item => item.value)[0]}
           placeholder="Unidade de medida"
           listOptions={unidadeMedida}
           onChangeItem={response => {
@@ -117,8 +133,6 @@ export default props => {
           keyboardType="numeric"
         />
       </Row>
-
-
     </Form>
   )
 }

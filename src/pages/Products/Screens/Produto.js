@@ -5,7 +5,7 @@ import axios from 'axios'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
 
 export default props => {
-  const { produto, setProduto, user, setValidation } = props
+  const { produto, setProduto, user, setValidation, activePage, pages, setPages } = props
   const [listCategoria, setListCategoria] = useState([])
   const [unidadeMedida, setUnidadeMedida] = useState([])
   const [productList, setProductList] = useState([])
@@ -17,9 +17,15 @@ export default props => {
     getUnidadeMedida()
   }, [])
 
-  useEffect(() => {
-    validateForm()
-  }, [produto.id_categoria, produto.id_produto_base, produto.dias_validade ])
+  useEffect(() => { validateForm() }, [
+    produto.id_categoria, 
+    produto.id_produto_base, 
+    produto.dias_validade, 
+    produto.unidade_medida_1, 
+    produto.peso_liquido, 
+    produto.peso_bruto, 
+    produto.codigo_barras 
+  ])
 
   const validateForm = () => {
     const validations = []
@@ -32,7 +38,16 @@ export default props => {
     validations.push(produto.codigo_barras)
   
     const validForm = validations.reduce((t,a) => t && a )
-    validForm ? setValidation(true) : setValidation(false)
+
+    let tempPages = pages
+    if(validForm) {
+      tempPages[activePage.index].validated = true
+      setValidation(true)
+      setPages(tempPages)
+    }else {
+      tempPages[activePage.index].validated = false
+      setValidation(false)
+    }
   }
 
   const getCategorias = () => {
@@ -70,9 +85,6 @@ export default props => {
       {/* categoria */}
       <AnimatedDropDown
         controll={true}
-        placeholder={listCategoria[0] !== undefined ? listCategoria.map(item => {
-          if(item.value === produto.id_categoria)  return (item.label) 
-        }) : ""}
         listOptions={listCategoria}
         onChangeItem={response => {
           setProductList([])

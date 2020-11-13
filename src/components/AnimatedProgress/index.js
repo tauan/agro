@@ -18,6 +18,10 @@ export default props => {
     })
   }, [activePage])
 
+  const onPress = (item) => {
+    setActivePage(item)
+  }
+
   const animationProgress = useRef(new Animated.Value(0)).current
 
   const animation = toValue => {
@@ -35,8 +39,8 @@ export default props => {
           {
             pages.map((item, key)=>{
               return ( 
-                <TouchableOpacity key={key} onPress={()=>setActivePage(item)}>
-                  <CircleStatus style={{backgroundColor: activePage !== undefined ? (activePage.index >= key ? "#008b54" : "#E0E0E0") : "#E0E0E0" }} />
+                <TouchableOpacity key={key} onPress={()=> onPress(item)}>
+                  <CircleStatus style={{backgroundColor: activePage !== undefined ? (pages[key].validated !== false ? "#008b54" : "#E0E0E0") : "#E0E0E0" }} />
                 </TouchableOpacity> 
               )
             }) 

@@ -32,36 +32,42 @@ export default ({ navigation }) => {
   const [pages, setPages] = useState([{
     route: "Produto",
     textHeader: "Detalhes do produto",
-    component: Produto
+    component: Produto,
+    validated: false
   }, {
     route: "Producao",
     textHeader: "Detalhes da produção",
-    component: Producao
+    component: Producao,
+    validated: false
   },
   {
     route: "Propriedade",
     textHeader: "Detalhes da propriedade",
-    component: Propriedades
+    component: Propriedades,
+    validated: true
   },
   {
     route: "Ingredientes",
     textHeader: "Ingredientes",
-    component: Ingredientes
+    component: Ingredientes,
+    validated: true
   },
   {
     route: "Descricao",
     textHeader: "Descrição",
-    component: Descricao
+    component: Descricao,
+    validated: false
   }])
 
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
+    console.log(produto)
   }, [pages]);
 
   let imageHidde = false
 
   const nextPage = () => {
-    if (activePage !== undefined && activePage.index !== pages.length - 1)
+    if (activePage !== undefined && activePage.index !== pages.length - 1){}
       setActivePage(pages[activePage.index + 1])
   }
 
@@ -162,12 +168,12 @@ export default ({ navigation }) => {
               </ButtonImageContainer>
             </ImageSelect>
           </TouchableOpacity>
-          <AnimatedProgress activePage={activePage} setActivePage={setActivePage} pages={pages} />
+          <AnimatedProgress activePage={activePage} setActivePage={setActivePage} setPages={setPages} pages={pages} />
         </HeaderContainer>
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              {activePage !== undefined && <activePage.component setValidation={setValidation} user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} />}
+              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} />}
             </PageScroll>
           </KeyboardAvoidingView>
         </CleanContainer>

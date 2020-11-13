@@ -10,6 +10,7 @@ export default props => {
   const [listCategoria, setListCategoria] = useState([])
   const [unidadeMedida, setUnidadeMedida] = useState([])
   const [productList, setProductList] = useState([])
+  const [disabled, setDisabled] = useState(false)
 
   useEffect(() => {
     getCategorias()
@@ -22,22 +23,18 @@ export default props => {
         const list = await resp.data.map(item => {
           return { label: item.descricao, value: item.id_categoria }
         })
-        setListCategoria(list)        
-        setProductList([{ label: '', value: '', url: ''}])
+        setListCategoria(list)
       })
 
   }
-
+  console.log(productList)
   const getProdutoBase = async id => {
-    await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
-      .then(resp => {
-        const { data } = resp
-        const list = []
-        data.filter(categoria => categoria.id_categoria === id).map(item => {
-          list.push({ label: item.descricao, value: item.id_produto_base, url: item.url })
-          setProductList(list)
-        })
-      })
+    const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
+    const list = []
+    data.filter(categoria => categoria.id_categoria === id).map(item => {
+      list.push({ label: item.descricao, value: item.id_produto_base, url: item.url })
+    })
+    setProductList(list)
   }
 
   const getUnidadeMedida = () => {
@@ -54,10 +51,13 @@ export default props => {
     <Form>
       {/* categoria */}
       <AnimatedDropDown
+        controll={true}
         placeholder="Categoria"
         listOptions={listCategoria}
         onChangeItem={response => {
-          setProduto({ ...produto, id_categoria: response });
+          setProductList([])
+          response === 365 ? setDisabled(true) : setDisabled(false)
+          setProduto({ ...produto, id_categoria: response, id_produto_base: undefined });
           getProdutoBase(response)
         }}
         width="100%"
@@ -68,12 +68,12 @@ export default props => {
         listOptions={productList}
         onChangeItem={response => {
           setProduto({ ...produto, id_produto_base: response, foto: `${productList.filter(item => item.value === response).map(item => item.url)}` });
-          getProdutoBase(response)
         }}
         width="100%"
       />
       <Row>
         <AnimatedDropDown
+          disabled={disabled}
           placeholder="Glutem"
           listOptions={[{ label: "Sim", value: "Sim" }, { label: "Não", value: "Não" }]}
           onChangeItem={response => {

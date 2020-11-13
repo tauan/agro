@@ -23,8 +23,8 @@ border-width: 1px;
 export const IMGItem = Styled.Image.attrs({
   resizeMode: "cover",
 })`
-    width: 120%;
-    height: 120%;
+    width: 100%;
+    height: 100%;
   `
 export const Title = Styled.Text`  
   padding-left: 10px;
@@ -44,5 +44,5 @@ export const Button = Styled.TouchableOpacity.attrs({
 export const TextButton = Styled.Text`  
   font-size: 16px;
   text-align: center;
-  color: #F43D3D;
+  color: #919191;
 `

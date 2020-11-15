@@ -1,19 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { FlatList, ImageBackground } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { FlatList, } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
-import PrimaryTouchable from '../../components/Buttons/PrimaryTouchable'
 import Header from '../../components/Header'
 import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
 import ProductContext from '../../contexs/ProductContext'
 import { App, Form, TitleStyle, TextStyle } from '../style'
-import {
-    Container,
-    HeaderTitle,
-} from './style'
+import { Container, HeaderTitle } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
@@ -80,7 +75,7 @@ export default ({ navigation }) => {
                             type: 'alert',
                             icon: true
                         }}
-                        onPressCancelButton={(value) => setTimeout(function () { setActiveModal(value); }, 800)} >
+                        onPressCancelButton={(value) => setActiveModal(value)} >
                     </ModalMessage>}
 
             </App >

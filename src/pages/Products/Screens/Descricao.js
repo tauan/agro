@@ -3,15 +3,16 @@ import InputAnimated from '../../../components/InputAnimated'
 import {Form, Row} from '../style'
 
 export default props => {
-  const {descricao, setDescricao} = props
+  const {produto, setProduto} = props
   return(
     <Form>
         <InputAnimated
+        textAlignVertical='top'
         placeholder='Descrição'
-        onChangeText={text => setDescricao(text)}
-        value={descricao}
+        onChangeText={text => setProduto({ ...produto, observacao: text })}
+        value={`${produto.observacao}`}
         multiline={true}
-        height={70}
+        height={100}
         width="100%"
       />
     </Form>

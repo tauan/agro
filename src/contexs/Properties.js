@@ -1,25 +1,34 @@
 import React, { createContext, useState } from "react";
 
-const PropertyContext = createContext();
+const Properties = createContext();
 
-export const PropertyProvider = ({ children }) => {
-  const [propriedades, setPropriedades] = useState({
-    id_agricultor: "",
-    nome_propriedade: "",
+export const PropertiesProvider = ({ children }) => {
+  const [activePage, setActivePage] = useState()
+  const [propriedade, setPropriedade] = useState({
+    id_agricultor: undefined,
+    descricao: "",
     ccir: "",
+    foto: "",
     area: "",
     condicao_posse: "",
     cep: "",
     uf: "",
-    endereco: "",
+    logradouro: "",
     bairro: "",
-    cidade: "",
+    municipio: "",
   });
   return (
-    <PropertyContext.Provider value={{ propriedades, setPropriedades }}>
+    <Properties.Provider
+      value={{
+        activePage,
+        propriedade,
+        setActivePage,
+        setPropriedade,
+      }}
+    >
       {children}
-    </PropertyContext.Provider>
+    </Properties.Provider>
   );
-};
+}
 
-export default PropertyContext;
+export default Properties

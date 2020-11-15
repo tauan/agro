@@ -29,7 +29,7 @@ export const IMGItem = Styled.Image.attrs({
 export const Title = Styled.Text`  
   padding-left: 10px;
   font-size: 16px;
-  text-align: center;
+  text-align: left;
   color: #333;
   font-weight: bold;
 `

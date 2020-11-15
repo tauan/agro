@@ -14,22 +14,22 @@ export default ({ navigation }) => {
     const { navigate } = navigation
     return (
         <>
-        <Header title="Senha" navigation={navigation} />
-        <App>
-            <ImgForgot />
-            <KeyboardAvoidingView>
+            <Header title="Senha" navigation={navigation} />
+            <App>
+                <ImgForgot />
                 <Form>
-                    <TitleStyle>Recuperar senha</TitleStyle>
-                    <InputAnimated
-                        placeholder='CPF/CNPJ'
-                        onChangeText={text => setCPF_CNPJ(text)}
-                        value={cpf_cnpj}
-                    />
-                    <Primary title='Enviar' shadow={2} />
+                    <KeyboardAvoidingView>
+                        <TitleStyle>Recuperar senha</TitleStyle>
+                        <InputAnimated
+                            placeholder='CPF/CNPJ'
+                            onChangeText={text => setCPF_CNPJ(text)}
+                            value={cpf_cnpj}
+                        />
+                        <Primary title='Enviar' shadow={2} />
+                    </KeyboardAvoidingView>
                 </Form>
-            </KeyboardAvoidingView>
-            <Link title='Cancelar' onPress={() => navigate('LoginScreen')} />
-        </App>
+                <Link title='Cancelar' onPress={() => navigate('LoginScreen')} />
+            </App>
         </>
     )
 }

@@ -15,15 +15,15 @@ import {
 import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
-    const [propertyList, setPropertyList] = useState([])
+    const [propertyList, setPropertiesList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
     const { user } = useContext(UserContext)
     const { propriedade, setPropriedade } = useContext(Properties)
 
-    useEffect(() => { getPropertyList() }, [])
+    useEffect(() => { getPropertiesList() }, [])
 
-    const getPropertyList = async (id) => {
+    const getPropertiesList = async (id) => {
         axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => {
                 const propriedades = []
@@ -35,7 +35,7 @@ export default ({ navigation }) => {
                             item.foto = 'http://dev.renovetecnologia.org:8049/imagens/image.jpg'
                         }
                         propriedades.push(item)
-                        if (propriedades.length === data.length) setPropertyList(propriedades)
+                        if (propriedades.length === data.length) setPropertiesList(propriedades)
                     })
                 }
             })
@@ -69,7 +69,7 @@ export default ({ navigation }) => {
                     <ModalMessage
                         showMessage={{
                             title: 'Atenção!',
-                            message: `Deseja realmente deletar a propriedade da lista?`,
+                            message: `Deseja realmente deletar esta propriedade?`,
                             type: 'alert',
                             icon: true
                         }}

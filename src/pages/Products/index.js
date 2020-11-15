@@ -71,7 +71,7 @@ export default ({ navigation }) => {
                     <ModalMessage
                         showMessage={{
                             title: 'Atenção!',
-                            message: `Deseja realmente deletar o produto da lista?`,
+                            message: `Deseja realmente deletar este produto?`,
                             type: 'alert',
                             icon: true
                         }}

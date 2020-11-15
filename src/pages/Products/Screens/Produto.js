@@ -10,6 +10,7 @@ export default props => {
   const [unidadeMedida, setUnidadeMedida] = useState([])
   const [productList, setProductList] = useState([])
   const [disabled, setDisabled] = useState(false)
+  const [defaultValue, setDefaultValue] = useState()
 
   useEffect(() => {
     setValidation(false)
@@ -76,7 +77,6 @@ export default props => {
     axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
       .then(async resp => {
         const list = await resp.data.map(item => {
-          console.log('unidade: ', resp.data[0].id_unidade)
           return {
             label: item.descricao,
             value: item.id_unidade,
@@ -85,14 +85,14 @@ export default props => {
         setUnidadeMedida(list)
       })
   }
-  console.log(produto)
   return (
     <Form>
       {/* categoria */}
       <AnimatedDropDown
         controll={true}
         disabled={produto.id_produto != undefined ? true : false}
-        defaultValue={listCategoria.filter(item => item.value == produto.id_categoria).map(item => item.value)[0]}
+        defaultValue={produto.id_categoria}
+        // defaultValue={''}
         placeholder={"Categoria"}
         listOptions={listCategoria}
         onChangeItem={response => {
@@ -105,7 +105,7 @@ export default props => {
       {/* produto */}
       <AnimatedDropDown
         disabled={produto.id_produto != undefined ? true : false}
-        defaultValue={productList.filter(item => item.value == produto.id_produto_base).map(item => item.value)[0]}
+        defaultValue={produto.id_produto_base}
         placeholder="Produto base"
         listOptions={productList}
         onChangeItem={response => {
@@ -115,7 +115,7 @@ export default props => {
       />
       <Row>
         <AnimatedDropDown
-          defaultValue={produto.gluten}
+          // defaultValue={produto.gluten}
           disabled={disabled}
           placeholder="Glutem"
           listOptions={[{
@@ -139,7 +139,7 @@ export default props => {
           keyboardType="numeric"
         />
         <AnimatedDropDown
-          defaultValue={unidadeMedida.filter(item => item.value == produto.unidade_medida_1).map(item => item.value)[0]}
+          defaultValue={produto.unidade_medida_1}
           placeholder="Unidade de medida"
           listOptions={unidadeMedida}
           defaultValue={produto.unidade_medida_1}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { View, Text } from 'react-native'
 
@@ -13,27 +13,26 @@ export default props => {
     width = "100%",
   } = props
 
-  let dropDown = createRef();
+  const [selectedItem, setSelectedItem] = useState(null)
   let controller;
 
-  useEffect(()=>{
-    // controller.selectItem(defaultValue)
-  },[])
+  useEffect(() => {
+    controller.selectItem(selectedItem)
+  }, [defaultValue])
 
   return (
     <DropDownPicker
-      ref={dropDown}
       controller={instance => controller = instance}
       disabled={disabled}
       items={listOptions}
-      defaultValue={defaultValue}
+      defaultValue={listOptions.length > 0 ? defaultValue : null}
       containerStyle={{ height: 50, marginTop, width }}
       style={{ backgroundColor: disabled ? '#F2F2F2' : '#fff', borderColor: '#BDBDBD' }}
       itemStyle={{
         justifyContent: 'flex-start'
       }}
       dropDownStyle={{ backgroundColor: '#fafafa' }}
-      onChangeItem={item => onChangeItem(item.value)}
+      onChangeItem={item => { onChangeItem(item.value) }}
       placeholder={placeholder}
     />
 

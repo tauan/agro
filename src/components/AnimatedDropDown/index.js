@@ -1,6 +1,5 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
-import { View, Text } from 'react-native'
 
 export default props => {
   const {
@@ -13,20 +12,11 @@ export default props => {
     width = "100%",
   } = props
 
-  let dropDown = createRef();
-  let controller;
-
-  useEffect(()=>{
-    // controller.selectItem(defaultValue)
-  },[])
-
   return (
     <DropDownPicker
-      ref={dropDown}
-      controller={instance => controller = instance}
       disabled={disabled}
       items={listOptions}
-      defaultValue={defaultValue}
+      defaultValue={listOptions.length > 0 && defaultValue}
       containerStyle={{ height: 50, marginTop, width }}
       style={{ backgroundColor: disabled ? '#F2F2F2' : '#fff', borderColor: '#BDBDBD' }}
       itemStyle={{

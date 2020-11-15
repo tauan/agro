@@ -29,15 +29,15 @@ export default props => {
   ])
 
   const validateForm = () => {
-    const validations = [produto]
-    // validations.push(produto)
-    // validations.push(produto.id_categoria)
-    // validations.push(produto.id_produto_base)
-    // validations.push(produto.dias_validade)
-    // validations.push(produto.unidade_medida_1)
-    // validations.push(produto.peso_liquido)
-    // validations.push(produto.peso_bruto)
-    // validations.push(produto.codigo_barras)
+    const validations = []
+    validations.push(produto)
+    validations.push(produto.id_categoria)
+    validations.push(produto.id_produto_base)
+    validations.push(produto.dias_validade)
+    validations.push(produto.unidade_medida_1)
+    validations.push(produto.peso_liquido)
+    validations.push(produto.peso_bruto)
+    validations.push(produto.codigo_barras)
 
     const validForm = validations.reduce((t, a) => t && a)
 
@@ -76,7 +76,7 @@ export default props => {
     axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
       .then(async resp => {
         const list = await resp.data.map(item => {
-          console.log('unidade: ', resp.data[0].id_unidade)
+          //console.log('unidade: ', resp.data[0].id_unidade)
           return {
             label: item.descricao,
             value: item.id_unidade,
@@ -85,7 +85,6 @@ export default props => {
         setUnidadeMedida(list)
       })
   }
-  console.log(produto)
   return (
     <Form>
       {/* categoria */}

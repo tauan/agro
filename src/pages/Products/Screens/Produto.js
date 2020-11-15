@@ -92,11 +92,9 @@ export default props => {
         controll={true}
         disabled={produto.id_produto != undefined ? true : false}
         defaultValue={produto.id_categoria}
-        // defaultValue={''}
         placeholder={"Categoria"}
         listOptions={listCategoria}
         onChangeItem={response => {
-          response === 365 ? setDisabled(true) : setDisabled(false)
           setProduto({ ...produto, id_categoria: response, id_produto_base: undefined });
           getProdutoBase(response)
         }}
@@ -108,15 +106,14 @@ export default props => {
         defaultValue={produto.id_produto_base}
         placeholder="Produto base"
         listOptions={productList}
-        onChangeItem={response => {
-          setProduto({ ...produto, id_produto_base: response, foto: `${productList.filter(item => item.value === response).map(item => item.url)}` });
+        onChangeItem={async response => {
+          setProduto({ ...produto, id_produto_base: response });
         }}
         width="100%"
       />
       <Row>
         <AnimatedDropDown
-          // defaultValue={produto.gluten}
-          disabled={disabled}
+          disabled={produto.id_categoria === 365 ? true : false}
           placeholder="Glutem"
           listOptions={[{
             label: "Sim",

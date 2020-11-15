@@ -1,60 +1,50 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { FlatList, ImageBackground } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { FlatList } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
 import Header from '../../components/Header'
 import Items from '../../components/Items'
 import Search from '../../components/Search'
 import UserContext from '../../contexs/User'
-
+import Tags from '../../contexs/Tags'
 import { App, Form, TitleStyle, TextStyle } from '../style'
 import {
     Container,
     HeaderTitle,
-    DetailsContainer,
-    Column, HeaderCard,
-    BodyCard,
-    FilterContainer,
-    Item,
-    Button,
-    TextButton,
-    CloseButton
 } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation }) => {
-    const [list, setList] = useState([])
+    const [tagsList, setTagsList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
-    const [activeDetails, setActiveDetails] = useState(false)
-    const [item, setItem] = useState()
-
-    useEffect(() => { getList() }, [])
-    const getList = () => axios.get("http://localhost:3000/products").then(({ data }) => setList(data))
-
     const { user } = useContext(UserContext)
+    const { etiquetas, setEtiquetas } = useContext(Tags)
+
+    useEffect(() => { getTagsList() }, [])
+
+    const getTagsList = async (id) => {
+        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+            .then(({ data }) => setTagsList(data))
+    }
 
     return (
         <>
-            <Header navigation={navigation} />
+            <Header color="#008b54" navigation={navigation} />
             <App>
                 <Form style={{ flex: 1 }}>
                     <Container>
                         <HeaderTitle>
                             <TitleStyle>Etiquetas</TitleStyle>
-                            <TextStyle>Cadastrar, excluir e editar etiquetas</TextStyle>
+                            <TextStyle>Cadastrar, excluir e gerar etiquetas.</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Criar etiquetas" width={150} onPress={() => console.log(user)} />
+                        <Primary title="Cadastrar etiquetas" width={150} onPress={() => { setEtiquetas({}); navigation.navigate("TagsForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
-                        data={list.filter(produto => produto.title.indexOf(value) != -1)}
-                        renderItem={({ item, index }) => <Items
-                            item={item}
-                            index={index}
-                            onPress={() => { setActiveDetails(true); setItem(item) }}
-                            deleteFunction={() => { setActiveModal(true); setItem(item) }} />
+                        data={tagsList.filter(produto => produto.descricao.indexOf(value) != -1)}
+                        renderItem={({ item, index }) =>
+                            <Items item={item} index={index} onPress={() => { setEtiquetas(item); navigation.navigate("TagsForm") }} deleteFunction={() => setActiveModal(true)} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -66,52 +56,13 @@ export default ({ navigation }) => {
                     <ModalMessage
                         showMessage={{
                             title: 'Atenção!',
-                            message: `Deseja realmente deletar o produto ${item.title} da lista?`,
+                            message: `Deseja realmente deletar esta etiqueta?`,
                             type: 'alert',
                             icon: true
                         }}
-                        onPress={() => { setActiveModal(false); }} >
+                        onPressCancelButton={(value) => setActiveModal(value)} >
                     </ModalMessage>}
-                {activeDetails &&
-                    <ModalMessage onPress={() => { setActiveDetails(false); }} >
-                        <DetailsContainer>
-                            <ImageBackground style={{ width: '100%' }} source={{ uri: item.image }}>
-                                <FilterContainer>
-                                    <CloseButton onPress={() => setActiveDetails(false)}>
-                                        <MaterialIcons size={24} name='close' color='#fff' />
-                                    </CloseButton>
-                                    <HeaderCard>
-                                        <TitleStyle color="#fff" fontsize={36}>{item.title}</TitleStyle>
-                                        <TextStyle color="#fff">{item.property}</TextStyle>
-                                    </HeaderCard>
-                                    <BodyCard>
-                                        <Column style={{ flexDirection: 'row' }}>
-                                            <Item>
-                                                <TextStyle color="#fff" fontsize={16}>Peso Líquido</TextStyle>
-                                                <TitleStyle color="#fff" fontsize={36}>{item.net_weight_product}<TextStyle color="#fff" fontsize={18}>{item.unit_product}</TextStyle></TitleStyle>
-                                            </Item>
-                                            <Item>
-                                                <TextStyle color="#fff" fontsize={16}>Produção</TextStyle>
-                                                <TitleStyle color="#fff" fontsize={36}>{item.production}<TextStyle color="#fff" fontsize={18}>{item.unit_production}</TextStyle></TitleStyle>
-                                            </Item>
-                                            <Item>
-                                                <TextStyle color="#fff" fontsize={16}>Validade</TextStyle>
-                                                <TitleStyle color="#fff" fontsize={36}>{item.production}<TextStyle color="#fff" fontsize={18}> dias</TextStyle></TitleStyle>
-                                            </Item>
-                                        </Column>
-                                        <Column style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                            <Button background="rgba(255, 255, 255, 0.2)" borderColor="#fff" borderWidth={1}>
-                                                <TextButton color="#fff">Editar Produto</TextButton>
-                                            </Button>
-                                            <Button>
-                                                <MaterialIcons name="qr-code-2" size={24} color="#fff" /><TextButton color="#fff"> Criar Etiquetas</TextButton>
-                                            </Button>
-                                        </Column>
-                                    </BodyCard>
-                                </FilterContainer>
-                            </ImageBackground>
-                        </DetailsContainer>
-                    </ModalMessage>}
+
             </App >
         </>
     )

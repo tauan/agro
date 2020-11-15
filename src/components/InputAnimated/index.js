@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { TextInput, View, Animated, Dimensions } from 'react-native';
+import { TextInput, View, Animated } from 'react-native';
 import Validator from './ultils/validator'
-
-const widthDimension = Dimensions.get("screen").width
 
 export default props => {
   const {
     backgroundColor = '#fff',
+    textAlignVertical = 'center',
     size = 14,
     color = '#333',
     keyboardType = 'default',
-    width = widthDimension - 60,
+    width = '100%',
     height = 50,
     borderRadius = 4,
     marginTop = 16,
@@ -89,12 +88,13 @@ export default props => {
           color,
           padding: 0,
           paddingHorizontal: 8,
-          paddingTop: 15,
+          paddingTop: textAlignVertical == 'top'  ? 25 : 15,
           borderWidth,
-          borderColor: isValid ? borderColor : "#f00"
+          borderColor: isValid ? borderColor : "#f00",
         }}
         keyboardType={keyboardType}
         onFocus={() => animateText(value)}
+        textAlignVertical={textAlignVertical}
         secureTextEntry={secureTextEntry}
         onEndEditing={(e) => finishEdit(e.nativeEvent.text)}
         autoCapitalize="none"

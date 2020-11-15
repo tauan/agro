@@ -24,9 +24,8 @@ export default ({ navigation }) => {
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} showsVerticalScrollIndicator={false}>
                 <App>
                     <ImgRegister />
-                    <KeyboardAvoidingView>
-                        <Form>
-
+                    <Form>
+                        <KeyboardAvoidingView>
                             <TitleStyle>Criar Conta</TitleStyle>
                             <InputAnimated
                                 placeholder='Nome'
@@ -56,8 +55,8 @@ export default ({ navigation }) => {
                                 secureTextEntry={true}
                             />
                             <Primary title='Enviar' shadow={2} />
-                        </Form>
-                    </KeyboardAvoidingView>
+                        </KeyboardAvoidingView>
+                    </Form>
                     <Link title='Cancelar' onPress={() => navigate('LoginScreen')} />
                 </App>
             </ScrollView>

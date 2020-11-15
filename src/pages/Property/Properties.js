@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
-import ProductContext from '../../contexs/ProductContext'
+import PropertiesContext from '../../contexs/Properties'
 import { App, Grid } from '../style'
 import UserContext from '../../contexs/User'
 import {
@@ -15,53 +15,29 @@ import {
   FixedButtonContainer
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
-
-import Produto from './Screens/Produto'
-import Producao from './Screens/Producao'
-import Propriedades from './Screens/Propriedades'
-import Ingredientes from './Screens/Ingredientes'
-import Descricao from './Screens/Descricao'
+import Propriedade from './Screens/Propriedade'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
+const { width } = Dimensions.get("window");
+
 export default ({ navigation }) => {
-  const { activePage, produto, producao, propriedades, descricao, ingredientes, setActivePage, setProduto, setProducao, setPropriedades, setDescricao, setIngredientes } = useContext(ProductContext)
+  const { activePage, propriedade, setActivePage, setPropriedade } = useContext(PropertiesContext)
   const { user } = useContext(UserContext)
   const [image, setImage] = useState(undefined)
   const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
-  const [pages, setPages] = useState([{
-    route: "Produto",
-    textHeader: "Detalhes do produto",
-    component: Produto,
-    validated: false
-  }, {
-    route: "Producao",
-    textHeader: "Detalhes da produção",
-    component: Producao,
-    validated: false
-  },
-  {
-    route: "Propriedade",
-    textHeader: "Detalhes da propriedade",
-    component: Propriedades,
-    validated: true
-  },
-  {
-    route: "Ingredientes",
-    textHeader: "Ingredientes",
-    component: Ingredientes,
-    validated: true
-  },
-  {
-    route: "Descricao",
-    textHeader: "Descrição",
-    component: Descricao,
-    validated: false
-  }])
+  const [pages, setPages] = useState([
+    {
+      route: "Propriedade",
+      textHeader: "Dados da propriedade",
+      component: Propriedade,
+      validated: true
+    },
+  ])
 
   useEffect(() => {
+    console.log('Contexto: ', propriedade)
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
-    console.log(produto)
   }, [pages]);
 
   let imageHidde = false
@@ -130,7 +106,7 @@ export default ({ navigation }) => {
             <ImageSelect style={{
               width: progress.interpolate({
                 inputRange: [0, 50, 100],
-                outputRange: [150, 150, Dimensions.get("window").width - 40],
+                outputRange: [150, 150, width - 40],
                 extrapolate: "clamp"
               }),
               height: progress.interpolate({
@@ -146,7 +122,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: produto.foto ? produto.foto : 'https://freeiconshop.com/wp-content/uploads/edd/camera-flat.png' }}
+                source={{ uri: propriedade.foto }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],
@@ -173,7 +149,7 @@ export default ({ navigation }) => {
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} />}
+              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} propriedade={propriedade} setPropriedade={setPropriedade} />}
             </PageScroll>
           </KeyboardAvoidingView>
         </CleanContainer>
@@ -182,7 +158,7 @@ export default ({ navigation }) => {
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
           <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => {
-            activePage.index !== (pages.length - 1) ? nextPage() : submitForm(); setProduto([{ ...produto, observacao: produto }])
+            activePage.index !== (pages.length - 1) ? nextPage() : submitForm();
           }} />
         </Grid>
       </FixedButtonContainer>

@@ -26,7 +26,7 @@ export default props => {
       controller={instance => controller = instance}
       disabled={disabled}
       items={listOptions}
-      defaultValue={''}
+      defaultValue={defaultValue}
       containerStyle={{ height: 50, marginTop, width }}
       style={{ backgroundColor: disabled ? '#F2F2F2' : '#fff', borderColor: '#BDBDBD' }}
       itemStyle={{

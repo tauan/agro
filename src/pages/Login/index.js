@@ -43,8 +43,8 @@ export default ({ navigation }) => {
     axios.post("http://dev.renovetecnologia.org:8049/webrunstudio/WS_LOGIN.rule?sys=SIS", {
       usuario: email,
       senha: password
-    }).then(async ({data}) => {
-      if(data.erro) { 
+    }).then(async ({ data }) => {
+      if (data.erro) {
         showMessage({
           message: data.erro,
           type: "danger",
@@ -59,13 +59,13 @@ export default ({ navigation }) => {
       await setUser(data)
       saveUser(data)
       setLoged(true)
-    }).catch(err=>console.log(err))
+    }).catch(err => console.log(err))
   }
   return (
     <App>
       <Logo />
-      <KeyboardAvoidingView>
-        <Form>
+      <Form>
+        <KeyboardAvoidingView>
           <InputAnimated
             placeholder='Email'
             keyboardType='email-address'
@@ -90,8 +90,8 @@ export default ({ navigation }) => {
               submitForm()}
             shadow={2}
             disabled={activeButton} />
-        </Form>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </Form>
       <Link title='Recuperar senha' onPress={() => navigate('PasswordScreen')} />
       <Link
         title='Cadastrar'

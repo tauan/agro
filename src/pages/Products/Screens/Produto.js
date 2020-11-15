@@ -19,33 +19,34 @@ export default props => {
   }, [])
 
   useEffect(() => { validateForm() }, [
-    produto.id_categoria, 
-    produto.id_produto_base, 
-    produto.dias_validade, 
-    produto.unidade_medida_1, 
-    produto.peso_liquido, 
-    produto.peso_bruto, 
-    produto.codigo_barras 
+    produto.id_categoria,
+    produto.id_produto_base,
+    produto.dias_validade,
+    produto.unidade_medida_1,
+    produto.peso_liquido,
+    produto.peso_bruto,
+    produto.codigo_barras
   ])
 
   const validateForm = () => {
-    const validations = []
-    validations.push(produto.id_categoria)
-    validations.push(produto.id_produto_base)
-    validations.push(produto.dias_validade)
-    validations.push(produto.unidade_medida_1)
-    validations.push(produto.peso_liquido)
-    validations.push(produto.peso_bruto)
-    validations.push(produto.codigo_barras)
-  
-    const validForm = validations.reduce((t,a) => t && a )
+    const validations = [produto]
+    // validations.push(produto)
+    // validations.push(produto.id_categoria)
+    // validations.push(produto.id_produto_base)
+    // validations.push(produto.dias_validade)
+    // validations.push(produto.unidade_medida_1)
+    // validations.push(produto.peso_liquido)
+    // validations.push(produto.peso_bruto)
+    // validations.push(produto.codigo_barras)
+
+    const validForm = validations.reduce((t, a) => t && a)
 
     let tempPages = pages
-    if(validForm) {
+    if (validForm) {
       tempPages[activePage.index].validated = true
       setValidation(true)
       setPages(tempPages)
-    }else {
+    } else {
       tempPages[activePage.index].validated = false
       setValidation(false)
     }
@@ -56,7 +57,7 @@ export default props => {
       .then(async resp => {
         const list = await resp.data
           .map(item => {
-            return { label: item.descricao, value: item.id_categoria}
+            return { label: item.descricao, value: item.id_categoria }
           })
         setListCategoria(list)
       })
@@ -66,7 +67,7 @@ export default props => {
     const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
     const list = []
     data.filter(categoria => categoria.id_categoria === id || categoria.id_categoria == produto.id_categoria).map(item => {
-      list.push({ label: item.descricao, value: item.id_produto_base, url: item.url,  })
+      list.push({ label: item.descricao, value: item.id_produto_base, url: item.url, })
     })
     setProductList(list)
   }
@@ -75,7 +76,7 @@ export default props => {
     axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
       .then(async resp => {
         const list = await resp.data.map(item => {
-          console.log('unidade: ', resp.data[0].id_unidade )
+          console.log('unidade: ', resp.data[0].id_unidade)
           return {
             label: item.descricao,
             value: item.id_unidade,

@@ -73,7 +73,7 @@ export default (props) => {
                 <TitleStyle color={config.color} >{showMessage.title}</TitleStyle>
                 <TextStyle style={{ marginVertical: 15 }} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
                 <Primary title="Deletar" backgroundColor="#EB4D4D" width="100%" onPress={() => { DesactiveModal(); props.onPressPrimaryButton(false) }} />
-                <Button onPress={() => { DesactiveModal(); props.onPressCancelButton(false) }}>
+                <Button onPress={() => { DesactiveModal(); setTimeout(function () { props.onPressCancelButton(false) }, 800) }}>
                     <TextButton>Cancelar</TextButton>
                 </Button>
             </DialogBox>

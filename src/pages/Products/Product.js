@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import ProductContext from '../../contexs/ProductContext'
@@ -12,7 +12,9 @@ import {
   ImgBackground,
   ButtonImageContainer,
   CleanContainer,
-  FixedButtonContainer
+  FixedButtonContainer,
+  SplashContainer,
+  TextSplash
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
 
@@ -26,6 +28,7 @@ import AnimatedProgress from '../../components/AnimatedProgress'
 export default ({ navigation }) => {
   const { activePage, produto, producao, propriedades, descricao, ingredientes, setActivePage, setProduto, setProducao, setPropriedades, setDescricao, setIngredientes } = useContext(ProductContext)
   const { user } = useContext(UserContext)
+  const [splash, setSplash] = useState(true)
   const [image, setImage] = useState(undefined)
   const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
@@ -60,8 +63,9 @@ export default ({ navigation }) => {
   }])
 
   useEffect(() => {
-    pages[0] !== undefined ? setActivePage(pages[0]) : ""
-  }, [pages]);
+    pages[0] !== undefined ? (setActivePage(pages[0]), setTimeout(()=> setSplash(false), 1500 )) : ""
+
+  }, []);
 
   let imageHidde = false
 
@@ -122,6 +126,11 @@ export default ({ navigation }) => {
   }
   return (
     <>
+      {splash === true && (<SplashContainer>
+        <TextSplash>Estamos preparando tudo para você</TextSplash>
+        <ActivityIndicator size="large" color="#ccc" />
+      </SplashContainer>)
+      }
       <Header color="#07AC82" navigation={navigation} />
       <App>
         <HeaderContainer>

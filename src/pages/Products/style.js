@@ -1,7 +1,6 @@
 
 import Styled from 'styled-components/native'
 import { Dimensions,Animated } from 'react-native'
-
 const { width } = Dimensions.get('screen')
 
 export const Container = Styled.View`
@@ -178,3 +177,17 @@ export const DeleteButton = Styled.TouchableOpacity`
   justify-content: center
 `
 
+export const SplashContainer = Styled.View`
+  position: absolute;
+  width: ${width}px;
+  height: 100%;
+  background: #fff;
+  z-index: 10;
+  align-items: center;
+  justify-content: center
+`
+export const TextSplash = Styled.Text`
+  color: #ccc;
+  font-size: 15px;
+  margin-vertical: 10px
+`

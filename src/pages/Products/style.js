@@ -150,7 +150,8 @@ export const Row = Styled.View`
   
 `
 export const ContainerList = Styled.View`
-  margin-top: 16px
+  margin-top: 16px;
+  z-index: 1
 `
 export const ItemContainer = Styled.View`
   width: 99%;

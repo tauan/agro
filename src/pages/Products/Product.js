@@ -61,7 +61,6 @@ export default ({ navigation }) => {
 
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
-    console.log(produto)
   }, [pages]);
 
   let imageHidde = false

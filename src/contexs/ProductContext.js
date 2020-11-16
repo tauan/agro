@@ -24,7 +24,7 @@ export const ProductProvider = ({ children }) => {
         unidade_medida_2: "",
         quantidade_producao: "",
     });
-    const [propriedades, setPropriedades] = useState(undefined);
+    const [propriedades, setPropriedades] = useState([]);
     const [ingredientes, setIngredientes] = useState([]);
     return (
         <ProductContext.Provider

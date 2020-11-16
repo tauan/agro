@@ -30,15 +30,15 @@ export default props => {
   ])
 
   const validateForm = () => {
-    const validations = [produto]
-    // validations.push(produto)
-    // validations.push(produto.id_categoria)
-    // validations.push(produto.id_produto_base)
-    // validations.push(produto.dias_validade)
-    // validations.push(produto.unidade_medida_1)
-    // validations.push(produto.peso_liquido)
-    // validations.push(produto.peso_bruto)
-    // validations.push(produto.codigo_barras)
+    const validations = []
+    validations.push(produto)
+    validations.push(produto.id_categoria)
+    validations.push(produto.id_produto_base)
+    validations.push(produto.dias_validade)
+    validations.push(produto.unidade_medida_1)
+    validations.push(produto.peso_liquido)
+    validations.push(produto.peso_bruto)
+    validations.push(produto.codigo_barras)
 
     const validForm = validations.reduce((t, a) => t && a)
 

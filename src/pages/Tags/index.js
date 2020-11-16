@@ -21,11 +21,31 @@ export default ({ navigation }) => {
     const { user } = useContext(UserContext)
     const { etiquetas, setEtiquetas } = useContext(Tags)
 
-    useEffect(() => { getTagsList() }, [])
+    useEffect(() => { getTagsList(); console.log(etiquetas) }, [etiquetas])
 
     const getTagsList = async (id) => {
         axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => setTagsList(data))
+    }
+
+    const DeleteTag = async () => {
+        const options = {
+            method: 'DELETE',
+            url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule',
+            params: { sys: 'SIS' },
+            headers: {
+                cookie: 'JSESSIONID=33BF2936814F3F4270DB0A969E12D473',
+                Authorization: user.token,
+                'Content-Type': 'application/json'
+            },
+            data: { chave_identificador: `${etiquetas.chave_identificador}` }
+        };
+
+        axios.request(options).then(function (response) {
+            console.log(response.data);
+        }).catch(function (error) {
+            console.error(error);
+        });
     }
 
     return (
@@ -45,7 +65,16 @@ export default ({ navigation }) => {
                         <FlatList
                             data={tagsList.filter(produto => produto.descricao.indexOf(value) != -1)}
                             renderItem={({ item, index }) =>
-                                <Items item={item} index={index} url={'https://image.freepik.com/free-vector/qr-code-icon-mobile-phone-smartphone-screen-person-hand-flat-cartoon-illustration_101884-857.jpg'} onPress={() => { setEtiquetas(item); navigation.navigate("TagsForm") }} deleteFunction={() => setActiveModal(true)} />
+                                <Items item={item}
+                                    index={index}
+                                    url={'https://image.freepik.com/free-vector/qr-code-icon-mobile-phone-smartphone-screen-person-hand-flat-cartoon-illustration_101884-857.jpg'}
+                                    onPress={() => {
+                                        setEtiquetas(item);
+                                    }}
+                                    deleteFunction={() => {
+                                        setEtiquetas(item);
+                                        setActiveModal(true)
+                                    }} />
                             }
                             keyExtractor={(keyExtractor, index) => String(index)}
                             columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -61,6 +90,9 @@ export default ({ navigation }) => {
                             type: 'alert',
                             icon: true
                         }}
+                        title="Deletar"
+                        backgroundColor="#EB4D4D"
+                        onPressPrimaryButton={() => { DeleteTag(); setActiveModal(false) }}
                         onPressCancelButton={(value) => setActiveModal(value)} >
                     </ModalMessage>}
 

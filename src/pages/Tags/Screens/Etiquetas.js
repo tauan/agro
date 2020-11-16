@@ -8,6 +8,7 @@ import AnimatedDropDown from '../../../components/AnimatedDropDown'
 export default props => {
   const { etiquetas, setEtiquetas, setValidation, activePage, pages, setPages, user } = props
   const [produtos, setProdutos] = useState([])
+  const [diasvalidade, setDiasValidade] = useState([])
 
   useEffect(() => {
     setValidation(false)
@@ -45,7 +46,7 @@ export default props => {
     const list = []
     axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
       .then(({ data }) => {
-        data.map(item => list.push({ label: item.descricao, value: item.id_produto }))
+        data.map(item => list.push({ label: item.descricao, value: item.id_produto, dias_validade: item.dias_validade }))
       })
     setProdutos(list)
   }
@@ -77,7 +78,7 @@ export default props => {
       />
       <Row>
         <InputDate value={etiquetas.emissao} completeDate={true} placeholder="Data de embalagem" width="48%" onChangeDate={text => setEtiquetas({ ...etiquetas, emissao: text })} />
-        <InputDate value={etiquetas.validade} completeDate={true} placeholder="Data de validade" width="48%" onChangeDate={text => setEtiquetas({ ...etiquetas, validade: text })} />
+        <InputDate value={etiquetas.validade} completeDate={true} placeholder="Data de validade" width="48%" onChangeDate={text => setEtiquetas({ ...etiquetas, validade: `${text + 1}` })} />
         <AnimatedDropDown
           controll={true}
           defaultValue={etiquetas.modelo}

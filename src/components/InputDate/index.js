@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import {View, Text, Animated, TouchableWithoutFeedback, Platform} from 'react-native'
+import { View, Text, Animated, TouchableWithoutFeedback, Platform } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 export default props => {
   const {
     value = "",
     placeholder = "",
-    onChangeDate = () => {},
+    onChangeDate = () => { },
     width = "100%",
     height = 50,
     color = "#333",
@@ -17,14 +17,15 @@ export default props => {
     marginTop = 16,
     marginLeft = 8,
     size = 14,
+    completeDate = false
   } = props
   const animation = new Animated.Value(value.length === 0 ? 0 : 100)
-  useEffect(()=>{ checkValue() },[])
+  useEffect(() => { checkValue() }, [])
   const [showCalendar, setShowCalendar] = useState(false)
   const [date, setDate] = useState(new Date())
   const months = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"]
   const checkValue = () => {
-    value !== "" ? (animatePlaceholder(100)): animatePlaceholder(0)
+    value !== "" ? (animatePlaceholder(100)) : animatePlaceholder(0)
   }
   const animatePlaceholder = toValue => {
     Animated.timing(animation, {
@@ -36,18 +37,18 @@ export default props => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || value;
     // retorna 01/01/2000 por exemplo
-    // const shortDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
+    const shortDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
     const onlyMonth = months[currentDate.getMonth()] //retorna o mes em maiusculo
     setShowCalendar(Platform.OS === 'ios')
     setDate(currentDate)
-    onChangeDate(onlyMonth)
+    completeDate ? onChangeDate(shortDate) : onChangeDate(onlyMonth)
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => {setShowCalendar(true)}}> 
+    <TouchableWithoutFeedback onPress={() => { setShowCalendar(true) }}>
       <View style={{
         width,
-        height, 
+        height,
         borderColor,
         borderWidth,
         borderRadius,
@@ -55,7 +56,7 @@ export default props => {
         overflow: "hidden"
       }}>
         {/* placeholder */}
-        
+
         <Animated.Text
           style={{
             position: 'absolute',
@@ -87,16 +88,16 @@ export default props => {
           paddingTop: 25,
         }}>{value !== "" ? value : " "}</Text>
         {showCalendar && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          is24Hour={true}
-          value={date}
-          mode="date"
-          display="default"
-          onChange={onChange}
-        />
-      )}
-        
+          <DateTimePicker
+            testID="dateTimePicker"
+            is24Hour={true}
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onChange}
+          />
+        )}
+
       </View>
     </TouchableWithoutFeedback>
   )

@@ -5,13 +5,13 @@ const Tags = createContext();
 export const TagsProvider = ({ children }) => {
   const [activePage, setActivePage] = useState()
   const [etiquetas, setEtiquetas] = useState({
-    id_agricultor: 36,
-    id_produto: 16,
+    id_agricultor: undefined,
+    id_produto: undefined,
     emissao: "",
     validade: "",
     descricao: "",
     lote: undefined,
-    quantidade: 12,
+    quantidade: undefined,
     modelo: "",
     chave_identificador: undefined
   });

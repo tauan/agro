@@ -41,16 +41,17 @@ export default ({ navigation }) => {
                         <Primary title="Cadastrar etiquetas" width={150} onPress={() => { setEtiquetas({}); navigation.navigate("TagsForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
-                    <FlatList
-                        data={tagsList.filter(produto => produto.descricao.indexOf(value) != -1)}
-                        renderItem={({ item, index }) =>
-                            <Items item={item} index={index} onPress={() => { setEtiquetas(item); navigation.navigate("TagsForm") }} deleteFunction={() => setActiveModal(true)} />
-                        }
-                        keyExtractor={(keyExtractor, index) => String(index)}
-                        columnWrapperStyle={{ justifyContent: "space-between" }}
-                        numColumns={2}
-                        showsVerticalScrollIndicator={false}
-                    />
+                    {tagsList.length > 0 &&
+                        <FlatList
+                            data={tagsList.filter(produto => produto.descricao.indexOf(value) != -1)}
+                            renderItem={({ item, index }) =>
+                                <Items item={item} index={index} url={'https://image.freepik.com/free-vector/qr-code-icon-mobile-phone-smartphone-screen-person-hand-flat-cartoon-illustration_101884-857.jpg'} onPress={() => { setEtiquetas(item); navigation.navigate("TagsForm") }} deleteFunction={() => setActiveModal(true)} />
+                            }
+                            keyExtractor={(keyExtractor, index) => String(index)}
+                            columnWrapperStyle={{ justifyContent: "space-between" }}
+                            numColumns={2}
+                            showsVerticalScrollIndicator={false}
+                        />}
                 </Form>
                 {activeModal &&
                     <ModalMessage

@@ -1,10 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { WebView } from 'react-native-webview'
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import TagsContext from '../../contexs/Tags'
 import { App, Grid } from '../style'
 import UserContext from '../../contexs/User'
+import axios from 'axios'
 import {
   HeaderContainer,
   ImageSelect,
@@ -17,6 +19,7 @@ import {
 import Primary from '../../components/Buttons/PrimaryTouchable'
 import Etiquetas from './Screens/Etiquetas'
 import AnimatedProgress from '../../components/AnimatedProgress'
+import ModalMessage from '../../components/ModalMessage'
 
 const { width } = Dimensions.get("window");
 
@@ -34,8 +37,9 @@ export default ({ navigation }) => {
       validated: true
     },
   ])
-
+  const [activeModal, setActiveModal] = useState(false)
   useEffect(() => {
+    setEtiquetas({ ...etiquetas, id_agricultor: user.id_agricultor })
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
   }, [pages]);
 
@@ -46,7 +50,18 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const submitForm = () => { }
+  const submitForm = () => {
+    const options = {
+      method: 'POST',
+      headers: { 'authorization': user.token },
+      data: etiquetas,
+      url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
+    };
+    axios(options)
+      .then(resp => {
+        resp.data && setActiveModal(true)
+      })
+  }
 
   const progress = new Animated.Value(0)
 
@@ -148,7 +163,7 @@ export default ({ navigation }) => {
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} etiquetas={etiquetas} setEtiquetas={setEtiquetas} />}
+              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} user={user} etiquetas={etiquetas} setEtiquetas={setEtiquetas} />}
             </PageScroll>
           </KeyboardAvoidingView>
         </CleanContainer>
@@ -156,11 +171,23 @@ export default ({ navigation }) => {
       <FixedButtonContainer
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => {
+          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Gerar Etiqueta")} shadow={2} onPress={() => {
             activePage.index !== (pages.length - 1) ? nextPage() : submitForm();
           }} />
         </Grid>
       </FixedButtonContainer>
+      {activeModal &&
+        <ModalMessage
+          showMessage={{
+            title: 'Sucesso!',
+            message: `As etiquetas foram geradas com sucesso.`,
+            type: 'success',
+            icon: true
+          }}
+          title="Ok"
+          visibleCancelButton={false}
+          onPressPrimaryButton={(value) => { setActiveModal(value); navigation.navigate("TagsScreen") }} >
+        </ModalMessage>}
     </>
   )
 }

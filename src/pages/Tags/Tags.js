@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
-import { WebView } from 'react-native-webview'
+import { showMessage } from "react-native-flash-message";
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import TagsContext from '../../contexs/Tags'
@@ -19,7 +19,6 @@ import {
 import Primary from '../../components/Buttons/PrimaryTouchable'
 import Etiquetas from './Screens/Etiquetas'
 import AnimatedProgress from '../../components/AnimatedProgress'
-import ModalMessage from '../../components/ModalMessage'
 
 const { width } = Dimensions.get("window");
 
@@ -37,7 +36,6 @@ export default ({ navigation }) => {
       validated: true
     },
   ])
-  const [activeModal, setActiveModal] = useState(false)
   useEffect(() => {
     setEtiquetas({ ...etiquetas, id_agricultor: user.id_agricultor })
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
@@ -59,7 +57,17 @@ export default ({ navigation }) => {
     };
     axios(options)
       .then(resp => {
-        resp.data && setActiveModal(true)
+        resp.data && showMessage({
+          message: 'As etiquetas foram geradas com sucesso!',
+          type: "success",
+          style: { justifyContent: 'space-between', alignItems: 'center' },
+          titleStyle: { fontSize: 16 },
+          icon: { icon: "danger", position: 'right' },
+          position: 'top',
+          duration: 3000,
+        })
+        setEtiquetas({ ...etiquetas, url: resp.data })
+        navigation.navigate("TagsScreen")
       })
   }
 
@@ -136,7 +144,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSGYw-S3YmfBH8zVwlEN78QQeAc0XLwTYaR3w&usqp=CAU' }}
+                source={{ uri: 'http://dev.renovetecnologia.org:8049/imagens/tags.jpg' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],
@@ -176,18 +184,6 @@ export default ({ navigation }) => {
           }} />
         </Grid>
       </FixedButtonContainer>
-      {activeModal &&
-        <ModalMessage
-          showMessage={{
-            title: 'Sucesso!',
-            message: `As etiquetas foram geradas com sucesso.`,
-            type: 'success',
-            icon: true
-          }}
-          title="Ok"
-          visibleCancelButton={false}
-          onPressPrimaryButton={(value) => { setActiveModal(value); navigation.navigate("TagsScreen") }} >
-        </ModalMessage>}
     </>
   )
 }

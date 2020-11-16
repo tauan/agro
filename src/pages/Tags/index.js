@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { showMessage } from "react-native-flash-message";
 import axios from 'axios'
-import { FlatList } from 'react-native'
+import { WebView } from 'react-native-webview'
+import { Dimensions, FlatList } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
+import Link from '../../components/Buttons/Link'
 import Header from '../../components/Header'
 import Items from '../../components/Items'
 import Search from '../../components/Search'
@@ -18,14 +21,15 @@ export default ({ navigation }) => {
     const [tagsList, setTagsList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
+    const [active, setActive] = useState(false)
     const { user } = useContext(UserContext)
     const { etiquetas, setEtiquetas } = useContext(Tags)
 
-    useEffect(() => { getTagsList(); console.log(etiquetas) }, [etiquetas])
+    useEffect(() => { getTagsList() }, [etiquetas, tagsList])
 
     const getTagsList = async (id) => {
         axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
-            .then(({ data }) => setTagsList(data))
+            .then(({ data }) => data.length > 0 && setTagsList(data))
     }
 
     const DeleteTag = async () => {
@@ -42,7 +46,15 @@ export default ({ navigation }) => {
         };
 
         axios.request(options).then(function (response) {
-            console.log(response.data);
+            response.data.sucesso && showMessage({
+                message: 'Etiqueta deletada com sucesso!',
+                type: "success",
+                style: { justifyContent: 'space-between', alignItems: 'center' },
+                titleStyle: { fontSize: 16 },
+                icon: { icon: "danger", position: 'right' },
+                position: 'top',
+                duration: 3000,
+            })
         }).catch(function (error) {
             console.error(error);
         });
@@ -67,9 +79,10 @@ export default ({ navigation }) => {
                             renderItem={({ item, index }) =>
                                 <Items item={item}
                                     index={index}
-                                    url={'https://image.freepik.com/free-vector/qr-code-icon-mobile-phone-smartphone-screen-person-hand-flat-cartoon-illustration_101884-857.jpg'}
+                                    url={'http://dev.renovetecnologia.org:8049/imagens/tags.jpg'}
                                     onPress={() => {
                                         setEtiquetas(item);
+                                        etiquetas.url != '' && setActive(true)
                                     }}
                                     deleteFunction={() => {
                                         setEtiquetas(item);
@@ -91,11 +104,23 @@ export default ({ navigation }) => {
                             icon: true
                         }}
                         title="Deletar"
-                        backgroundColor="#EB4D4D"
                         onPressPrimaryButton={() => { DeleteTag(); setActiveModal(false) }}
                         onPressCancelButton={(value) => setActiveModal(value)} >
                     </ModalMessage>}
-
+                {active &&
+                    <ModalMessage
+                        style={{
+                            width: Dimensions.get('screen').width * 0.9,
+                            height: Dimensions.get('screen').height * 0.85,
+                        }}
+                        onPressCancelButton={(value) => setActive(value)} >
+                        <WebView source={{ uri: `https://drive.google.com/viewerng/viewer?embedded=true&url=${etiquetas.url}` }}
+                            style={{
+                                width: Dimensions.get('screen').width,
+                                height: Dimensions.get('screen').height * 0.8,
+                            }} />
+                        <Link title="Fechar" onPress={() => setActive(false)} />
+                    </ModalMessage>}
             </App >
         </>
     )

@@ -16,6 +16,7 @@ import { TitleStyle, TextStyle } from '../../pages/style'
 export default (props) => {
     const {
         backgroundColor = "#008b54",
+        style = {},
         title = '',
         visible,
         visiblePrimaryButton = true,
@@ -92,7 +93,7 @@ export default (props) => {
     return (
         <Modal visible={visible}>
             <Container>
-                <BoxMessage as={Animated.View} style={{ transform: [{ scale: anim }], padding: 0 }}>
+                <BoxMessage as={Animated.View} style={[style, { transform: [{ scale: anim }], padding: 0 }]}>
                     {children ? children : ChildrenMessage()}
                 </BoxMessage>
             </Container>

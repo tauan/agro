@@ -13,7 +13,8 @@ export const TagsProvider = ({ children }) => {
     lote: undefined,
     quantidade: undefined,
     modelo: "",
-    chave_identificador: undefined
+    chave_identificador: undefined,
+    url: ""
   });
   return (
     <Tags.Provider

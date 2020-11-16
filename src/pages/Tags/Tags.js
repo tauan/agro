@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
-import PropertiesContext from '../../contexs/Properties'
+import TagsContext from '../../contexs/Tags'
 import { App, Grid } from '../style'
 import UserContext from '../../contexs/User'
 import {
@@ -15,22 +15,22 @@ import {
   FixedButtonContainer
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
-import Propriedade from './Screens/Propriedade'
+import Etiquetas from './Screens/Etiquetas'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
 const { width } = Dimensions.get("window");
 
 export default ({ navigation }) => {
-  const { activePage, propriedade, setActivePage, setPropriedade } = useContext(PropertiesContext)
+  const { activePage, etiquetas, setActivePage, setEtiquetas } = useContext(TagsContext)
   const { user } = useContext(UserContext)
   const [image, setImage] = useState(undefined)
   const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
   const [pages, setPages] = useState([
     {
-      route: "Propriedade",
-      textHeader: "Dados da propriedade",
-      component: Propriedade,
+      route: "Etiquetas",
+      textHeader: "Dados da etiqueta",
+      component: Etiquetas,
       validated: true
     },
   ])
@@ -121,7 +121,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: propriedade.foto }}
+                source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSGYw-S3YmfBH8zVwlEN78QQeAc0XLwTYaR3w&usqp=CAU' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],
@@ -148,7 +148,7 @@ export default ({ navigation }) => {
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} propriedade={propriedade} setPropriedade={setPropriedade} />}
+              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} etiquetas={etiquetas} setEtiquetas={setEtiquetas} />}
             </PageScroll>
           </KeyboardAvoidingView>
         </CleanContainer>

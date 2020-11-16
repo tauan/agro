@@ -5,7 +5,7 @@ import axios from 'axios'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
 
 export default props => {
-  const { produto, setProduto, user, setValidation, activePage, pages, setPages } = props
+  const { produto, setProduto, user, setValidation, activePage, pages, setPages, setSplash } = props
   const [listCategoria, setListCategoria] = useState([])
   const [unidadeMedida, setUnidadeMedida] = useState([])
   const [productList, setProductList] = useState([])
@@ -83,6 +83,7 @@ export default props => {
           }
         })
         setUnidadeMedida(list)
+        setTimeout(()=> setSplash(false), 300)
       })
   }
   return (

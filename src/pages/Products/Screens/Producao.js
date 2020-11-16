@@ -14,6 +14,7 @@ export default props => {
     setValidation(false)
     getTipoProducao()
     getUnidadeMedida()
+    validateForm()
   },[])
 
   useEffect(() => { validateForm() }, [
@@ -46,7 +47,7 @@ export default props => {
   }
 
   const getTipoProducao = async () => {
-    const tempTiposProducao = ["DIARIA", "SEMANAL", "QUINZENAL", "MENSAL", "SEMESTRAL", "ANUAL"]
+    const tempTiposProducao = ["Diaria", "Semanal", "Quinzenal", "Mensal", "Semestral", "Anual"]
     const tiposProducao = await tempTiposProducao.map(item => ({ label: item, value: item }))
     //console.log(tiposProducao)
     setTipoProducao(tiposProducao) 
@@ -70,6 +71,7 @@ export default props => {
       
         <AnimatedDropDown
           placeholder="Tipo de produção"
+          defaultValue={produto.tipo_producao}
           listOptions={tipoProducao} 
           onChangeItem={value => setProduto({...produto, tipo_producao: value})}
           width="100%"
@@ -77,6 +79,7 @@ export default props => {
         <AnimatedDropDown
             placeholder="Unidade de medida"
             listOptions={unidadeMedida} 
+            defaultValue={produto.unidade_medida_2}
             onChangeItem={response => {
               setProduto({...produto, unidade_medida_2: response }); 
             }}

@@ -30,7 +30,6 @@ export default ({ navigation }) => {
   const { user } = useContext(UserContext)
   const [splash, setSplash] = useState(true)
   const [image, setImage] = useState(undefined)
-  const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
   const [pages, setPages] = useState([{
     route: "Produto",
@@ -63,7 +62,8 @@ export default ({ navigation }) => {
   }])
 
   useEffect(() => {
-    pages[0] !== undefined ? (setActivePage(pages[0]), setTimeout(()=> setSplash(false), 1500 )) : ""
+    pages[0] !== undefined ? setActivePage(pages[0]) : ""
+
 
   }, []);
 
@@ -124,6 +124,15 @@ export default ({ navigation }) => {
       };
     })
   }
+
+  const onPressFloatButton = () => {
+    if(activePage.index !== (pages.length - 1)) {
+      nextPage()
+    }  else{
+      submitForm(); 
+    }
+  }
+
   return (
     <>
       {splash === true && (<SplashContainer>
@@ -181,7 +190,7 @@ export default ({ navigation }) => {
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} />}
+              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} user={user} produto={produto} setProduto={setProduto} producao={producao} setProducao={setProducao} propriedades={propriedades} setPropriedades={setPropriedades} descricao={descricao} setDescricao={setDescricao} ingredientes={ingredientes} setIngredientes={setIngredientes} setSplash={setSplash} />}
             </PageScroll>
           </KeyboardAvoidingView>
         </CleanContainer>
@@ -190,7 +199,8 @@ export default ({ navigation }) => {
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
           <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => {
-            activePage.index !== (pages.length - 1) ? nextPage() : submitForm(); setProduto([{ ...produto, observacao: produto }])
+            nextPage()
+            onPressFloatButton()
           }} />
         </Grid>
       </FixedButtonContainer>

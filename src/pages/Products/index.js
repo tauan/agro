@@ -15,7 +15,7 @@ export default ({ navigation }) => {
     const [productsList, setProductsList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
-    const { setProduto } = useContext(ProductContext)
+    const { setProduto, produto } = useContext(ProductContext)
     const { user } = useContext(UserContext)
 
     useEffect(() => { getProductList() }, [])

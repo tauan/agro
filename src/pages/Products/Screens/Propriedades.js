@@ -7,60 +7,65 @@ import axios from 'axios'
 
 export default props => {
   const {propriedades, setPropriedades, produto, setProduto, user} = props
-  const [tempPropriedade, setTempPropriedade] = useState('')
-  const [propriedadesList, setPropriedadesList] = useState([])
+  const [tempProperty, setTempProperty] = useState('')
+  const [propriedadesList, setPropriedadesList] = useState([]) // lista com 2 atributos "label: descrição do produto" e "value: id_propriedade"
+  const [propertiesList, setPropertiesList] = useState([]) // lista com todos os atributos que será usada para cruzar os dados e puxar a descrição de propriedades
+  const [showList, setShowList] = useState([])
 
   useEffect(()=> {
     getPropertiesList()
   }, [])
 
+  useEffect(()=> { listSelectedsProperties() }, [propertiesList, propriedades])
+
+  const addNewProperty = () => {
+    const { id_agricultor, id_produto } = produto
+
+    if(tempProperty !== "") {
+      propriedades.length > 0 ? setPropriedades([...propriedades, {id_agricultor, id_produto, id_propriedade: tempProperty}]) : setPropriedades([{id_agricultor, id_produto, id_propriedade: tempProperty}])
+    }
+  }
+
+  const listSelectedsProperties = async () => {
+    if(propriedades.length > 0) {
+      const newList = await propriedades.map(item => {
+        propertiesList.forEach(obj => { if(obj.id_propriedade === item.id_propriedade)  item.descricao = obj.descricao })
+        return item
+      })
+      setShowList(newList)
+    }
+  }
+
   const getPropertiesList = () => {
     axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${produto.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
       .then(async resp => {
-        const list = await resp.data
-          .map(item => {
-            return { label: item.descricao, value: item.id_propriedade }
-          })
-        setPropriedadesList(list)
-        propriedades.map(item => console.log(item))
+        const list = await resp.data .map(item => ({ label: item.descricao, value: item.id_propriedade }))
+
+        setPropertiesList(resp.data) // Guarda a lista original para cruzar informações na hora de exibir a lista
+        setPropriedadesList(list) // Guarda uma lista contendo objetos com dois atributos "label: descrição do produto" e "value: id_propriedade"
       })
   }
-  // id_agricultor, id_produto, id_propriedade
   return(
     <Form style={{paddingBottom: 300}}>
       <Row>
-      <AnimatedDropDown
-          placeholder="Selecione a propriedade"
-          listOptions={propriedadesList} 
-          width="80%"
-        />
-      <Primary width="18%" title='+' shadow={2} onPress={() => { tempPropriedade !== "" ? (setPropriedadesList([...propriedadesList, tempPropriedade]), setTempPropriedade("")) : "" }} />
+        <AnimatedDropDown
+            placeholder="Adicione uma propriedade"
+            listOptions={propriedadesList} 
+            width="80%"
+            onChangeItem={(item)=> setTempProperty(item)}
+          />
+        <Primary width="18%" title='+' shadow={2} onPress={() => addNewProperty()} />
       </Row>
       <ContainerList>
-        {propriedades.length === 0 && <Subtitle>Nenhum item para ser exibido </Subtitle>}
-        {propriedades.length > 0 && propriedades.map((item, index) => {
-          return propriedadesList.map(propriedade => { 
-            if(propriedade.value === item.id_propriedade) {
-              (
-                <ItemContainer key={index}>
-                  <ItemText>{item.id_agricultor}</ItemText>
-                  <DeleteButton>
-                    <Icon style={{ padding: 10 }} name="delete" color="#666666" size={20} onPress={() => { console.log(item) }} />
-                  </DeleteButton>
-                </ItemContainer>
-              )
-            }
-            propriedade.value === item.id_propriedade ? (
-              <ItemContainer key={index}>
-                <ItemText>{item.id_agricultor}</ItemText>
-                <DeleteButton>
-                  <Icon style={{ padding: 10 }} name="delete" color="#666666" size={20} onPress={() => { console.log(item) }} />
-                </DeleteButton>
-              </ItemContainer>
-            ) : ""          
-           })
-          
-          })
+        {showList.length === 0 && <Subtitle>Nenhum item para ser exibido </Subtitle>}
+        {showList.length > 0 && showList.map((item, index) => (
+            <ItemContainer key={index}>
+              <ItemText>{item.descricao}</ItemText>
+              <DeleteButton>
+                <Icon style={{ padding: 10 }} name="delete" color="#666666" size={20} onPress={() => addNewProperty() } />
+              </DeleteButton>
+            </ItemContainer>
+          ))
         }
       </ContainerList>
         

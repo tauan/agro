@@ -24,11 +24,7 @@ export const ProductProvider = ({ children }) => {
         unidade_medida_2: "",
         quantidade_producao: "",
     });
-    const [propriedades, setPropriedades] = useState([{
-        id_agricultor: 36,
-        id_produto: 16,
-        id_propriedade: 5
-    }]);
+    const [propriedades, setPropriedades] = useState([]);
     const [ingredientes, setIngredientes] = useState([]);
     return (
         <ProductContext.Provider

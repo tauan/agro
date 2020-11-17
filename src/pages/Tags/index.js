@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { showMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message"
+import RNFetchBlob from 'rn-fetch-blob'
 import axios from 'axios'
 import { WebView } from 'react-native-webview'
 import { Dimensions, FlatList } from 'react-native'
@@ -25,11 +26,34 @@ export default ({ navigation }) => {
     const { user } = useContext(UserContext)
     const { etiquetas, setEtiquetas } = useContext(Tags)
 
-    useEffect(() => { getTagsList() }, [etiquetas, tagsList])
+    useEffect(() => { getTagsList() }, [etiquetas])
 
     const getTagsList = async (id) => {
         axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => data.length > 0 && setTagsList(data))
+    }
+
+
+    const downloadEtiquetas = (url) => {
+        const { dirs } = RNFetchBlob.fs
+        RNFetchBlob.config({
+            fileCache: true,
+            path: dirs.DownloadDir + '/test-report.pdf',
+            addAndroidDownloads: {
+                notification: true,
+                useDownloadManager: true,
+                title: 'test-report.pdf',
+                mime: 'application/pdf',
+                description: 'Your test reports.',
+                path: dirs.DownloadDir + '/test-report.pdf',
+            }
+        })
+            .fetch('GET', url)
+            .then((resp) => {
+                setEtiquetas({ ...etiquetas, url: resp.path() })
+                console.log(resp)
+                setActive(true)
+            })
     }
 
     const DeleteTag = async () => {
@@ -55,6 +79,7 @@ export default ({ navigation }) => {
                 position: 'top',
                 duration: 3000,
             })
+            getTagsList()
         }).catch(function (error) {
             console.error(error);
         });
@@ -81,8 +106,7 @@ export default ({ navigation }) => {
                                     index={index}
                                     url={'http://dev.renovetecnologia.org:8049/imagens/tags.jpg'}
                                     onPress={() => {
-                                        setEtiquetas(item);
-                                        etiquetas.url != '' && setActive(true)
+                                        downloadEtiquetas(item.url)
                                     }}
                                     deleteFunction={() => {
                                         setEtiquetas(item);
@@ -114,7 +138,10 @@ export default ({ navigation }) => {
                             height: Dimensions.get('screen').height * 0.85,
                         }}
                         onPressCancelButton={(value) => setActive(value)} >
-                        <WebView source={{ uri: `https://drive.google.com/viewerng/viewer?embedded=true&url=${etiquetas.url}` }}
+                        <WebView
+                            bounces={false}
+                            scrollEnabled={false}
+                            source={{ uri: 'file://' + etiquetas.url }}
                             style={{
                                 width: Dimensions.get('screen').width,
                                 height: Dimensions.get('screen').height * 0.8,

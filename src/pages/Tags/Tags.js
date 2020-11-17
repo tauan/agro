@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
-import { showMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message"
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import TagsContext from '../../contexs/Tags'

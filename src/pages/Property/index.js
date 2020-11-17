@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { showMessage } from "react-native-flash-message";
 import axios from 'axios'
 import { FlatList } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
@@ -21,7 +22,39 @@ export default ({ navigation }) => {
     const { user } = useContext(UserContext)
     const { propriedade, setPropriedade } = useContext(Properties)
 
-    useEffect(() => { getPropertiesList() }, [])
+    useEffect(() => { getPropertiesList(); }, [])
+
+    const DeleteProperty = async () => {
+        const options = {
+            method: 'DELETE',
+            url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule',
+            params: { sys: 'SIS' },
+            headers: {
+                cookie: 'JSESSIONID=33BF2936814F3F4270DB0A969E12D473',
+                Authorization: user.token,
+                'Content-Type': 'application/json'
+            },
+            data: {
+                id_agricultor: propriedade.id_agricultor,
+                id_propriedade: propriedade.id_propriedade
+            }
+        };
+
+        axios.request(options).then(function (response) {
+            response.data.sucesso && showMessage({
+                message: 'Propriedade deletada com sucesso!',
+                type: "success",
+                style: { justifyContent: 'space-between', alignItems: 'center' },
+                titleStyle: { fontSize: 16 },
+                icon: { icon: "danger", position: 'right' },
+                position: 'top',
+                duration: 3000,
+            })
+            getPropertiesList()
+        }).catch(function (error) {
+            console.error(error);
+        });
+    }
 
     const getPropertiesList = async (id) => {
         axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
@@ -51,13 +84,23 @@ export default ({ navigation }) => {
                             <TitleStyle>Locais de produção</TitleStyle>
                             <TextStyle>Cadastrar, excluir e editar locais de produção</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => { setPropriedade({}); navigation.navigate("PropertiesForm") }} />
+                        <Primary title={`Cadastrar Local`} width={150} onPress={() => { setPropriedade({}); navigation.navigate("PropertiesForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
                         data={propertyList.filter(produto => produto.descricao.indexOf(value) != -1)}
                         renderItem={({ item, index }) =>
-                            <Items item={item} index={index} onPress={() => { setPropriedade(item); navigation.navigate("PropertiesForm") }} deleteFunction={() => setActiveModal(true)} />
+                            <Items
+                                item={item}
+                                index={index}
+                                onPress={() => {
+                                    setPropriedade(item);
+                                    navigation.navigate("PropertiesForm")
+                                }}
+                                deleteFunction={() => {
+                                    setPropriedade(item);
+                                    setActiveModal(true)
+                                }} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -73,6 +116,9 @@ export default ({ navigation }) => {
                             type: 'alert',
                             icon: true
                         }}
+                        title="Deletar"
+                        backgroundColor="#EB4D4D"
+                        onPressPrimaryButton={(value) => { DeleteProperty(); setActiveModal(false) }}
                         onPressCancelButton={(value) => setActiveModal(value)} >
                     </ModalMessage>}
 

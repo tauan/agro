@@ -21,7 +21,7 @@ export default ({ navigation }) => {
     useEffect(() => { getProductList() }, [])
 
     const getProductList = async (id) => {
-        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+        await axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => {
                 const produtoBase = []
                 if (Array.isArray(data)) {

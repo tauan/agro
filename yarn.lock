@@ -1185,12 +1185,12 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/picker/-/picker-1.8.1.tgz#94f14f0aad98fa7592967b941be97deec95c3805"
   integrity sha512-Sj9DzX1CSnmYiuEQ5fQhExoo4XjSKoZkqLPAAybycq6RHtCuWppf+eJXRMCOJki25BlKSSt+qVqg0fIe//ujNQ==
 
-"@react-native-community/progress-bar-android@^1.0.3":
+"@react-native-community/progress-bar-android@^1.0.3", "@react-native-community/progress-bar-android@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@react-native-community/progress-bar-android/-/progress-bar-android-1.0.4.tgz#2601353b23a7ad76a59e5b0981e0b08c39902708"
   integrity sha512-O7UCpXDXlpxIx2eusj6bc8noJ5KyXZjnad0NQig9myq6iV4D9uGVziSj6J2v46dTnMd9iTX60szBu1LvsUO6rg==
 
-"@react-native-community/progress-view@^1.0.3":
+"@react-native-community/progress-view@^1.0.3", "@react-native-community/progress-view@^1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@react-native-community/progress-view/-/progress-view-1.2.3.tgz#73ee6498d3ff2ba3ac3df77553f04344e1534a52"
   integrity sha512-CW7eOhxduIxA723aZlKMOnBEz1o5Cjo5ibMNsf81TcjNqtsamRHm8jFS98za7t5P7XdhM0MhzkbaS90cwOlN+Q==
@@ -5837,6 +5837,11 @@ react-native-screens@^2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.11.0.tgz#34b30b07c2d04aa100cba984b944b303bfa43ea6"
   integrity sha512-vJzJE3zI1XUtqthrX3Dh2TBQWB+xFyaGhF52KBq9FjJUN5ws4xpLZJxBWa1KbGV3DilmcSZ4jmZR5LGordwE7w==
+
+react-native-share@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-4.1.0.tgz#78083d03c236849342decd0ecbc0bb9b77f1eb72"
+  integrity sha512-ytkgi9UsjQviKgWKuniApomB3opjydxPKnrApBF+SPMnQFVVDlH5EyHR6rK+qxMtIAcspb7ylNPj3KzgO+YCrg==
 
 react-native-vector-icons@^7.0.0, react-native-vector-icons@^7.1.0:
   version "7.1.0"

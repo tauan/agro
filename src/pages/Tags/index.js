@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { showMessage } from "react-native-flash-message"
 import RNFetchBlob from 'rn-fetch-blob'
 import axios from 'axios'
-import { WebView } from 'react-native-webview'
+import Pdf from 'react-native-pdf';
 import { Dimensions, FlatList } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
 import Link from '../../components/Buttons/Link'
@@ -31,29 +31,6 @@ export default ({ navigation }) => {
     const getTagsList = async (id) => {
         axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => data.length > 0 && setTagsList(data))
-    }
-
-
-    const downloadEtiquetas = (url) => {
-        const { dirs } = RNFetchBlob.fs
-        RNFetchBlob.config({
-            fileCache: true,
-            path: dirs.DownloadDir + '/test-report.pdf',
-            addAndroidDownloads: {
-                notification: true,
-                useDownloadManager: true,
-                title: 'test-report.pdf',
-                mime: 'application/pdf',
-                description: 'Your test reports.',
-                path: dirs.DownloadDir + '/test-report.pdf',
-            }
-        })
-            .fetch('GET', url)
-            .then((resp) => {
-                setEtiquetas({ ...etiquetas, url: resp.path() })
-                console.log(resp)
-                setActive(true)
-            })
     }
 
     const DeleteTag = async () => {
@@ -85,6 +62,10 @@ export default ({ navigation }) => {
         });
     }
 
+    const options = {
+        sendFile: 'SendFile'
+    }
+
     return (
         <>
             <Header color="#008b54" navigation={navigation} />
@@ -106,7 +87,15 @@ export default ({ navigation }) => {
                                     index={index}
                                     url={'http://dev.renovetecnologia.org:8049/imagens/tags.jpg'}
                                     onPress={() => {
-                                        downloadEtiquetas(item.url)
+                                        setEtiquetas(item);
+                                        // Share.open(options)
+                                        //     .then((res) => {
+                                        //         console.log(res);
+                                        //     })
+                                        //     .catch((err) => {
+                                        //         err && console.log(err);
+                                        //     });
+                                        setActive(true)
                                     }}
                                     deleteFunction={() => {
                                         setEtiquetas(item);
@@ -123,7 +112,7 @@ export default ({ navigation }) => {
                     <ModalMessage
                         showMessage={{
                             title: 'Atenção!',
-                            message: `Deseja realmente deletar esta etiqueta?`,
+                            message: `Deseja realmente deletar esta etiqueta ? `,
                             type: 'alert',
                             icon: true
                         }}
@@ -134,19 +123,21 @@ export default ({ navigation }) => {
                 {active &&
                     <ModalMessage
                         style={{
+                            borderWidth: 1,
+                            borderColor: '#008b54',
                             width: Dimensions.get('screen').width * 0.9,
                             height: Dimensions.get('screen').height * 0.85,
                         }}
                         onPressCancelButton={(value) => setActive(value)} >
-                        <WebView
-                            bounces={false}
-                            scrollEnabled={false}
-                            source={{ uri: 'file://' + etiquetas.url }}
+                        <Pdf
+                            source={{ uri: `${RNFetchBlob.fs.dirs.DownloadDir}/${etiquetas.chave_identificador}.pdf` }}
                             style={{
-                                width: Dimensions.get('screen').width,
-                                height: Dimensions.get('screen').height * 0.8,
+                                flex: 1,
+                                width: Dimensions.get('window').width * 0.9,
+                                height: Dimensions.get('window').height * 0.85,
+                                backgroundColor:"#008b54"
                             }} />
-                        <Link title="Fechar" onPress={() => setActive(false)} />
+                        <Link title="Fechar" backgroundColor="#008b54" color="#fff" onPress={() => setActive(false)} />
                     </ModalMessage>}
             </App >
         </>

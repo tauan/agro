@@ -8,6 +8,8 @@ target 'agro' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNPDF', :path => '../node_modules/react-native-view-pdf'
+
   target 'agroTests' do
     inherit! :complete
     # Pods for testing

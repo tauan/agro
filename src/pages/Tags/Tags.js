@@ -50,7 +50,7 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const submitForm = () => {    
+  const submitForm = async () => {
 
     const options = {
       method: 'POST',
@@ -58,7 +58,7 @@ export default ({ navigation }) => {
       data: etiquetas,
       url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
     };
-    axios(options)
+    await axios.request(options)
       .then(resp => {
         resp.data && showMessage({
           message: 'As etiquetas foram geradas com sucesso!',
@@ -69,7 +69,6 @@ export default ({ navigation }) => {
           position: 'top',
           duration: 3000,
         })
-        // console.log(resp.data)
         DownloadFile(resp.data)
         navigation.navigate("TagsScreen")
       })
@@ -128,48 +127,6 @@ export default ({ navigation }) => {
       <Header color="#07AC82" navigation={navigation} />
       <App>
         <HeaderContainer>
-          <TouchableOpacity onPress={pickerImage}>
-            <ImageSelect style={{
-              width: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [150, 150, width - 40],
-                extrapolate: "clamp"
-              }),
-              height: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [150, 50, 50],
-                extrapolate: "clamp"
-              }),
-              borderRadius: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [150, 150, 4],
-                extrapolate: "clamp"
-              }),
-            }}>
-              <ImgBackground
-                resizeMode="cover"
-                source={{ uri: 'http://dev.renovetecnologia.org:8049/imagens/tags.jpg' }}
-                style={{
-                  opacity: progress.interpolate({
-                    inputRange: [0, 50, 100],
-                    outputRange: [1, 1, .15],
-                    extrapolate: "clamp"
-                  }),
-                }}
-              />
-              <ButtonImageContainer style={{
-                transform: [{
-                  translateY: progress.interpolate({
-                    inputRange: [0, 50, 100],
-                    outputRange: [0, 0, -50],
-                    extrapolate: "clamp"
-                  })
-                }]
-              }}>
-                <Primary width="100%" title='Alterar imagem' shadow={2} onPress={pickerImage} backgroundColor="transparent" marginTop={0} />
-              </ButtonImageContainer>
-            </ImageSelect>
-          </TouchableOpacity>
           <AnimatedProgress activePage={activePage} setActivePage={setActivePage} setPages={setPages} pages={pages} />
         </HeaderContainer>
         <CleanContainer>

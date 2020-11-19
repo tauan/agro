@@ -22,7 +22,8 @@ export default props => {
     onChangeText = () => { },
     required = false,
     valid = "none",
-    multiline = false
+    multiline = false,
+    maxLength = undefined
   } = props;
   const [isValid, setIsValid] = useState(true)
 
@@ -101,6 +102,7 @@ export default props => {
         secureTextEntry={secureTextEntry}
         onEndEditing={(e) => finishEdit(e.nativeEvent.text)}
         autoCapitalize={autoCapitalize}
+        maxLength={maxLength}
         value={value}
         multiline={multiline}
         onChangeText={e => {

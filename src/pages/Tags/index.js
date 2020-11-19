@@ -41,7 +41,6 @@ export default ({ navigation }) => {
             url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule',
             params: { sys: 'SIS' },
             headers: {
-                cookie: 'JSESSIONID=33BF2936814F3F4270DB0A969E12D473',
                 Authorization: user.token,
                 'Content-Type': 'application/json'
             },
@@ -54,7 +53,7 @@ export default ({ navigation }) => {
                 type: "success",
                 style: { justifyContent: 'space-between', alignItems: 'center' },
                 titleStyle: { fontSize: 16 },
-                icon: { icon: "danger", position: 'right' },
+                icon: { icon: "success", position: 'right' },
                 position: 'top',
                 duration: 3000,
             })
@@ -64,29 +63,32 @@ export default ({ navigation }) => {
         });
     }
 
+    const GetFile = async (item) => {
+        try {
+            const options = {
+                headers: {
+                    'authorization': user.token,
+                    'Content-Type': 'application/json; charset=utf-8;'
+                },
+                params: { IDENTIFICADOR: item.chave_identificador, MODELO_ETIQUETA: item.modelo_etiqueta }
+            };
+            const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/IMPRESSAO_ETIQUETA_APP.rule?sys=SIS', options)
+            DownloadFile({ url: data, uuid: item.chave_identificador })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     const CheckFileExist = (item) => {
-        const path = `${FS.DownloadDirectoryPath}/${item.chave_identificador}.pdf`
-        FS.existsAssets(path).then(( resp ) => {
-            console.log(resp)
+        const path = `${RNFetchBlob.fs.dirs.DownloadDir}/${item.chave_identificador}.pdf`
+        FS.exists(path).then(resp => {
             if (resp) {
-                console.log('Entrou')
                 setActive(true)
             } else {
-                const options = {
-                    method: 'GET',
-                    headers: {
-                        'authorization': user.token,
-                        'Content-Type': 'application/json; charset=utf-8;'
-                    },
-                    url: 'http://dev.renovetecnologia.org:8049/webrunstudio/IMPRESSAO%20ETIQUETA%20APP.rule?sys=SIS',
-                    params: { IDENTIFICADOR: etiquetas.chave_identificador, MODELO_ETIQUETA: etiquetas.modelo_etiqueta }
-                };
-                axios(options)
-                    .then(resp => {
-                        DownloadFile({ url: resp.data, uuid: etiquetas.chave_identificador })
-                    })
+                GetFile(item)
             }
         })
+
     }
 
     return (
@@ -128,7 +130,7 @@ export default ({ navigation }) => {
                     <ModalMessage
                         showMessage={{
                             title: 'Atenção!',
-                            message: `Deseja realmente deletar esta etiqueta ? `,
+                            message: `Deseja realmente deletar esta etiqueta? `,
                             type: 'alert',
                             icon: true
                         }}

@@ -45,8 +45,9 @@ export default props => {
   const GetProducts = () => {
     const list = []
     axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
-      .then(({ data }) => {
+      .then(( {data} ) => {
         data.map(item => list.push({ label: item.descricao, value: item.id_produto, dias_validade: item.dias_validade }))
+        console.log(data)
       })
     setProdutos(list)
   }
@@ -88,12 +89,15 @@ export default props => {
           width="100%"
         />
         <InputAnimated
+          maxLength={13}
           placeholder='Lote'
           onChangeText={text => setEtiquetas({ ...etiquetas, lote: text })}
           value={etiquetas.lote}
           width="48%"
         />
         <InputAnimated
+          maxLength={3}
+          keyboardType="numeric"
           placeholder='Quantidade'
           onChangeText={text => setEtiquetas({ ...etiquetas, quantidade: text })}
           value={etiquetas.quantidade}

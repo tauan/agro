@@ -1,4 +1,3 @@
-import React from 'react'
 import RNFetchBlob from 'rn-fetch-blob'
 
 const DownloadFile = (value) => {
@@ -8,7 +7,6 @@ const DownloadFile = (value) => {
         path: dirs.DownloadDir + `/${value.uuid}.pdf`,
         addAndroidDownloads: {
             notification: true,
-            useDownloadManager: true,
             title: `${value.uuid}.pdf`,
             mime: 'application/pdf',
             description: 'Your test reports.',
@@ -18,7 +16,6 @@ const DownloadFile = (value) => {
         .then((resp) => {
             console.log(resp.data)
         })
-    // console.log(result)
 }
 
 export default DownloadFile

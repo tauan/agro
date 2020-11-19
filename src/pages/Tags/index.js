@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { showMessage } from "react-native-flash-message"
 import RNFetchBlob from 'rn-fetch-blob'
+import FS from 'react-native-fs'
 import axios from 'axios'
 import Pdf from 'react-native-pdf';
 import { Dimensions, FlatList } from 'react-native'
 import Primary from '../../components/Buttons/Primary'
+import DownloadFile from './utils/DownloadFile'
 import Link from '../../components/Buttons/Link'
 import Header from '../../components/Header'
 import Items from '../../components/Items'
@@ -30,7 +32,7 @@ export default ({ navigation }) => {
 
     const getTagsList = async (id) => {
         axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
-            .then(({ data }) => data.length > 0 && setTagsList(data))
+            .then(({ data }) => setTagsList(data))
     }
 
     const DeleteTag = async () => {
@@ -62,8 +64,29 @@ export default ({ navigation }) => {
         });
     }
 
-    const options = {
-        sendFile: 'SendFile'
+    const CheckFileExist = (item) => {
+        const path = `${FS.DownloadDirectoryPath}/${item.chave_identificador}.pdf`
+        FS.existsAssets(path).then(( resp ) => {
+            console.log(resp)
+            if (resp) {
+                console.log('Entrou')
+                setActive(true)
+            } else {
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'authorization': user.token,
+                        'Content-Type': 'application/json; charset=utf-8;'
+                    },
+                    url: 'http://dev.renovetecnologia.org:8049/webrunstudio/IMPRESSAO%20ETIQUETA%20APP.rule?sys=SIS',
+                    params: { IDENTIFICADOR: etiquetas.chave_identificador, MODELO_ETIQUETA: etiquetas.modelo_etiqueta }
+                };
+                axios(options)
+                    .then(resp => {
+                        DownloadFile({ url: resp.data, uuid: etiquetas.chave_identificador })
+                    })
+            }
+        })
     }
 
     return (
@@ -85,17 +108,10 @@ export default ({ navigation }) => {
                             renderItem={({ item, index }) =>
                                 <Items item={item}
                                     index={index}
-                                    url={'http://dev.renovetecnologia.org:8049/imagens/tags.jpg'}
+                                    url={'http://dev.renovetecnologia.org:8049/imagens/tags.png'}
                                     onPress={() => {
                                         setEtiquetas(item);
-                                        // Share.open(options)
-                                        //     .then((res) => {
-                                        //         console.log(res);
-                                        //     })
-                                        //     .catch((err) => {
-                                        //         err && console.log(err);
-                                        //     });
-                                        setActive(true)
+                                        CheckFileExist(item)
                                     }}
                                     deleteFunction={() => {
                                         setEtiquetas(item);
@@ -135,8 +151,21 @@ export default ({ navigation }) => {
                                 flex: 1,
                                 width: Dimensions.get('window').width * 0.9,
                                 height: Dimensions.get('window').height * 0.85,
-                                backgroundColor:"#008b54"
-                            }} />
+                                backgroundColor: "#008b54"
+                            }}
+                            onLoadComplete={(numberOfPages, filePath) => {
+                                console.log(`number of pages: ${numberOfPages}`);
+                            }}
+                            onPageChanged={(page, numberOfPages) => {
+                                console.log(`current page: ${page}`);
+                            }}
+                            onError={(error) => {
+                                // DownloadFile({ url: etiquetas.url, uuid: etiquetas.chave_identificador })
+                            }}
+                            onPressLink={(uri) => {
+                                console.log(`Link presse: ${uri}`)
+                            }}
+                        />
                         <Link title="Fechar" backgroundColor="#008b54" color="#fff" onPress={() => setActive(false)} />
                     </ModalMessage>}
             </App >

@@ -6,7 +6,7 @@ export default props => {
   const {
     backgroundColor = '#fff',
     textAlignVertical = 'center',
-    autoCapitalize = 'default',
+    autoCapitalize = 'none',
     size = 14,
     color = '#333',
     keyboardType = 'default',

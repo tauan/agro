@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import { showMessage } from "react-native-flash-message"
-import RNFetchBlob from 'rn-fetch-blob'
+import DownloadFile from './utils/DownloadFile'
 import Share from 'react-native-share';
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
@@ -50,34 +50,11 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const downloadEtiquetas = (value) => {
+  const submitForm = () => {    
 
-    const { dirs } = RNFetchBlob.fs
-
-    RNFetchBlob.config({
-      fileCache: true,
-      path: dirs.DownloadDir + `/${value.uuid}.pdf`,
-      addAndroidDownloads: {
-        notification: true,
-        useDownloadManager: true,
-        title: `${value.uuid}.pdf`,
-        mime: 'application/pdf',
-        description: 'Your test reports.',
-        path: dirs.DownloadDir + `/${value.uuid}.pdf`,
-      }
-    })
-      .fetch('GET', value.url)
-      .then((resp) => {
-        setEtiquetas({ ...etiquetas, url: resp.path() })
-        console.log(resp.path())
-        setActive(true)
-      })
-  }
-
-  const submitForm = () => {
     const options = {
       method: 'POST',
-      headers: { 'authorization': user.token },
+      headers: { 'authorization': user.token, 'Content-Type': 'application/json; charset=utf-8;' },
       data: etiquetas,
       url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
     };
@@ -92,7 +69,8 @@ export default ({ navigation }) => {
           position: 'top',
           duration: 3000,
         })
-        downloadEtiquetas(resp.data)
+        // console.log(resp.data)
+        DownloadFile(resp.data)
         navigation.navigate("TagsScreen")
       })
   }

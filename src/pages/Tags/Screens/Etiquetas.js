@@ -8,7 +8,7 @@ import AnimatedDropDown from '../../../components/AnimatedDropDown'
 export default props => {
   const { etiquetas, setEtiquetas, setValidation, activePage, pages, setPages, user } = props
   const [produtos, setProdutos] = useState([])
-  const [diasvalidade, setDiasValidade] = useState([])
+  const [data, setData] = useState([])
 
   useEffect(() => {
     setValidation(false)
@@ -26,6 +26,10 @@ export default props => {
     etiquetas.nome_propriedade
   ])
 
+  useEffect(() => {
+    data && ValidateDate()
+  }, [data])
+
   const validateForm = () => {
     const validations = [etiquetas]
 
@@ -42,17 +46,17 @@ export default props => {
     }
   }
 
+
   const GetProducts = () => {
     const list = []
     axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
-      .then(( {data} ) => {
+      .then(({ data }) => {
         data.map(item => list.push({ label: item.descricao, value: item.id_produto, dias_validade: item.dias_validade }))
-        console.log(data)
       })
     setProdutos(list)
   }
 
-  const TagsModel = () => {
+  const TagModels = () => {
     const list = []
     const models = [
       'PADRAO 35 X 35MM',
@@ -67,6 +71,16 @@ export default props => {
     return list
   }
 
+  const ValidateDate = () => {
+    let dias = produtos.map(resp => resp[0] == etiquetas.id_produto && resp)
+    if (data != '') {
+      const d = new Date(data.substring(6, 10), data.substring(3, 5), data.substring(0, 2))
+      d.setDate(d.getDate() + dias[0].dias_validade)
+      setEtiquetas({ ...etiquetas, validade: `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}` })
+      setData('')
+    }
+  }
+
   return (
     <Form>
       <AnimatedDropDown
@@ -74,17 +88,31 @@ export default props => {
         defaultValue={etiquetas.id_produto}
         placeholder={"Produtos"}
         listOptions={produtos}
-        onChangeItem={response => setEtiquetas({ ...etiquetas, id_produto: response })}
+        onChangeItem={response => { setEtiquetas({ ...etiquetas, id_produto: response }) }}
         width="100%"
       />
       <Row>
-        <InputDate value={etiquetas.emissao} completeDate={true} placeholder="Data de embalagem" width="48%" onChangeDate={text => setEtiquetas({ ...etiquetas, emissao: text })} />
-        <InputDate value={etiquetas.validade} completeDate={true} placeholder="Data de validade" width="48%" onChangeDate={text => setEtiquetas({ ...etiquetas, validade: `${text + 1}` })} />
+        <InputDate
+          value={etiquetas.emissao}
+          completeDate={true}
+          placeholder="Data de embalagem"
+          width="48%"
+          onChangeDate={text => {
+            setEtiquetas({ ...etiquetas, emissao: text });
+            setData(text)
+          }} />
+        <InputDate value={etiquetas.validade}
+          completeDate={true}
+          placeholder="Data de validade"
+          width="48%"
+          onChangeDate={text =>
+            setEtiquetas({ ...etiquetas, validade: text })
+          } />
         <AnimatedDropDown
           controll={true}
           defaultValue={etiquetas.modelo}
           placeholder={"Modelo de Etiqueta"}
-          listOptions={TagsModel()}
+          listOptions={TagModels()}
           onChangeItem={response => setEtiquetas({ ...etiquetas, modelo: response })}
           width="100%"
         />

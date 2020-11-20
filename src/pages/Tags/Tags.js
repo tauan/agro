@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { Animated, Dimensions, KeyboardAvoidingView } from 'react-native'
 import { showMessage } from "react-native-flash-message"
 import DownloadFile from './utils/DownloadFile'
-import Share from 'react-native-share';
-import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import TagsContext from '../../contexs/Tags'
 import { App, Grid } from '../style'
@@ -11,10 +9,7 @@ import UserContext from '../../contexs/User'
 import axios from 'axios'
 import {
   HeaderContainer,
-  ImageSelect,
   PageScroll,
-  ImgBackground,
-  ButtonImageContainer,
   CleanContainer,
   FixedButtonContainer
 } from './style'
@@ -22,13 +17,9 @@ import Primary from '../../components/Buttons/PrimaryTouchable'
 import Etiquetas from './Screens/Etiquetas'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
-const { width } = Dimensions.get("window");
-
 export default ({ navigation }) => {
   const { activePage, etiquetas, setActivePage, setEtiquetas } = useContext(TagsContext)
   const { user } = useContext(UserContext)
-  const [image, setImage] = useState(undefined)
-  const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
   const [pages, setPages] = useState([
     {
@@ -100,28 +91,12 @@ export default ({ navigation }) => {
         imageHidde = true
       }
       if (velocity < 1.5 && imageHidde === true) {
-        console.log("abrir imagem")
         openImage()
         imageHidde = false
       }
     }
   }
 
-  const pickerImage = async () => {
-    ImagePicker.launchImageLibrary({
-      includeBase64: true
-    }, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        setImage(response)
-      };
-    })
-  }
   return (
     <>
       <Header color="#07AC82" navigation={navigation} />

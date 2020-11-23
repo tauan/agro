@@ -4,11 +4,14 @@ import InputDate from '../../../components/InputDate'
 import axios from 'axios'
 import { Form, Row } from '../style'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
+import moment from 'moment'
 
 export default props => {
   const { etiquetas, setEtiquetas, setValidation, activePage, pages, setPages, user } = props
   const [produtos, setProdutos] = useState([])
-  const [data, setData] = useState([])
+  const [data, setData] = useState()
+  const [id_produto, setIDProduto] = useState()
+  const [validade, setValidade] = useState()
 
   useEffect(() => {
     setValidation(false)
@@ -16,19 +19,17 @@ export default props => {
   }, [])
 
   useEffect(() => { validateForm() }, [
-    etiquetas.cep,
-    etiquetas.ccir,
-    etiquetas.endereco,
-    etiquetas.condicoes_posse,
-    etiquetas.cidade,
-    etiquetas.uf,
-    etiquetas.area,
-    etiquetas.nome_propriedade
+    etiquetas.id_produto,
+    etiquetas.emissao,
+    etiquetas.validade,
+    etiquetas.modelo,
+    etiquetas.lote,
+    etiquetas.quantidade,
   ])
 
   useEffect(() => {
-    data && ValidateDate()
-  }, [data])
+    etiquetas.emissao != '' && SetValidDate()
+  }, [etiquetas.id_produto, etiquetas.emissao])
 
   const validateForm = () => {
     const validations = [etiquetas]
@@ -71,15 +72,49 @@ export default props => {
     return list
   }
 
-  const ValidateDate = () => {
-    let dias = produtos.map(resp => resp[0] == etiquetas.id_produto && resp)
-    if (data != '') {
-      const d = new Date(data.substring(6, 10), data.substring(3, 5), data.substring(0, 2))
-      d.setDate(d.getDate() + dias[0].dias_validade)
-      setEtiquetas({ ...etiquetas, validade: `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}` })
-      setData('')
+  // console.log('Date Now: ', moment().format('DD/MM/YYYY'))
+  // console.log('Date Emmit: ', moment(d).format('DD/MM/YYYY'))
+  // console.log('New Date: ', moment(d).add(dias_validade, 'days').format('DD/MM/YYYY'))
+
+  const SetValidDate = (emissao) => {
+    const validDays = produtos.map(({ value, dias_validade }) => value === id_produto && dias_validade)
+    if (emissao) {
+      const days = emissao.substring(0, 2) >= 10 ? emissao.substring(0, 2) : emissao.substring(0, 1)
+      const month = days < 10 ? emissao.substring(2, 4) : emissao.substring(3, 5)
+      const years = days < 10 ? emissao.substring(5, 9) : emissao.substring(6, 10)
+      const d = [years, month, days]
+      setValidade(d)
     }
+    setEtiquetas({
+      ...etiquetas,
+      emissao: moment(validade).format('DD/MM/YYYY'),
+      validade: moment(validade).add(validDays, 'days').format('DD/MM/YYYY')
+    })
   }
+
+  // const SetValidDate = () => {
+  //   let validDate
+  //   const currentDate = new Date()
+  //   let dias = produtos.filter(resp => resp.value === etiquetas.id_produto).map(resp => resp.dias_validade)[0]
+  //   console.log(dias)
+  //   if (data != '') {
+  //     validDate = new Date(data.substring(6, 10), data.substring(3, 5), data.substring(0, 2))
+  //     validDate.setDate(validDate.getDate() + dias)
+  //     console.log('Data de validade: ', validDate)
+  //     // setEtiquetas({ ...etiquetas, validade: `${validDate.getDate()}/${validDate.getMonth()}/${validDate.getFullYear()}` })
+  //     // setData('')
+  //   } else {
+  //     validDate = new Date()
+  //     validDate.setDate(validDate.getDate() + dias)
+  //     etiquetas.id_produto != undefined && setEtiquetas({
+  //       ...etiquetas,
+  //       emissao: `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`,
+  //       validade: `${validDate.getDate()}/${validDate.getMonth()}/${validDate.getFullYear()}`
+  //     })
+  //     setData('')
+  //   }
+
+  // }
 
   return (
     <Form>
@@ -88,7 +123,10 @@ export default props => {
         defaultValue={etiquetas.id_produto}
         placeholder={"Produtos"}
         listOptions={produtos}
-        onChangeItem={response => { setEtiquetas({ ...etiquetas, id_produto: response }) }}
+        onChangeItem={response => {
+          setEtiquetas({ ...etiquetas, id_produto: response, emissao: moment().format('DD/MM/YYYY') })
+          setIDProduto(response)
+        }}
         width="100%"
       />
       <Row>
@@ -99,7 +137,7 @@ export default props => {
           width="48%"
           onChangeDate={text => {
             setEtiquetas({ ...etiquetas, emissao: text });
-            setData(text)
+            SetValidDate(text)
           }} />
         <InputDate value={etiquetas.validade}
           completeDate={true}

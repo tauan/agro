@@ -118,7 +118,7 @@ export default ({ navigation }) => {
                             <TitleStyle>Etiquetas</TitleStyle>
                             <TextStyle>Cadastrar, excluir e gerar etiquetas.</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar etiquetas" width={150} onPress={() => { setEtiquetas({}); navigation.navigate("TagsForm") }} />
+                        <Primary title="Cadastrar etiquetas" width={150} onPress={() => { navigation.navigate("TagsForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     {tagsList.length > 0 &&

@@ -10,6 +10,7 @@ import ProductContext from '../../contexs/ProductContext'
 import { App, Form, TitleStyle, TextStyle } from '../style'
 import { Container, HeaderTitle } from './style'
 import ModalMessage from '../../components/ModalMessage'
+import {showMessage} from 'react-native-flash-message'
 
 export default ({ navigation }) => {
     const [productsList, setProductsList] = useState([])
@@ -18,31 +19,98 @@ export default ({ navigation }) => {
     const { setProduto, produto } = useContext(ProductContext)
     const { user } = useContext(UserContext)
 
-    useEffect(() => { getProductList() }, [])
+    useEffect(() => { 
+        setProduto(defaultProductContext)
+        getProductList();
+    }, [])
+
+    const defaultProductContext = {
+        id_produto: null,
+        id_agricultor: user.id_agricultor,
+        id_categoria: null,
+        descricao: "",
+        gluten: "",
+        peso_liquido: "",
+        peso_bruto: "",
+        codigo_barras: "",
+        dias_validade: "",
+        foto: "",
+        url_imagem: "https://freeiconshop.com/wp-content/uploads/edd/camera-flat.png",
+        observacao: "",
+        id_produto_base: null,
+        mes_inicial_plantio: "",
+        mes_final_plantio: "",
+        tipo_producao: null,
+        unidade_medida_1: null,
+        unidade_medida_2: null,
+        quantidade_producao: "",
+        propriedades: []
+    }
 
     const getProductList = async (id) => {
-        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
-            .then(({ data }) => {
-                const produtoBase = []
-                if (Array.isArray(data)) {
-                    data.map(async item => {
-                        if (item.foto === "" || item.foto === undefined) {
-                            const { id_produto_base } = item
-                            const result = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
+        try {
+            const productBase = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
+            const response = await axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { contentType: "application/json" , authorization: user.token } })
 
-                            if (Array.isArray(result.data)) {
-                                await result.data
-                                    .filter(pBase => pBase.id_produto_base === id_produto_base)
-                                    .map(obj => { item.foto = item.url_imagem == '' ? item.foto = obj.url : item.foto = item.url_imagem })
-                                item.foto === '' && (item.foto = 'http://dev.renovetecnologia.org:8049/imagens/image.jpg')
-                            }
-                        }
-                        produtoBase.push(item)
-                        if (produtoBase.length === data.length) setProductsList(produtoBase)
+            const checkExistImageAndSetList = async array => {
+                const tempProductList = []
+                await array.map(item => {
+                    if(item.url_imagem === "" || item.url_imagem === undefined)  {
+                        if(productBase.data && Array.isArray(productBase.data))
+                            productBase.data.map(pb => { 
+                                if(item.id_produto_base === pb.id_produto_base) item.url_imagem = pb.url
+                            })
+                    }
+                    tempProductList.push(item)
+                })
+                setProductsList(tempProductList)
+            }
+            if(response.status !== undefined && response.status === 200) 
+                if(Array.isArray(response.data)) checkExistImageAndSetList(response.data) 
+        }catch(err) { console.log("erro na listagem de produtos"); getProductList() }
+    }
+
+    const deleteProduct = async () => {
+        if(produto.id_produto !== null) {
+            try{
+                const options = {
+                    method: "DELETE",
+                    url: "http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS",
+                    headers: {
+                        authorization: user.token
+                    },
+                    data: {
+                        id_agricultor: produto.id_agricultor,
+                        id_produto: produto.id_produto
+                    }
+                }
+                const response = await axios.request(options)
+                if(response.data.sucesso) {
+                    getProductList();
+                    showMessage({
+                        message: 'Produto deletado com sucesso!',
+                        type: "success",
+                        style: { justifyContent: 'space-between', alignItems: 'center' },
+                        titleStyle: { fontSize: 16 },
+                        icon: { icon: "success", position: 'right' },
+                        position: 'top',
+                        duration: 3000,
                     })
                 }
-            })
+
+                
+
+            } catch(err) {}
+        }
     }
+
+    const setParsedItem = item => {
+        item.unidade_medida_1 = parseInt(item.unidade_medida_1); 
+        item.unidade_medida_2 = parseInt(item.unidade_medida_2); 
+        
+        setProduto(item)
+    }
+
     return (
         <>
             <Header color="#008b54" navigation={navigation} />
@@ -53,13 +121,13 @@ export default ({ navigation }) => {
                             <TitleStyle>Produtos</TitleStyle>
                             <TextStyle>Cadastrar, excluir e editar produtos</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar produto" width={150} onPress={() => { setProduto({}); navigation.navigate("ProductForm") }} />
+                        <Primary title="Cadastrar produto" width={150} onPress={() => { setProduto(defaultProductContext); navigation.navigate("ProductForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
                         data={productsList.filter(produto => produto.descricao.indexOf(value) != -1)}
                         renderItem={({ item, index }) =>
-                            <Items item={item} index={index} onPress={() => { setProduto(item); navigation.navigate("ProductForm") }} deleteFunction={() => setActiveModal(true)} />
+                            <Items item={item} index={index} onPress={() => { setParsedItem(item); navigation.navigate("ProductForm") }} deleteFunction={() =>{ setProduto(item); setActiveModal(true)}} />
                         }
                         keyExtractor={(keyExtractor, index) => String(index)}
                         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -75,7 +143,9 @@ export default ({ navigation }) => {
                             type: 'alert',
                             icon: true
                         }}
-                        onPressCancelButton={(value) => setActiveModal(value)} >
+                        title="Deletar"
+                        onPressPrimaryButton={() => deleteProduct()}
+                        setActiveModal={setActiveModal} >
                     </ModalMessage>}
 
             </App >

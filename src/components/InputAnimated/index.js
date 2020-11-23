@@ -21,7 +21,8 @@ export default props => {
     onChangeText = () => { },
     required = false,
     valid = "none",
-    multiline = false
+    multiline = false,
+    editable = true
   } = props;
   const [isValid, setIsValid] = useState(true)
 
@@ -55,7 +56,7 @@ export default props => {
     }
   };
   return (
-    <View style={{ width, marginTop, backgroundColor, height,
+    <View style={{ width, marginTop, backgroundColor: editable ? backgroundColor : "#efefef", height,
       borderRadius}}>
       
       <Animated.Text
@@ -80,6 +81,7 @@ export default props => {
         {props.placeholder}
       </Animated.Text>
       <TextInput
+      editable={editable}
         style={{
           backgroundColor: "transparent",
           height,

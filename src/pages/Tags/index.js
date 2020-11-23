@@ -86,7 +86,7 @@ export default ({ navigation }) => {
                                     }}
                                     deleteFunction={() => {
                                         setEtiquetas(item);
-                                        setActiveModal(true)
+                                        setActiveModal(true);
                                     }} />
                             }
                             keyExtractor={(keyExtractor, index) => String(index)}

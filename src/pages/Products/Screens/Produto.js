@@ -12,12 +12,24 @@ export default props => {
   const [disabled, setDisabled] = useState(false)
   const [defaultValue, setDefaultValue] = useState()
 
-  useEffect(() => {
+  useEffect(() => { 
+    checkProductId() 
+    return () => setSplash(true)
+  }, [])
+
+  useEffect(()=>{
+    if(produto.id_categoria)
+      getProdutoBase(produto.id_categoria)
+  },[produto.id_categoria])
+
+  const checkProductId = () => { 
     setValidation(false)
+    if(produto.id_produto_base){ 
+      getProdutoBase(produto.id_produto_base)
+    }
     getCategorias()
     getUnidadeMedida()
-    getProdutoBase()
-  }, [])
+  }
 
   useEffect(() => { validateForm() }, [
     produto.id_categoria,
@@ -31,7 +43,6 @@ export default props => {
 
   const validateForm = () => {
     const validations = []
-    validations.push(produto)
     validations.push(produto.id_categoria)
     validations.push(produto.id_produto_base)
     validations.push(produto.dias_validade)
@@ -53,51 +64,65 @@ export default props => {
     }
   }
 
-  const getCategorias = () => {
-    axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
-      .then(async resp => {
-        const list = await resp.data
-          .map(item => {
-            return { label: item.descricao, value: item.id_categoria }
-          })
-        setListCategoria(list)
-      })
-
-  }
-  const getProdutoBase = async id => {
-    const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
-    const list = []
-    data.filter(categoria => categoria.id_categoria === id || categoria.id_categoria == produto.id_categoria).map(item => {
-      list.push({ label: item.descricao, value: item.id_produto_base, url: item.url, })
-    })
-    setProductList(list)
-  }
-
-  const getUnidadeMedida = () => {
-    axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
-      .then(async resp => {
-        const list = await resp.data.map(item => {
-          return {
-            label: item.descricao,
-            value: item.id_unidade,
-          }
+  const getCategorias = async () => {
+    try {
+      const result = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
+      if(result.data !== undefined && Array.isArray(result.data)){
+        const list = await result.data.map(item => {
+          return { label: item.descricao, value: parseInt(item.id_categoria) }
         })
-        setUnidadeMedida(list)
-        setTimeout(()=> setSplash(false), 300)
+        setListCategoria(list)
+      }
+    } catch (err) {
+      getCategorias()
+    }
+  }
+
+  const getProdutoBase = async id => {
+    try {
+      const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
+      const list = []
+      if(data && Array.isArray(data)) 
+        data.filter(categoria => categoria.id_categoria === id || categoria.id_categoria == produto.id_categoria).map(item => {
+          list.push({ label: item.descricao, value: parseInt(item.id_produto_base), url: item.url, })
+        })
+      setProductList(list)
+    }catch (err) {
+      getProdutoBase(id)
+    }
+  }
+
+  const getDescription = async id => {
+    const description = await productList.filter(item => item.value === id)
+    description.length === 1 ? setProduto({...produto, id_produto_base: id, descricao: description[0].label, url_imagem: description[0].url }) : console.log("O produto base selecionado é invalido.")
+  }
+
+  const getUnidadeMedida = async () => {
+    try {
+      const {data} = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
+      const list = data.map(item => {
+        return {
+          label: item.descricao,
+          value: item.id_unidade,
+        }
       })
+      setUnidadeMedida(list)
+    } catch(err) {
+      getUnidadeMedida()
+    }
+    setTimeout(()=> setSplash(false), 300)
   }
   return (
     <Form>
       {/* categoria */}
       <AnimatedDropDown
-        controll={true}
         disabled={produto.id_produto != undefined ? true : false}
         defaultValue={produto.id_categoria}
         placeholder={"Categoria"}
         listOptions={listCategoria}
         onChangeItem={response => {
           setProduto({ ...produto, id_categoria: response, id_produto_base: undefined });
-          getProdutoBase(response)
+          
         }}
         width="100%"
       />
@@ -107,9 +132,7 @@ export default props => {
         defaultValue={produto.id_produto_base}
         placeholder="Produto base"
         listOptions={productList}
-        onChangeItem={async response => {
-          setProduto({ ...produto, id_produto_base: response });
-        }}
+        onChangeItem={response => getDescription(response)}
         width="100%"
       />
       <Row>
@@ -137,13 +160,10 @@ export default props => {
           keyboardType="numeric"
         />
         <AnimatedDropDown
-          defaultValue={produto.unidade_medida_1}
           placeholder="Unidade de medida"
           listOptions={unidadeMedida}
           defaultValue={produto.unidade_medida_1}
-          onChangeItem={response => {
-            setProduto({ ...produto, unidade_medida_1: response });
-          }}
+          onChangeItem={response => setProduto({ ...produto, unidade_medida_1: response })}
         />
         <InputAnimated
           placeholder='Peso liquido'

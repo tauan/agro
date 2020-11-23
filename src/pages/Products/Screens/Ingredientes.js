@@ -6,8 +6,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import ModalMessage from '../../../components/ModalMessage'
 
 export default props => {
-  useEffect(() => { }, [ingredientes])
-  const { ingredientes, setIngredientes } = props
+  useEffect(() => { 
+    setSplash(false)
+    return () => setSplash(true)
+
+  }, [])
+  const { produto, ingredientes, setIngredientes, setSplash } = props
   const [tempIngrediente, setTempIngrediente] = useState("")
   const [activeModal, setActiveModal] = useState(false)
   const [update, setUpdate] = useState(false)
@@ -22,6 +26,7 @@ export default props => {
     <Form>
       <Row>
         <InputAnimated
+          editable={produto.id_categoria !== "365"}
           placeholder='Adicionar ingrediente'
           onChangeText={text => setTempIngrediente(text)}
           value={tempIngrediente}

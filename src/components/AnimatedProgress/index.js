@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Nav, LoadingProgressContainer, CircleStatus, BarStatusProgress } from './style'
 import { Grid, Title3, Title3Regular, CleanContainer } from '../../pages/style'
-import { TouchableOpacity, Animated, Dimensions, TouchableWithoutFeedback } from 'react-native'
+import {  TouchableWithoutFeedback ,Animated, Dimensions } from 'react-native'
 
 export default props => {
   const { activePage, pages, setActivePage } = props
@@ -39,11 +39,20 @@ export default props => {
           <LoadingProgressContainer>
             {
               pages.map((item, key) => {
-                return (
-                  <TouchableOpacity key={key} onPress={() => onPress(item)}>
-                    <CircleStatus style={{ backgroundColor: activePage !== undefined ? (pages[key].validated !== false ? "#008b54" : "#E0E0E0") : "#E0E0E0" }} />
-                  </TouchableOpacity>
-                )
+                if(item === activePage) {
+                  return (
+                    <TouchableWithoutFeedback key={key} onPress={() => onPress(item)}>
+                      <CircleStatus style={{ backgroundColor: "#008B54" }} />
+                    </TouchableWithoutFeedback>
+                  )
+                }else {
+                  return (
+                    <TouchableWithoutFeedback key={key} onPress={() => onPress(item)}>
+                      <CircleStatus style={{ backgroundColor: activePage !== undefined ? (pages[key].validated !== false ? "#13BB78" : "#E0E0E0") : "#E0E0E0" }} />
+                    </TouchableWithoutFeedback>
+                  )
+                }
+                
               })
             }
           </LoadingProgressContainer>
@@ -51,7 +60,7 @@ export default props => {
             <Animated.View style={{
               borderRadius: 5,
               height: "100%",
-              backgroundColor: "#008b54",
+              backgroundColor: "#13BB78",
               width: animationProgress.interpolate({
                 inputRange: [0, 100],
                 outputRange: [0, width - 40],

@@ -6,7 +6,7 @@ import {Form, Row} from '../style'
 import axios from 'axios'
 
 export default props => {
-  const {produto,setProduto, user, setValidation, activePage, pages, setPages} = props
+  const {produto,setProduto, user, setValidation, activePage, pages, setPages, setSplash} = props
   const [tipoProducao, setTipoProducao] = useState([])
   const [unidadeMedida, setUnidadeMedida] = useState([])
 
@@ -15,6 +15,7 @@ export default props => {
     getTipoProducao()
     getUnidadeMedida()
     validateForm()
+    return () => setSplash(true)
   },[])
 
   useEffect(() => { validateForm() }, [
@@ -60,7 +61,8 @@ export default props => {
         return { label: item.descricao, value: item.id_unidade } 
       })
       setUnidadeMedida(list)
-    })
+      setSplash(false)
+    }).catch(err=>getUnidadeMedida())
   }
 
   return(

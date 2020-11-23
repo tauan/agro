@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { showMessage } from "react-native-flash-message"
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import ProductContext from '../../contexs/ProductContext'
@@ -24,6 +25,7 @@ import Propriedades from './Screens/Propriedades'
 import Ingredientes from './Screens/Ingredientes'
 import Descricao from './Screens/Descricao'
 import AnimatedProgress from '../../components/AnimatedProgress'
+import axios from 'axios'
 
 export default ({ navigation }) => {
   const { activePage, produto, producao, propriedades, descricao, ingredientes, setActivePage, setProduto, setProducao, setPropriedades, setDescricao, setIngredientes } = useContext(ProductContext)
@@ -63,8 +65,6 @@ export default ({ navigation }) => {
 
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
-
-
   }, []);
 
   let imageHidde = false
@@ -74,7 +74,36 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const submitForm = () => { }
+  const submitForm = async () => { 
+    try {
+      const options = {
+        url: "http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS",
+        method: "POST", 
+        data: produto,
+        headers: {
+          authorization: user.token
+        }
+      }
+      const response = await axios.request(options)
+      if(response.data.sucesso !== undefined) {
+        showMessage({
+          message: response.data.sucesso,
+          type: "success",
+          style: { justifyContent: 'space-between', alignItems: 'center' },
+          titleStyle: { fontSize: 16 },
+          icon: { icon: "danger", position: 'right' },
+          position: 'top',
+          duration: 3000,
+        })
+        setTimeout(()=> navigation.push("ProductScreen"), 3000)
+        
+        //navigation.popToTop()
+      }
+    } catch (err){
+      console.log(err)
+      console.log("Erro ao salvar produto no servidor")
+    }
+  }
 
   const progress = new Animated.Value(0)
 
@@ -163,7 +192,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: produto.foto ? produto.foto : 'https://freeiconshop.com/wp-content/uploads/edd/camera-flat.png' }}
+                source={{ uri: produto.url_imagem ? produto.url_imagem : 'https://freeiconshop.com/wp-content/uploads/edd/camera-flat.png' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],
@@ -198,10 +227,7 @@ export default ({ navigation }) => {
       <FixedButtonContainer
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => {
-            nextPage()
-            onPressFloatButton()
-          }} />
+          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => { onPressFloatButton() }} />
         </Grid>
       </FixedButtonContainer>
     </>

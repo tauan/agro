@@ -27,7 +27,8 @@ export default (props) => {
             title: '',
             message: '',
             type: '',
-        }
+        },
+        setActiveModal = () => console.log("Passe uma função como atributo para setActiveModal, caso contrario o modal permanecerá aberto durante todo o tempo.")
     } = props
 
     const [config, setConfig] = useState({})
@@ -53,6 +54,7 @@ export default (props) => {
                 useNativeDriver: true,
             }),
         ]).start()
+        setTimeout(function () { setActiveModal(false) }, 800)
     }
 
     useEffect(() => {
@@ -83,7 +85,7 @@ export default (props) => {
                 <TitleStyle color={config.color} >{showMessage.title}</TitleStyle>
                 <TextStyle style={{ marginVertical: 15 }} align="center" color="#666" fontsize={20}>{showMessage.message}</TextStyle>
                 {visiblePrimaryButton && <Primary title={title} backgroundColor={backgroundColor} width="100%" onPress={() => { DesactiveModal(); props.onPressPrimaryButton(false) }} />}
-                {visibleCancelButton && <Button onPress={() => { DesactiveModal(); setTimeout(function () { props.onPressCancelButton(false) }, 800) }}>
+                {visibleCancelButton && <Button onPress={() => { DesactiveModal(); }}>
                     <TextButton>Cancelar</TextButton>
                 </Button>}
             </DialogBox>

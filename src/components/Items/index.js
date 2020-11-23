@@ -4,7 +4,7 @@ import { Animated } from "react-native";
 import { Container, ContainerIMG, IMGItem, Title, Button, TextButton } from './style'
 
 export default (props) => {
-    const { id, foto, descricao } = props.item
+    const { id, foto, descricao, url_imagem } = props.item
     const { onPress, deleteFunction, index, url } = props
 
     const anim = useRef(new Animated.Value(0)).current
@@ -25,7 +25,7 @@ export default (props) => {
     return (
         <Container as={Animated.View} style={{ transform: [{ scale: anim }] }}>
             <ContainerIMG onPress={onPress}>
-                <IMGItem source={{ uri: foto ? foto : url}} />
+                <IMGItem source={{ uri: url_imagem ? url_imagem : url}} />
             </ContainerIMG>
             <Title color="#33333">{descricao}</Title>
             <Button onPress={() => deleteFunction(id)}>

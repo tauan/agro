@@ -6,6 +6,7 @@ export default props => {
   const {
     backgroundColor = '#fff',
     textAlignVertical = 'center',
+    autoCapitalize = 'none',
     size = 14,
     color = '#333',
     keyboardType = 'default',
@@ -39,12 +40,12 @@ export default props => {
   };
   const finishEdit = text => {
     verifyTextValue(text)
-    if(required!==false){
+    if (required !== false) {
       text.length === 0 ? setIsValid(false) : setIsValid(true)
     }
-    if(valid !== "none") 
-      setIsValid(Validator({valid, value}))
-      
+    if (valid !== "none")
+      setIsValid(Validator({ valid, value }))
+
   }
   const verifyTextValue = e => {
     if (e.length === 0) {
@@ -90,7 +91,7 @@ export default props => {
           color,
           padding: 0,
           paddingHorizontal: 8,
-          paddingTop: textAlignVertical == 'top'  ? 25 : 15,
+          paddingTop: textAlignVertical == 'top' ? 25 : 15,
           borderWidth,
           borderColor: isValid ? borderColor : "#f00",
         }}
@@ -99,10 +100,11 @@ export default props => {
         textAlignVertical={textAlignVertical}
         secureTextEntry={secureTextEntry}
         onEndEditing={(e) => finishEdit(e.nativeEvent.text)}
-        autoCapitalize="none"
+        autoCapitalize={autoCapitalize}
+        maxLength={maxLength}
         value={value}
         multiline={multiline}
-        onChangeText={e=>{
+        onChangeText={e => {
           onChangeText(e)
           e.length === 0 ? setIsValid(false) : setIsValid(true)
         }}

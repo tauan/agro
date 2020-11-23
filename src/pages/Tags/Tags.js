@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
-import { showMessage } from "react-native-flash-message";
-import ImagePicker from 'react-native-image-picker'
+import { Animated, Dimensions, KeyboardAvoidingView } from 'react-native'
+import { showMessage } from "react-native-flash-message"
+import DownloadFile from './utils/DownloadFile'
 import Header from '../../components/Header'
 import TagsContext from '../../contexs/Tags'
 import { App, Grid } from '../style'
@@ -9,10 +9,7 @@ import UserContext from '../../contexs/User'
 import axios from 'axios'
 import {
   HeaderContainer,
-  ImageSelect,
   PageScroll,
-  ImgBackground,
-  ButtonImageContainer,
   CleanContainer,
   FixedButtonContainer
 } from './style'
@@ -20,13 +17,9 @@ import Primary from '../../components/Buttons/PrimaryTouchable'
 import Etiquetas from './Screens/Etiquetas'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
-const { width } = Dimensions.get("window");
-
 export default ({ navigation }) => {
   const { activePage, etiquetas, setActivePage, setEtiquetas } = useContext(TagsContext)
   const { user } = useContext(UserContext)
-  const [image, setImage] = useState(undefined)
-  const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
   const [pages, setPages] = useState([
     {
@@ -48,14 +41,15 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const submitForm = () => {
+  const submitForm = async () => {
+
     const options = {
       method: 'POST',
-      headers: { 'authorization': user.token },
+      headers: { 'authorization': user.token, 'Content-Type': 'application/json; charset=utf-8;' },
       data: etiquetas,
       url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
     };
-    axios(options)
+    await axios.request(options)
       .then(resp => {
         resp.data && showMessage({
           message: 'As etiquetas foram geradas com sucesso!',
@@ -66,7 +60,7 @@ export default ({ navigation }) => {
           position: 'top',
           duration: 3000,
         })
-        setEtiquetas({ ...etiquetas, url: resp.data })
+        DownloadFile(resp.data)
         navigation.navigate("TagsScreen")
       })
   }
@@ -97,75 +91,17 @@ export default ({ navigation }) => {
         imageHidde = true
       }
       if (velocity < 1.5 && imageHidde === true) {
-        console.log("abrir imagem")
         openImage()
         imageHidde = false
       }
     }
   }
 
-  const pickerImage = async () => {
-    ImagePicker.launchImageLibrary({
-      includeBase64: true
-    }, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        setImage(response)
-      };
-    })
-  }
   return (
     <>
       <Header color="#07AC82" navigation={navigation} />
       <App>
         <HeaderContainer>
-          <TouchableOpacity onPress={pickerImage}>
-            <ImageSelect style={{
-              width: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [150, 150, width - 40],
-                extrapolate: "clamp"
-              }),
-              height: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [150, 50, 50],
-                extrapolate: "clamp"
-              }),
-              borderRadius: progress.interpolate({
-                inputRange: [0, 50, 100],
-                outputRange: [150, 150, 4],
-                extrapolate: "clamp"
-              }),
-            }}>
-              <ImgBackground
-                resizeMode="cover"
-                source={{ uri: 'http://dev.renovetecnologia.org:8049/imagens/tags.jpg' }}
-                style={{
-                  opacity: progress.interpolate({
-                    inputRange: [0, 50, 100],
-                    outputRange: [1, 1, .15],
-                    extrapolate: "clamp"
-                  }),
-                }}
-              />
-              <ButtonImageContainer style={{
-                transform: [{
-                  translateY: progress.interpolate({
-                    inputRange: [0, 50, 100],
-                    outputRange: [0, 0, -50],
-                    extrapolate: "clamp"
-                  })
-                }]
-              }}>
-                <Primary width="100%" title='Alterar imagem' shadow={2} onPress={pickerImage} backgroundColor="transparent" marginTop={0} />
-              </ButtonImageContainer>
-            </ImageSelect>
-          </TouchableOpacity>
           <AnimatedProgress activePage={activePage} setActivePage={setActivePage} setPages={setPages} pages={pages} />
         </HeaderContainer>
         <CleanContainer>

@@ -38,7 +38,7 @@ export default ({ navigation }) => {
 
     return (
         <ImageBackground source={BKG} style={{ flex: 1 }}>
-            <LinearGradient colors={['#3ae25480', '#00261080']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1 }}>
+            <LinearGradient colors={['#3ae25480', '#00261080']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1, justifyContent: 'center' }}>
                 <Container>
                     {/* <TextStyle style={{ marginBottom: 25 }} color="#fff" fontsize={18}>Seja bem vindo</TextStyle> */}
                     <Body >

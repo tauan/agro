@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import axios from 'axios'
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import PropertiesContext from '../../contexs/Properties'
@@ -46,7 +47,27 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const submitForm = () => { }
+  const submitForm = () => {
+    const options = {
+      method: 'POST',
+      headers: { 'authorization': user.token },
+      data: propriedade,
+      url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS',
+    };
+    axios(options)
+      .then(resp => {
+        resp.data && showMessage({
+          message: 'Propriedade cadastrada com sucesso!',
+          type: "success",
+          style: { justifyContent: 'space-between', alignItems: 'center' },
+          titleStyle: { fontSize: 16 },
+          icon: { icon: "danger", position: 'right' },
+          position: 'top',
+          duration: 3000,
+        })
+        navigation.navigate("PropertyScreen")
+      })
+  }
 
   const progress = new Animated.Value(0)
 
@@ -156,7 +177,7 @@ export default ({ navigation }) => {
       <FixedButtonContainer
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => {
+          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Cadastrar")} shadow={2} onPress={() => {
             activePage.index !== (pages.length - 1) ? nextPage() : submitForm();
           }} />
         </Grid>

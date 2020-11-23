@@ -5,17 +5,23 @@ const Properties = createContext();
 export const PropertiesProvider = ({ children }) => {
   const [activePage, setActivePage] = useState()
   const [propriedade, setPropriedade] = useState({
-    id_agricultor: undefined,
-    descricao: "",
-    ccir: "",
-    foto: "",
-    area: "",
-    condicao_posse: "",
-    cep: "",
-    uf: "",
-    logradouro: "",
+    area: undefined,
     bairro: "",
+    ccir: "",
+    cep: "",
+    complemento: "",
+    condicoes_posse: "",
+    descricao: "",
+    foto: "",
+    id_agricultor: undefined,
+    id_propriedade: undefined,
+    latitude: "",
+    logradouro: "",
+    longitude: "",
     municipio: "",
+    n_logradouro: "",
+    uf: undefined,
+    url: ""
   });
   return (
     <Properties.Provider

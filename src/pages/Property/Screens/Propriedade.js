@@ -37,61 +37,85 @@ export default props => {
     }
   }
 
+  const CondicoesPosse = () => {
+    let list = []
+    const condicoes = [
+      'ARRENDATÁRIO(A)',
+      'ASSENTADO(A) PELO PNRA',
+      'BENEFICIÁRIO',
+      'EXTRATIVISTA',
+      'MEEIRO(A)',
+      'PERMISSIONÁRIO DE ÁREAS PÚBLICAS',
+      'POSSEIRO(A)',
+      'PROPRIETÁRIO(A)',
+      'USO COLETIVO',
+      'OUTRA']
+    condicoes.map(item => list.push({ label: item, value: item }))
+    return list
+  }
+
   return (
     <Form>
       <InputAnimated
         placeholder='Nome da propriedade'
-        onChangeText={text => setProduto({ ...propriedade, descricao: text })}
+        onChangeText={text => setPropriedade({ ...propriedade, descricao: text })}
         value={propriedade.descricao}
       />
       <Row>
         <InputAnimated
           placeholder='CCIR'
           onChangeText={text => setPropriedade({ ...propriedade, ccir: text })}
-          value={`${propriedade.ccir}`}
+          value={propriedade.ccir}
           width="48%"
         />
         <InputAnimated
+          keyboardType="numeric"
           placeholder='Área(ha)'
           onChangeText={text => setPropriedade({ ...propriedade, area: text })}
-          value={`${propriedade.area}`}
+          value={propriedade.area}
           width="48%"
         />
         <AnimatedDropDown
-          // defaultValue={propertyList.filter(item => item.value == propriedade.id_propriedade_base).map(item => item.value)[0]}
+          defaultValue={propriedade.condicoes_posse}
           placeholder="Condições de posse"
-          listOptions={[""]}
+          listOptions={CondicoesPosse()}
           onChangeItem={response => setPropriedade({ ...propriedade, condicoes_posse: response })}
           width="100%"
-        /> 
+        />
         <InputAnimated
           placeholder='CEP'
           onChangeText={text => setPropriedade({ ...propriedade, cep: text })}
-          value={`${propriedade.cep}`}
-          width="48%"
+          value={propriedade.cep}
+          width="30.8%"
         />
         <InputAnimated
           placeholder='UF'
           onChangeText={text => setPropriedade({ ...propriedade, uf: text })}
-          value={`${propriedade.uf}`}
-          width="48%"
+          value={propriedade.uf}
+          width="30.8%"
+        />
+        <InputAnimated
+          placeholder='Nº'
+          onChangeText={text => setPropriedade({ ...propriedade, n_logradouro: text })}
+          value={propriedade.n_logradouro}
+          width="30.8%"
         />
         <InputAnimated
           placeholder='Endereço'
           onChangeText={text => setPropriedade({ ...propriedade, logradouro: text })}
-          value={`${propriedade.logradouro}`}
+          value={propriedade.logradouro}
           width="100%"
         />
         <InputAnimated
           placeholder='Bairro'
           onChangeText={text => setPropriedade({ ...propriedade, bairro: text })}
-          value={`${propriedade.bairro}`}
+          value={propriedade.bairro}
           width="100%"
         />
         <InputAnimated
           placeholder='Cidade'
           onChangeText={text => setPropriedade({ ...propriedade, municipio: text })}
-          value={`${propriedade.municipio}`}
+          value={propriedade.municipio}
           width="100%"
         />
       </Row>

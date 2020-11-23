@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Dimensions } from 'react-native'
-import {TouchableOpacity} from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
 const wDimensions = Dimensions.get('screen').width
 
@@ -15,12 +15,11 @@ export default (props) => {
     borderRadius = 4,
     marginTop = 16,
     color = "#fff",
-    onPress = () => { },
     shadow = 0,
     elevation = shadow
   } = props
   return (
-    <TouchableOpacity onPress={onPress} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={disabled}>
+    <TouchableOpacity onPress={() => props.onPress()} style={{ width, height, backgroundColor, borderRadius, marginTop, elevation, marginRight }} enabled={disabled}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color }}>{title}</Text>
       </View>

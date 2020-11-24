@@ -40,7 +40,7 @@ export default ({ navigation }) => {
     controller ? setActiveButton(true) : setActiveButton(false)
   }
   const submitForm = async () => {
-    axios.post("http://dev.renovetecnologia.org:8049/webrunstudio/WS_LOGIN.rule?sys=SIS", {
+    axios.post("https://dev.renovetecnologia.org/webrunstudio/WS_LOGIN.rule?sys=SIS", {
       usuario: email,
       senha: password
     }).then(async ({ data }) => {
@@ -63,7 +63,7 @@ export default ({ navigation }) => {
   }
   return (
     <App>
-      <Logo />
+      {/* <Logo /> */}
       <Form>
         <KeyboardAvoidingView>
           <InputAnimated

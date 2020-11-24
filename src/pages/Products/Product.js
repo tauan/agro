@@ -77,7 +77,7 @@ export default ({ navigation }) => {
   const submitForm = async () => { 
     try {
       const options = {
-        url: "http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS",
+        url: "https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS.rule?sys=SIS",
         method: "POST", 
         data: produto,
         headers: {

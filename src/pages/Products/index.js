@@ -35,7 +35,7 @@ export default ({ navigation }) => {
         codigo_barras: "",
         dias_validade: "",
         foto: "",
-        url_imagem: "https://freeiconshop.com/wp-content/uploads/edd/camera-flat.png",
+        url_imagem: "https://dev.renovetecnologia.org/imagens/image.jpg",
         observacao: "",
         id_produto_base: null,
         mes_inicial_plantio: "",
@@ -49,8 +49,8 @@ export default ({ navigation }) => {
 
     const getProductList = async (id) => {
         try {
-            const productBase = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
-            const response = await axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { contentType: "application/json" , authorization: user.token } })
+            const productBase = await axios.get("https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
+            const response = await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { contentType: "application/json" , authorization: user.token } })
 
             const checkExistImageAndSetList = async array => {
                 const tempProductList = []
@@ -75,7 +75,7 @@ export default ({ navigation }) => {
             try{
                 const options = {
                     method: "DELETE",
-                    url: "http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS",
+                    url: "https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS.rule?sys=SIS",
                     headers: {
                         authorization: user.token
                     },

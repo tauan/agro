@@ -55,7 +55,7 @@ export default props => {
   }
 
   const getUnidadeMedida = () => {
-    axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers : { authorization: user.token }})
+    axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers : { authorization: user.token }})
     .then(async resp => {
       const list = await resp.data.map(item => {
         return { label: item.descricao, value: item.id_unidade } 

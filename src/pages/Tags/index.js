@@ -32,7 +32,7 @@ export default ({ navigation }) => {
     useEffect(() => { getTagsList() }, [etiquetas])
 
     const getTagsList = async (id) => {
-        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+        axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => {
                 setTagsList(data)
             })
@@ -41,7 +41,7 @@ export default ({ navigation }) => {
     const DeleteTag = () => {
         const options = {
             method: 'DELETE',
-            url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule',
+            url: 'https://dev.renovetecnologia.org/webrunstudio/WS_ETIQUETAS.rule',
             params: { sys: 'SIS' },
             headers: {
                 Authorization: user.token,
@@ -75,7 +75,7 @@ export default ({ navigation }) => {
                 },
                 params: { IDENTIFICADOR: item.chave_identificador, MODELO_ETIQUETA: item.modelo_etiqueta }
             };
-            const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/IMPRESSAO_ETIQUETA_APP.rule?sys=SIS', options)
+            const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/IMPRESSAO_ETIQUETA_APP.rule?sys=SIS', options)
             DownloadFile({ url: data, uuid: item.chave_identificador })
         } catch (err) {
             console.log(err)
@@ -127,7 +127,7 @@ export default ({ navigation }) => {
                             renderItem={({ item, index }) =>
                                 <Items item={item}
                                     index={index}
-                                    url={'http://dev.renovetecnologia.org:8049/imagens/tags.png'}
+                                    url={'https://dev.renovetecnologia.org/imagens/tags.png'}
                                     onPress={() => {
                                         setEtiquetas(item);
                                         CheckFileExist(item)

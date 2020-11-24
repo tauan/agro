@@ -52,7 +52,7 @@ export default ({ navigation }) => {
       method: 'POST',
       headers: { 'authorization': user.token },
       data: propriedade,
-      url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS',
+      url: 'https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS',
     };
     axios(options)
       .then(resp => {

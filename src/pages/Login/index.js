@@ -40,11 +40,10 @@ export default ({ navigation }) => {
     controller ? setActiveButton(true) : setActiveButton(false)
   }
   const submitForm = async () => {
-    
-    axios.post("https://dev.renovetecnologia.org/webrunstudio/WS_LOGIN.rule?sys=SIS",{
-        usuario: email,
-        senha: password  
-      }).then(async ({ data }) => {
+    axios.post("https://dev.renovetecnologia.org/webrunstudio/WS_LOGIN.rule?sys=SIS", {
+      usuario: email,
+      senha: password
+    }).then(async ({ data }) => {
       if (data.erro) {
         showMessage({
           message: data.erro,
@@ -64,7 +63,7 @@ export default ({ navigation }) => {
   }
   return (
     <App>
-      <Logo />
+      {/* <Logo /> */}
       <Form>
         <KeyboardAvoidingView>
           <InputAnimated

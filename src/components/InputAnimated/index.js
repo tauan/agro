@@ -22,6 +22,7 @@ export default props => {
     onChangeText = () => { },
     required = false,
     valid = "none",
+    maxLength = 100,
     multiline = false,
     editable = true,
     maxLength = 100

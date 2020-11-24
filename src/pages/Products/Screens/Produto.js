@@ -66,7 +66,7 @@ export default props => {
 
   const getCategorias = async () => {
     try {
-      const result = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
+      const result = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
       if(result.data !== undefined && Array.isArray(result.data)){
         const list = await result.data.map(item => {
           return { label: item.descricao, value: parseInt(item.id_categoria) }
@@ -80,7 +80,7 @@ export default props => {
 
   const getProdutoBase = async id => {
     try {
-      const { data } = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
+      const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
       const list = []
       if(data && Array.isArray(data)) 
         data.filter(categoria => categoria.id_categoria === id || categoria.id_categoria == produto.id_categoria).map(item => {
@@ -99,7 +99,7 @@ export default props => {
 
   const getUnidadeMedida = async () => {
     try {
-      const {data} = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
+      const {data} = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
       const list = data.map(item => {
         return {
           label: item.descricao,

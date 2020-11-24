@@ -26,7 +26,7 @@ export default ({navigation}) => {
   return (
     <Container>
       <LogoContainer>
-        <LogoImage />
+        {/* <LogoImage /> */}
       </LogoContainer>
       <StatusContainer>
         <TextStyle color="#008b54" style={{lineHeight: 30, marginRight: 10}}>Aguarde</TextStyle>

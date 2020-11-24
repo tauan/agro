@@ -64,7 +64,7 @@ export default ({ navigation }) => {
                     {/* <TextStyle style={{ marginBottom: 25 }} color="#fff" fontsize={18}>Seja bem vindo</TextStyle> */}
                     <Body >
                         <Header>
-                            <Logo source={LogoContag} />
+                            {/* <Logo source={LogoContag} /> */}
                             <ContainerIMG >
                                 <IMGUser source={UserIMG} />
                             </ContainerIMG>

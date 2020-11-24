@@ -27,7 +27,7 @@ export default ({ navigation }) => {
     const DeleteProperty = async () => {
         const options = {
             method: 'DELETE',
-            url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule',
+            url: 'https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule',
             params: { sys: 'SIS' },
             headers: {
                 cookie: 'JSESSIONID=33BF2936814F3F4270DB0A969E12D473',
@@ -57,7 +57,7 @@ export default ({ navigation }) => {
     }
 
     const getPropertiesList = async (id) => {
-        axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+        axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => {
                 const propriedades = []
                 if (Array.isArray(data)) {
@@ -65,7 +65,7 @@ export default ({ navigation }) => {
                         if (item.foto === "" && item.url != "") {
                             item.foto = item.url
                         } else {
-                            item.foto = 'http://dev.renovetecnologia.org:8049/imagens/image.jpg'
+                            item.foto = 'https://dev.renovetecnologia.org/imagens/image.jpg'
                         }
                         propriedades.push(item)
                         if (propriedades.length === data.length) setPropertiesList(propriedades)

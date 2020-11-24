@@ -42,20 +42,12 @@ export default props => {
 
     if(produto.propriedades && Array.isArray(produto.propriedades)) setProduto({...produto, propriedades: [...produto.propriedades, newProperty]})
     
-    
-    
-
-    // if(produto.propriedades && Array.isArray(produto.propriedades))
-    //     produto.propriedades.length > 0 ? setProduto({...produto, propriedades: [...produto.propriedades, tempProperty]}) : setProduto ({...produto, propriedades: [tempProperty]})
-
-    // console.log(produto.propriedades)
-    
   }
 
 
   const getPropertiesList = () => {
     try {
-      axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${produto.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+      axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${produto.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
       .then(async resp => {
         const list = await resp.data.map(item => ({ label: item.descricao, value: item.id_propriedade }))
 

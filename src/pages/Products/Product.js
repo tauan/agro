@@ -64,6 +64,7 @@ export default ({ navigation }) => {
   }])
 
   useEffect(() => {
+    console.log(navigation)
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
   }, []);
 

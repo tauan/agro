@@ -7,7 +7,7 @@ import axios from 'axios'
 import { showMessage } from "react-native-flash-message";
 
 import InputAnimated from '../../components/InputAnimated'
-import Primary from '../../components/Buttons/Primary'
+import Primary from '../../components/Buttons/PrimaryTouchable'
 import Link from '../../components/Buttons/Link'
 
 import { App, Form } from '../style'
@@ -40,10 +40,11 @@ export default ({ navigation }) => {
     controller ? setActiveButton(true) : setActiveButton(false)
   }
   const submitForm = async () => {
-    axios.post("http://dev.renovetecnologia.org:8049/webrunstudio/WS_LOGIN.rule?sys=SIS", {
-      usuario: email,
-      senha: password
-    }).then(async ({ data }) => {
+    
+    axios.post("https://dev.renovetecnologia.org/webrunstudio/WS_LOGIN.rule?sys=SIS",{
+        usuario: email,
+        senha: password  
+      }).then(async ({ data }) => {
       if (data.erro) {
         showMessage({
           message: data.erro,

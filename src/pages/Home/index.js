@@ -12,6 +12,7 @@ import AuthContext from '../../contexs/Auth'
 import BKG from './assets/background.jpg'
 import LogoContag from './assets/logo.png'
 import CheckSession from '../../utils/CheckSession'
+import axios from 'axios'
 
 import {
     TitleStyle,
@@ -34,7 +35,27 @@ export default ({ navigation }) => {
     const { logout, logoutWithoutAuthorization } = useContext(AuthContext)
     const { navigate } = navigation
 
-    useEffect(() => { CheckSession(user.token, logoutWithoutAuthorization) }, [])
+    useEffect(() => { CheckSession(user.token, logoutWithoutAuthorization); testConnection(); testConnection2(); testConnection3();}, [])
+
+    let counter = 0
+    let errors = 0
+
+
+    const getDatas = async () => {
+        try {
+            const productBase = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
+            const response = await axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { contentType: "application/json" , authorization: user.token } })
+            const cat = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
+            const uni = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
+            if(productBase, response, cat, uni) {
+                return true
+            }else {
+                return false
+            }
+        }catch(err) { return false }
+    }
+
+
 
     return (
         <ImageBackground source={BKG} style={{ flex: 1 }}>

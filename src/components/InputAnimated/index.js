@@ -23,7 +23,8 @@ export default props => {
     required = false,
     valid = "none",
     multiline = false,
-    editable = true
+    editable = true,
+    maxLength = 100
   } = props;
   const [isValid, setIsValid] = useState(true)
 

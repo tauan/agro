@@ -19,7 +19,9 @@ export default props => {
   }, [activePage])
 
   const onPress = (item) => {
-    setActivePage(item)
+    if(activePage.index > item.index) setActivePage(item)
+    if(item.validated) setActivePage(item)
+    if(pages[item.index - 1] && pages[item.index - 1].validated) setActivePage(item)
   }
 
   const animationProgress = useRef(new Animated.Value(0)).current

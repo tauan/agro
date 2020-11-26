@@ -35,7 +35,7 @@ export default ({ navigation }) => {
     const { logout, logoutWithoutAuthorization } = useContext(AuthContext)
     const { navigate } = navigation
 
-    useEffect(() => { CheckSession(user.token, logoutWithoutAuthorization); testConnection(); testConnection2(); testConnection3();}, [])
+    useEffect(() => { CheckSession(user.token, logoutWithoutAuthorization); }, [])
 
     let counter = 0
     let errors = 0
@@ -77,7 +77,7 @@ export default ({ navigation }) => {
                                 <MaterialCommunityIcons name="home-map-marker" size={60} color="#fff" />
                                 <TextStyle align="center" color="#fff">Locais de produção</TextStyle>
                             </ContainerItem>
-                            <ContainerItem background="#008b54" onPress={() => navigate('ProductScreen')} >
+                            <ContainerItem background="#008b54" onPress={() => navigate('ProductScreen', {update: false})} >
                                 <FontAwesome5 name="apple-alt" size={50} color="#fff" />
                                 <TextStyle align="center" color="#fff">Produtos</TextStyle>
                             </ContainerItem>

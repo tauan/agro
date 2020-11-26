@@ -6,22 +6,31 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import ModalMessage from '../../../components/ModalMessage'
 
 export default props => {
-  useEffect(() => { 
-    setSplash(false)
-    return () => setSplash(true)
-
-  }, [])
-  const { produto, ingredientes, setIngredientes, setSplash } = props
+  const { produto, ingredientes, setIngredientes, setSplash, pages, activePage, setPages, setValidation } = props
   const [tempIngrediente, setTempIngrediente] = useState("")
   const [activeModal, setActiveModal] = useState(false)
   const [update, setUpdate] = useState(false)
   const [item, setItem] = useState(undefined)
+
+  useEffect(() => { 
+    setSplash(false)
+
+    let tempPages = pages
+    tempPages[activePage.index].validated = true
+    setValidation(true)
+    setPages(tempPages)
+    
+    return () => setSplash(true)
+
+  }, [])
+
   const deleteIngrediente = index => {
     const list = ingredientes
     list.splice(index, 1)
     setIngredientes(list)
     setUpdate(update ? false : true)
   }
+
   return (
     <Form>
       <Row>

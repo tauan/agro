@@ -48,13 +48,13 @@ export default ({ navigation }) => {
     route: "Propriedade",
     textHeader: "Detalhes da propriedade",
     component: Propriedades,
-    validated: true
+    validated: false
   },
   {
     route: "Ingredientes",
     textHeader: "Ingredientes",
     component: Ingredientes,
-    validated: true
+    validated: false
   },
   {
     route: "Descricao",
@@ -64,11 +64,21 @@ export default ({ navigation }) => {
   }])
 
   useEffect(() => {
-    console.log(navigation)
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
+    checkProduct() 
   }, []);
 
   let imageHidde = false
+
+  const checkProduct = () => {
+    if(produto.id_produto) {
+      const tempPages = pages.map(item => {
+        item.validated = true 
+        return item
+      })
+      setPages(tempPages)
+    }
+  }
 
   const nextPage = () => {
     if (activePage !== undefined && activePage.index !== pages.length - 1) { }
@@ -94,9 +104,10 @@ export default ({ navigation }) => {
           titleStyle: { fontSize: 16 },
           icon: { icon: "danger", position: 'right' },
           position: 'top',
-          duration: 3000,
+          duration: 1500,
         })
-        setTimeout(()=> navigation.push("ProductScreen"), 3000)
+        
+        setTimeout(()=> navigation.navigate("ProductScreen", {update: true}), 1500)
         
         //navigation.popToTop()
       }

@@ -6,12 +6,16 @@ export default props => {
   const {produto, setProduto, setValidation, pages, activePage, setPages, setSplash} = props
 
   useEffect(() => {
-    setValidation(false);
     setSplash(false)
+
+    let tempPages = pages
+    tempPages[activePage.index].validated = true
+    setPages(tempPages)
+    setValidation(true)
+    
     return () => setSplash(true)
   }, [])
 
-  useEffect(() => { validateForm() }, [ produto.observacao])
 
   const validateForm = () => {
     const validations = []

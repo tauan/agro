@@ -12,7 +12,7 @@ import { Container, HeaderTitle } from './style'
 import ModalMessage from '../../components/ModalMessage'
 import {showMessage} from 'react-native-flash-message'
 
-export default ({ navigation }) => {
+export default ({ navigation, route, routes }) => {
     const [productsList, setProductsList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
@@ -20,9 +20,20 @@ export default ({ navigation }) => {
     const { user } = useContext(UserContext)
 
     useEffect(() => { 
+        console.log(route.params)
         setProduto(defaultProductContext)
         getProductList();
+
+        return () => { console.log("fechou")}
     }, [])
+
+    useEffect(()=> {
+        console.log(route.params)
+        if(route.params.update === true) {
+            console.log("att")
+            getProductList()
+        }
+    }, [route.params])
 
     const defaultProductContext = {
         id_produto: null,

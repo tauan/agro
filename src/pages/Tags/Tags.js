@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Animated, Dimensions, KeyboardAvoidingView } from 'react-native'
+import { Animated, Dimensions, KeyboardAvoidingView, Text, Image } from 'react-native'
+import { ProgressBar } from '@react-native-community/progress-bar-android'
 import { showMessage } from "react-native-flash-message"
 import DownloadFile from './utils/DownloadFile'
 import Header from '../../components/Header'
 import TagsContext from '../../contexs/Tags'
 import { App, Grid } from '../style'
 import UserContext from '../../contexs/User'
+import ModalMessage from '../../components/ModalMessage'
 import axios from 'axios'
 import {
   HeaderContainer,
@@ -21,6 +23,7 @@ export default ({ navigation }) => {
   const { activePage, etiquetas, setActivePage, setEtiquetas } = useContext(TagsContext)
   const { user } = useContext(UserContext)
   const [validation, setValidation] = useState(false)
+  const [active, setActive] = useState(false)
   const [pages, setPages] = useState([
     {
       route: "Etiquetas",
@@ -60,7 +63,10 @@ export default ({ navigation }) => {
           position: 'top',
           duration: 3000,
         })
-        DownloadFile(resp.data)
+        DownloadFile(resp.data).then(resp => {
+          console.log(resp)
+          setActive(false)
+        })
         navigation.navigate("TagsScreen")
       })
   }
@@ -109,6 +115,21 @@ export default ({ navigation }) => {
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
               {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} user={user} etiquetas={etiquetas} setEtiquetas={setEtiquetas} />}
             </PageScroll>
+            {active &&
+              <ModalMessage
+                style={{
+                  elevation: 0,
+                  backgroundColor: 'transparent',
+                  width: Dimensions.get('screen').width * 0.9,
+                  height: Dimensions.get('screen').height * 0.65,
+                }}
+                onPressCancelButton={(value) => setActive(value)} >
+                <Image source={{ uri: 'https://dev.renovetecnologia.org/imagens/tags.png' }} style={{ width: 200, height: 200, borderRadius: 100 }} />
+                <Text style={{ fontSize: 20, lineHeight: 48 }}>Estamos preparando tudo!</Text>
+                <ProgressBar
+                  styleAttr="Horizontal"  color="'#07AC82" style={{ width: '60%' }} />
+                <Text style={{ fontSize: 20, color: '#07AC82' }}>Aguarde...</Text>
+              </ModalMessage>}
           </KeyboardAvoidingView>
         </CleanContainer>
       </App>
@@ -116,7 +137,7 @@ export default ({ navigation }) => {
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
           <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Gerar Etiqueta")} shadow={2} onPress={() => {
-            activePage.index !== (pages.length - 1) ? nextPage() : submitForm();
+            activePage.index !== (pages.length - 1) ? nextPage() : setActive(true); submitForm();
           }} />
         </Grid>
       </FixedButtonContainer>

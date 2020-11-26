@@ -5,7 +5,7 @@ import { Container, ContainerIMG, IMGItem, Title, Button, TextButton } from './s
 
 export default (props) => {
     const { id, foto, descricao, url_imagem } = props.item
-    const { onPress, deleteFunction, index, url } = props
+    const { onPress, deleteFunction, index, url = 'https://dev.renovetecnologia.org/imagens/image.jpg' } = props
 
     const anim = useRef(new Animated.Value(0)).current
     let dlay = 0

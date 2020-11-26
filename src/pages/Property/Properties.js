@@ -47,16 +47,16 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const submitForm = () => {
+  const submitForm = async () => {
     const options = {
       method: 'POST',
       headers: { 'authorization': user.token },
-      data: propriedade,
+      data: Object.assign(propriedade, { id_agricultor: user.id_agricultor }),
       url: 'https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS',
     };
-    axios(options)
+    await axios(options)
       .then(resp => {
-        resp.data && showMessage({
+        resp.suscesso && showMessage({
           message: 'Propriedade cadastrada com sucesso!',
           type: "success",
           style: { justifyContent: 'space-between', alignItems: 'center' },

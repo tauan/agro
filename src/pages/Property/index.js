@@ -40,7 +40,7 @@ export default ({ navigation }) => {
             }
         };
 
-        axios.request(options).then(function (response) {
+        await axios.request(options).then(function (response) {
             response.data.sucesso && showMessage({
                 message: 'Propriedade deletada com sucesso!',
                 type: "success",
@@ -57,15 +57,13 @@ export default ({ navigation }) => {
     }
 
     const getPropertiesList = async (id) => {
-        axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+        await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => {
                 const propriedades = []
                 if (Array.isArray(data)) {
                     data.map(async item => {
                         if (item.foto === "" && item.url != "") {
                             item.foto = item.url
-                        } else {
-                            item.foto = 'https://dev.renovetecnologia.org/imagens/image.jpg'
                         }
                         propriedades.push(item)
                         if (propriedades.length === data.length) setPropertiesList(propriedades)

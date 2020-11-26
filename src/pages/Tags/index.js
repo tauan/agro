@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { View, TouchableOpacity, Text, Dimensions, FlatList  } from 'react-native'
+import { View, TouchableOpacity, Text, Dimensions, FlatList, Image } from 'react-native'
+import { ProgressBar } from '@react-native-community/progress-bar-android'
 import { showMessage } from "react-native-flash-message"
 import RNFetchBlob from 'rn-fetch-blob'
 import Share from 'react-native-share';
@@ -26,6 +27,7 @@ export default ({ navigation }) => {
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
     const [active, setActive] = useState(false)
+    const [activeTagModal, setActiveTagModal] = useState(false)
     const { user } = useContext(UserContext)
     const { etiquetas, setEtiquetas } = useContext(Tags)
 
@@ -76,7 +78,8 @@ export default ({ navigation }) => {
                 params: { IDENTIFICADOR: item.chave_identificador, MODELO_ETIQUETA: item.modelo_etiqueta }
             };
             const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/IMPRESSAO_ETIQUETA_APP.rule?sys=SIS', options)
-            DownloadFile({ url: data, uuid: item.chave_identificador })
+            DownloadFile({ url: data, uuid: item.chave_identificador }).then(resp => console.log(resp))
+            setActiveTagModal(false)
         } catch (err) {
             console.log(err)
         }
@@ -88,6 +91,7 @@ export default ({ navigation }) => {
             if (resp) {
                 setActive(true)
             } else {
+                setActiveTagModal(true)
                 GetFile(item)
             }
         })
@@ -118,7 +122,7 @@ export default ({ navigation }) => {
                             <TitleStyle>Etiquetas</TitleStyle>
                             <TextStyle>Cadastrar, excluir e gerar etiquetas.</TextStyle>
                         </HeaderTitle>
-                        <Primary title="Cadastrar etiquetas" width={150} onPress={() => { navigation.navigate("TagsForm") }} />
+                        <Primary title="Cadastrar etiquetas" width={150} onPress={() => { setEtiquetas({}); navigation.navigate("TagsForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     {tagsList.length > 0 &&
@@ -195,6 +199,21 @@ export default ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                    </ModalMessage>}
+                {activeTagModal &&
+                    <ModalMessage
+                        style={{
+                            elevation: 0,
+                            backgroundColor: 'transparent',
+                            width: Dimensions.get('screen').width * 0.9,
+                            height: Dimensions.get('screen').height * 0.65,
+                        }}
+                        onPressCancelButton={(value) => setActive(value)} >
+                        <Image source={{ uri: 'https://dev.renovetecnologia.org/imagens/tags.png' }} style={{ width: 200, height: 200, borderRadius: 100 }} />
+                        <Text style={{ fontSize: 20, lineHeight: 48 }}>Estamos preparando tudo!</Text>
+                        <ProgressBar
+                            styleAttr="Horizontal" color="'#07AC82" style={{ width: '60%' }} />
+                        <Text style={{ fontSize: 20, color: '#07AC82' }}>Aguarde...</Text>
                     </ModalMessage>}
             </App >
         </>

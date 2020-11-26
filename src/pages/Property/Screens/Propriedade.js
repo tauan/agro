@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import InputAnimated from '../../../components/InputAnimated'
 import { Form, Row } from '../style'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
+import UserContext from '../../../contexs/User'
+import axios from 'axios'
 
 export default props => {
   const { propriedade, setPropriedade, setValidation, activePage, pages, setPages } = props
+  const { user } = useContext(UserContext)
+  const [federacoes, setFederacoes] = useState([])
 
   useEffect(() => {
     setValidation(false)
+    GetFederacoes()
   }, [])
+  useEffect(() => {
+    let list = []
+    list.push(propriedade.cep)
+    list.length == 8 && ViaCep()
+  }, [propriedade.cep])
 
   useEffect(() => { validateForm() }, [
     propriedade.cep,
@@ -54,6 +64,25 @@ export default props => {
     return list
   }
 
+  const GetFederacoes = async () => {
+    let list = []
+    const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_FEDERACOES.rule?sys=SIS', { headers: { authorization: user.token } })
+    data.map(resp => list.push({ label: resp.sigla, value: resp.id_uf }))
+    setFederacoes(list)
+  }
+
+  const ViaCep = async () => {
+    const { data } = await axios(`https://viacep.com.br/ws/${propriedade.cep.replace('-', '')}/json/`)
+    !data.erro && propriedade.id_propriedade === undefined && setPropriedade({
+      ...propriedade,
+      complemento: data.complemento,
+      logradouro: data.logradouro,
+      bairro: data.bairro,
+      municipio: data.localidade,
+      uf: federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
+    })
+  }
+
   return (
     <Form>
       <InputAnimated
@@ -84,14 +113,16 @@ export default props => {
         />
         <InputAnimated
           placeholder='CEP'
-          onChangeText={text => setPropriedade({ ...propriedade, cep: text })}
+          keyboardType="numeric"
+          onChangeText={text => setPropriedade({ ...propriedade, cep: text.replace(/(\d{5})(\d{3})/g, '$1-$2') })}
           value={propriedade.cep}
           width="30.8%"
         />
-        <InputAnimated
-          placeholder='UF'
-          onChangeText={text => setPropriedade({ ...propriedade, uf: text })}
-          value={propriedade.uf}
+        <AnimatedDropDown
+          defaultValue={propriedade.uf}
+          placeholder="UF"
+          listOptions={federacoes}
+          onChangeItem={response => setPropriedade({ ...propriedade, uf: response })}
           width="30.8%"
         />
         <InputAnimated

@@ -2,7 +2,7 @@ import { PermissionsAndroid } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob'
 
 const DownloadFile = async (value) => {
-
+    let data = (value) => value
     try {
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
@@ -16,19 +16,18 @@ const DownloadFile = async (value) => {
                     notification: true,
                     title: `${value.uuid}.pdf`,
                     mime: 'application/pdf',
-                    description: 'Your test reports.',
+                    description: 'Etiquetas.',
                     path: dirs.DownloadDir + `/${value.uuid}.pdf`,
                 }
             }).fetch('GET', value.url)
-                .then((resp) => {
-                    console.log(resp.data)
-                })
+                .then(resp => console.log(resp))
         } else {
-            console.log('Permission denied');
+            console.log('Permissão negada!');
         }
     } catch (err) {
         console.warn(err);
     }
+    console.log(data())
 }
 
 export default DownloadFile

@@ -73,7 +73,8 @@ export default props => {
   }
 
   const SetValidDate = (emissao) => {
-    const validDays = produtos.map(({ value, dias_validade }) => value === id_produto && dias_validade)
+    const validDays = produtos.filter(({ value }) => value === id_produto).map(({ dias_validade }) => dias_validade)[0]
+    console.log(validDays)
     if (emissao) {
       const days = emissao.substring(0, 2) >= 10 ? emissao.substring(0, 2) : emissao.substring(0, 1)
       const month = days < 10 ? emissao.substring(2, 4) : emissao.substring(3, 5)

@@ -5,6 +5,8 @@ import { ProductProvider } from '../contexs/ProductContext'
 import { PropertiesProvider } from '../contexs/Properties'
 import { TagsProvider } from '../contexs/Tags'
 import HomeScreen from '../pages/Home';
+import ProfileScreen from '../pages/Profile';
+import ProfileForm from '../pages/Profile/Screens/Perfil';
 import PropertyScreen from '../pages/Property/';
 import ProductScreen from '../pages/Products/index';
 import ProductForm from '../pages/Products/Product';
@@ -26,6 +28,8 @@ const MainRoutes = props => {
               animationEnabled: false,
             }}>
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="ProfileForm" component={ProfileForm} />
             <Stack.Screen name="PropertyScreen" component={PropertyScreen} />
             <Stack.Screen name="ProductScreen" component={ProductScreen} />
             <Stack.Screen name="ProductForm" component={ProductForm} />

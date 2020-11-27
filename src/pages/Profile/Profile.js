@@ -17,7 +17,7 @@ import {
   FixedButtonContainer
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
-import Propriedade from './Screens/Propriedade'
+import Propriedade from './Screens/Perfil'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
 const { width } = Dimensions.get("window");
@@ -178,7 +178,7 @@ export default ({ navigation }) => {
       <FixedButtonContainer
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : propriedade.id_propriedade != undefined ? "Atualizar" : "Cadastrar")} shadow={2} onPress={() => {
+          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Atualizar dados")} shadow={2} onPress={() => {
             activePage.index !== (pages.length - 1) ? nextPage() : submitForm();
           }} />
         </Grid>

@@ -14,6 +14,7 @@ export default props => {
     setValidation(false)
     GetFederacoes()
   }, [])
+
   useEffect(() => {
     String(propriedade.cep).length >= 9 && ViaCep()
   }, [propriedade.cep])
@@ -83,7 +84,7 @@ export default props => {
 
   return (
     <Form>
-      <InputAnimated
+      {/* <InputAnimated
         placeholder='Nome da propriedade'
         onChangeText={text => setPropriedade({ ...propriedade, descricao: text })}
         value={propriedade.descricao}
@@ -148,7 +149,7 @@ export default props => {
           value={propriedade.municipio}
           width="100%"
         />
-      </Row>
+      </Row> */}
     </Form>
   )
 }

@@ -12,7 +12,6 @@ import AuthContext from '../../contexs/Auth'
 import BKG from './assets/background.jpg'
 import LogoContag from './assets/logo.png'
 import CheckSession from '../../utils/CheckSession'
-import axios from 'axios'
 
 import {
     TitleStyle,
@@ -37,26 +36,6 @@ export default ({ navigation }) => {
 
     useEffect(() => { CheckSession(user.token, logoutWithoutAuthorization); }, [])
 
-    let counter = 0
-    let errors = 0
-
-
-    const getDatas = async () => {
-        try {
-            const productBase = await axios.get("http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS", { headers: { authorization: user.token } })
-            const response = await axios.get(`http://dev.renovetecnologia.org:8049/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { contentType: "application/json" , authorization: user.token } })
-            const cat = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
-            const uni = await axios.get('http://dev.renovetecnologia.org:8049/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
-            if(productBase, response, cat, uni) {
-                return true
-            }else {
-                return false
-            }
-        }catch(err) { return false }
-    }
-
-
-
     return (
         <ImageBackground source={BKG} style={{ flex: 1 }}>
             <LinearGradient colors={['#3ae25480', '#00261080']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1, justifyContent: 'center' }}>
@@ -70,10 +49,10 @@ export default ({ navigation }) => {
                             </ContainerIMG>
                             <TitleStyle style={{ marginTop: 15 }} fontsize={28} align="center">{user.usr_nome}</TitleStyle>
                             <TextStyle>STR de Vitória da Conquista - BA</TextStyle>
-                            <Primary width="100%" title='Editar perfil' fontsize={18} />
+                            <Primary width="100%" onPress={() => navigate('ProfileScreen')} title='Editar perfil' fontsize={18} />
                         </Header>
                         <ContainerButtons direction="row">
-                            <ContainerItem background="#008b54" onPress={() => navigate('PropertyScreen')}>
+                            <ContainerItem background="#008b54" onPress={() => navigate('PropertyScreen', {update: false})}>
                                 <MaterialCommunityIcons name="home-map-marker" size={60} color="#fff" />
                                 <TextStyle align="center" color="#fff">Locais de produção</TextStyle>
                             </ContainerItem>
@@ -81,7 +60,7 @@ export default ({ navigation }) => {
                                 <FontAwesome5 name="apple-alt" size={50} color="#fff" />
                                 <TextStyle align="center" color="#fff">Produtos</TextStyle>
                             </ContainerItem>
-                            <ContainerItem background="#008b54" onPress={() => navigate('TagsScreen')}>
+                            <ContainerItem background="#008b54" onPress={() => navigate('TagsScreen', {update: false})}>
                                 <MaterialIcons name="qr-code-2" size={50} color="#fff" />
                                 <TextStyle align="center" color="#fff">Etiquetas</TextStyle>
                             </ContainerItem>

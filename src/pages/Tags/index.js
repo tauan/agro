@@ -22,7 +22,7 @@ import {
 } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
     const [tagsList, setTagsList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
@@ -30,8 +30,15 @@ export default ({ navigation }) => {
     const [activeTagModal, setActiveTagModal] = useState(false)
     const { user } = useContext(UserContext)
     const { etiquetas, setEtiquetas } = useContext(Tags)
+    useEffect(() => {
+        getTagsList()
+    }, [])
 
-    useEffect(() => { getTagsList() }, [etiquetas])
+    useEffect(() => {
+        if (route.params.update === true) {
+            getTagsList()
+        }
+    }, [route.params])
 
     const getTagsList = async (id) => {
         axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_ETIQUETAS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })

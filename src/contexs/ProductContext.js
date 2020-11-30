@@ -24,6 +24,7 @@ export const ProductProvider = ({ children }) => {
         unidade_medida_1: "",
         unidade_medida_2: "",
         quantidade_producao: "",
+        in_natura: [],
         propriedades: []
     });
     const [propriedades, setPropriedades] = useState([]);

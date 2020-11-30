@@ -15,7 +15,8 @@ import {
   CleanContainer,
   FixedButtonContainer,
   SplashContainer,
-  TextSplash
+  TextSplash,
+  Row
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
 
@@ -174,6 +175,10 @@ export default ({ navigation }) => {
     }
   }
 
+  const goBack = () => {
+    setActivePage(pages[activePage.index - 1])
+  }
+
   return (
     <>
       {splash === true && (<SplashContainer>
@@ -239,7 +244,11 @@ export default ({ navigation }) => {
       <FixedButtonContainer
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => { onPressFloatButton() }} />
+          <Row>
+            {(activePage !== undefined && activePage.index > 0) && <Primary marginTop={0} title="<" width="15%" onPress={()=>goBack()} />}
+            
+            <Primary marginTop={0} width={(activePage !== undefined && activePage.index > 0) ? "82%" : "100%"} title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => { onPressFloatButton() }} />
+          </Row>
         </Grid>
       </FixedButtonContainer>
     </>

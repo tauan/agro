@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import ModalMessage from '../../../components/ModalMessage'
 
 export default props => {
-  const { produto, ingredientes, setIngredientes, setSplash, pages, activePage, setPages, setValidation } = props
+  const { produto, setProduto, ingredientes, setIngredientes, setSplash, pages, activePage, setPages, setValidation } = props
   const [tempIngrediente, setTempIngrediente] = useState("")
   const [activeModal, setActiveModal] = useState(false)
   const [update, setUpdate] = useState(false)
@@ -25,10 +25,19 @@ export default props => {
   }, [])
 
   const deleteIngrediente = index => {
-    const list = ingredientes
+    const list = produto.in_natura
     list.splice(index, 1)
-    setIngredientes(list)
+    setProduto({...produto, in_natura: list})
     setUpdate(update ? false : true)
+  }
+
+  const addItem = () => {
+    if(Array.isArray(produto.in_natura)) {
+      setProduto({...produto, in_natura:[...produto.in_natura, tempIngrediente]}) 
+    }else {
+      setProduto({...produto, in_natura:[tempIngrediente]}) 
+    }
+    setTempIngrediente("")
   }
 
   return (
@@ -41,11 +50,11 @@ export default props => {
           value={tempIngrediente}
           width="80%"
         />
-        <Primary width="18%" title='+' shadow={2} onPress={() => { tempIngrediente !== "" ? (setIngredientes([...ingredientes, tempIngrediente]), setTempIngrediente("")) : "" }} />
+        <Primary width="18%" title='+' shadow={2} onPress={() => { tempIngrediente !== "" ? addItem() : "" }} />
       </Row>
       <ContainerList>
-        {ingredientes.length === 0 && <Subtitle>Nenhum item para ser exibido </Subtitle>}
-        {ingredientes.length > 0 && ingredientes.map((item, index) => (
+        {(!Array.isArray(produto.in_natura) || produto.in_natura.length === 0 ) && <Subtitle>Nenhum item para ser exibido </Subtitle>}
+        {(Array.isArray(produto.in_natura) && produto.in_natura.length > 0) && produto.in_natura.map((item, index) => (
           <ItemContainer key={index}>
             <ItemText>{item}</ItemText>
             <DeleteButton>

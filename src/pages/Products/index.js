@@ -19,18 +19,13 @@ export default ({ navigation, route, routes }) => {
     const { setProduto, produto } = useContext(ProductContext)
     const { user } = useContext(UserContext)
 
-    useEffect(() => { 
-        console.log(route.params)
+    useEffect(() => {
         setProduto(defaultProductContext)
         getProductList();
-
-        return () => { console.log("fechou")}
     }, [])
 
     useEffect(()=> {
-        console.log(route.params)
         if(route.params.update === true) {
-            console.log("att")
             getProductList()
         }
     }, [route.params])
@@ -55,6 +50,7 @@ export default ({ navigation, route, routes }) => {
         unidade_medida_1: null,
         unidade_medida_2: null,
         quantidade_producao: "",
+        in_natura: [],
         propriedades: []
     }
 
@@ -136,7 +132,7 @@ export default ({ navigation, route, routes }) => {
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
-                        data={productsList.filter(produto => produto.descricao.indexOf(value) != -1)}
+                        data={productsList.filter(produto => produto.descricao.indexOf(value.toUpperCase()) != -1)}
                         renderItem={({ item, index }) =>
                             <Items item={item} index={index} onPress={() => { setParsedItem(item); navigation.navigate("ProductForm") }} deleteFunction={() =>{ setProduto(item); setActiveModal(true)}} />
                         }

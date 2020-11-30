@@ -16,34 +16,32 @@ export default props => {
   useEffect(()=> { 
     setSplash(false)
     getPropertiesList()
+
     return () => setSplash(true)
    }, [])
 
   const addNewProperty = () => {
-    if(produto.propriedades === undefined) {
-    // setProduto({...produto, propriedades: [tempProperty]})
-      return // caso seja undefined a função ja para aqui
-    }
-    if(tempProperty === "") return // caso não haja um tempProperty ou items na lista a função apra aqui
-    const response = produto.propriedades.filter(item => item.id_propriedade === tempProperty)
-    if(response.length > 0) return
+ //[{"descricao": "FAZENDA CANTO DO RIO", "id_propriedade": 5}, {"descricao": "FAZENDA FELIZ D'AGUA", "id_propriedade": 6}]
 
-    propriedadesList.map(item => {
-      if(item.id_propriedade === tempProperty) 
-        console.log(item)
-      console.log("*******************")
-    })
-    console.log(propriedadesList)
-    
-    const newProperty = {
+    if(tempProperty==="") return 
+    if(produto.propriedades.length > 0) {
+      const response = produto.propriedades.filter(item => item.id_propriedade === tempProperty)
+      if(response.length > 0) return
+    }
+    let newProperty = {
       descricao: "",
-      id_propriedade: parseInt(tempProperty) 
+      id_propriedade: undefined
     }
-
+    propriedadesList.map(property => {
+      if(property.value === tempProperty) 
+      newProperty = {
+        descricao: property.label,
+        id_propriedade: property.value
+      }
+    })
     if(produto.propriedades && Array.isArray(produto.propriedades)) setProduto({...produto, propriedades: [...produto.propriedades, newProperty]})
     
   }
-
 
   const getPropertiesList = () => {
     try {

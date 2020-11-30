@@ -177,15 +177,7 @@ export const DeleteButton = Styled.TouchableOpacity`
   justify-content: center
 `
 
-export const SplashContainer = Styled.View`
-  position: absolute;
-  width: ${width}px;
-  height: 100%;
-  background: #fff;
-  z-index: 10;
-  align-items: center;
-  justify-content: center
-`
+
 export const TextSplash = Styled.Text`
   color: #ccc;
   font-size: 15px;

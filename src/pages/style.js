@@ -1,4 +1,7 @@
 import Styled from 'styled-components/native'
+import {Dimensions} from 'react-native'
+
+const {width} = Dimensions.get("window")
 
 export const App = Styled.View`
   flex: 1;
@@ -64,4 +67,13 @@ export const TextStyle = Styled.Text`
   font-size: ${props => props.fontsize ? props.fontsize : 14}px;
   color: ${props => props.color ? props.color : '#333'};
   text-align: ${props => props.align ? props.align : 'left'};
+`
+export const SplashContainer = Styled.View`
+  position: absolute;
+  width: ${width}px;
+  height: 100%;
+  background: #fff;
+  z-index: 10;
+  align-items: center;
+  justify-content: center
 `

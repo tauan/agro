@@ -49,7 +49,7 @@ export default ({ navigation }) => {
                             </ContainerIMG>
                             <TitleStyle style={{ marginTop: 15 }} fontsize={28} align="center">{user.usr_nome}</TitleStyle>
                             <TextStyle>STR de Vitória da Conquista - BA</TextStyle>
-                            <Primary width="100%" onPress={() => navigate('ProfileScreen')} title='Editar perfil' fontsize={18} />
+                            <Primary width="100%" onPress={() => navigate('ProfileForm')} title='Editar perfil' fontsize={18} />
                         </Header>
                         <ContainerButtons direction="row">
                             <ContainerItem background="#008b54" onPress={() => navigate('PropertyScreen', {update: false})}>

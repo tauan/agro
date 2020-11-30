@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { showMessage } from "react-native-flash-message"
 import ImagePicker from 'react-native-image-picker'
 import axios from 'axios'
 import Header from '../../components/Header'
-import { App, Grid } from '../style'
+import { App, Grid, TitleStyle, TextStyle, SplashContainer } from '../style'
 import UserContext from '../../contexs/User'
 import {
   HeaderContainer,
@@ -13,7 +13,8 @@ import {
   ImgBackground,
   ButtonImageContainer,
   CleanContainer,
-  FixedButtonContainer
+  FixedButtonContainer,
+  HeaderTitle,
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
 import Perfil from './Screens/Perfil'
@@ -25,6 +26,7 @@ export default ({ navigation }) => {
   const { user, profile, activePage, setProfile, setActivePage } = useContext(UserContext)
   const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
+  const [splash, setSplash] = useState(true)
   const [pages, setPages] = useState([
     {
       route: "",
@@ -33,24 +35,22 @@ export default ({ navigation }) => {
       validated: true
     },
   ])
+  let imageHidde = false
+  
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
-  }, [pages]);
-
-  useEffect(() => {
     GetDataUser()
-  }, [])
-
-  let imageHidde = false
-
-  const nextPage = () => {
-    if (activePage !== undefined && activePage.index !== pages.length - 1) { }
-    setActivePage(pages[activePage.index + 1])
-  }
+  }, [pages]);
 
   const GetDataUser = async () => {
     const { data } = await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_AGRICULTOR.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
     setProfile(data)
+    setSplash(false)
+  }
+
+  const nextPage = () => {
+    if (activePage !== undefined && activePage.index !== pages.length - 1) { }
+    setActivePage(pages[activePage.index + 1])
   }
 
   const submitForm = async () => {
@@ -123,6 +123,17 @@ export default ({ navigation }) => {
 
   return (
     <>
+      {splash === true && (
+        <SplashContainer>
+          <HeaderTitle style={{ width: '100%' }}>
+            <TitleStyle align="center">Aguade...</TitleStyle>
+            <ActivityIndicator size={50} color="#008b54" />
+            <TextStyle fontsize={18} align="center">Estamos preparando tudo para você!</TextStyle>
+          </HeaderTitle>
+        </SplashContainer>
+        
+      )
+      }
       <Header color="#07AC82" navigation={navigation} />
       <App>
         <HeaderContainer>

@@ -4,7 +4,7 @@ import { showMessage } from "react-native-flash-message"
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import ProductContext from '../../contexs/ProductContext'
-import { App, Grid } from '../style'
+import { App, Grid, SplashContainer } from '../style'
 import UserContext from '../../contexs/User'
 import {
   HeaderContainer,
@@ -14,7 +14,6 @@ import {
   ButtonImageContainer,
   CleanContainer,
   FixedButtonContainer,
-  SplashContainer,
   TextSplash,
   Row
 } from './style'

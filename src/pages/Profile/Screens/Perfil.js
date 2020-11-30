@@ -4,30 +4,22 @@ import InputDate from '../../../components/InputDate'
 import { Form, Row } from '../style'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
 import axios from 'axios'
-import moment from 'moment'
 
 export default props => {
   const { profile, user, setProfile, setValidation, activePage, pages, setPages } = props
   const [federacoes, setFederacoes] = useState([])
 
   useEffect(() => {
+    console.log(profile)
     setValidation(false)
     GetFederacoes()
   }, [])
 
   useEffect(() => {
-    String(profile.cep).length >= 9 && ViaCep()
-  }, [profile.cep])
+    ViaCep()
+  }, [profile.cep_propriedade, federacoes])
 
-  useEffect(() => { validateForm() }, [
-    profile.cep,
-    profile.ccir,
-    profile.endereco,
-    profile.condicoes_posse,
-    profile.cidade,
-    profile.uf,
-    profile.area,
-  ])
+  useEffect(() => { validateForm() }, [])
 
   const validateForm = () => {
     const validations = [profile]
@@ -62,21 +54,20 @@ export default props => {
   }
 
   const ViaCep = async () => {
-    try {
-      const cep = profile.cep_propriedade.replace('-', '')
-      const { data } = await axios.get(`http://cep.republicavirtual.com.br/web_cep.php?cep=${cep}&formato=jsonp`)
-      setProfile({
-        ...profile,
-        complemento: data.complemento,
-        logradouro_propriedade: data.logradouro,
-        bairro_propriedade: data.bairro,
-        municipio: data.cidade,
-        id_uf: federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
-      })
-    } catch (e) {
-      console.log(e)
-    }
+    const cep = profile.cep_propriedade.replace('-', '')
+    const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+    console.log(data)
+    const idUF = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
+    setProfile({
+      ...profile,
+      complemento: data.complemento,
+      logradouro_propriedade: data.logradouro,
+      bairro_propriedade: data.bairro,
+      municipio: data.localidade,
+      id_uf: idUF
+    })
   }
+
   return (
     <Form>
       <InputAnimated
@@ -104,9 +95,8 @@ export default props => {
           completeDate={true}
           placeholder="Data de nascimento"
           width="48%"
-          onChangeDate={text =>
-            setProfile({ ...profile, data_nascimento: text })
-          } />
+          onChangeDate={text => setProfile({ ...profile, data_nascimento: text })}
+        />
         <AnimatedDropDown
           defaultValue={profile.id_sexo}
           placeholder="Sexo"
@@ -170,7 +160,9 @@ export default props => {
           placeholder='CEP'
           maxLength={9}
           keyboardType="numeric"
-          onChangeText={text => setProfile({ ...profile, cep_propriedade: text.replace(/(\d{5})(\d{3})/g, '$1-$2') })}
+          onChangeText={text => {
+            setProfile({ ...profile, cep_propriedade: text.replace(/(\d{5})(\d{3})/g, '$1-$2') })
+          }}
           value={profile.cep_propriedade ? profile.cep_propriedade.replace(/(\d{5})(\d{3})/g, '$1-$2') : profile.cep_propriedade}
           width="48%"
         />
@@ -178,7 +170,7 @@ export default props => {
           defaultValue={profile.id_uf}
           placeholder="UF"
           listOptions={federacoes}
-          onChangeItem={response => setProfile({ ...profile, uf: response })}
+          onChangeItem={response => setProfile({ ...profile, id_uf: response })}
           width="48%"
         />
         <InputAnimated

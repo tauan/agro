@@ -15,14 +15,21 @@ import {
 } from './style'
 import ModalMessage from '../../components/ModalMessage'
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
     const [propertyList, setPropertiesList] = useState([])
     const [value, setValue] = useState('')
     const [activeModal, setActiveModal] = useState(false)
     const { user } = useContext(UserContext)
     const { propriedade, setPropriedade } = useContext(Properties)
+    useEffect(() => {
+        getPropertiesList()
+    }, [])
 
-    useEffect(() => { getPropertiesList(); }, [])
+    useEffect(() => {
+        if (route.params.update === true) {
+            getPropertiesList()
+        }
+    }, [route.params])
 
     const DeleteProperty = async () => {
         const options = {
@@ -82,11 +89,14 @@ export default ({ navigation }) => {
                             <TitleStyle>Locais de produção</TitleStyle>
                             <TextStyle>Cadastrar, excluir e editar locais de produção</TextStyle>
                         </HeaderTitle>
-                        <Primary title={`Cadastrar Local`} width={150} onPress={() => { setPropriedade({}); navigation.navigate("PropertiesForm") }} />
+                        <Primary title={`Cadastrar Local`} width={150} onPress={() => {
+                            setPropriedade({});
+                            navigation.navigate("PropertiesForm")
+                        }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
                     <FlatList
-                        data={propertyList.filter(produto => produto.descricao.indexOf(value) != -1)}
+                        data={propertyList.filter(produto => produto.descricao.indexOf(value.toUpperCase()) != -1)}
                         renderItem={({ item, index }) =>
                             <Items
                                 item={item}

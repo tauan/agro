@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { KeyboardAvoidingView, ScrollView } from 'react-native'
 
-import Dropdown from '../../components/Dropdown'
+import AnimatedDropDown from '../../components/AnimatedDropDown'
 import InputAnimated from '../../components/InputAnimated'
 import Primary from '../../components/Buttons/Primary'
 import Header from '../../components/Header'
@@ -27,6 +27,11 @@ export default ({ navigation }) => {
                     <Form>
                         <KeyboardAvoidingView>
                             <TitleStyle>Criar Conta</TitleStyle>
+                            <AnimatedDropDown
+                                defaultValue={sexo}
+                                placeholder="Sindicato"
+                                onChangeItem={text => setSexo(text)}
+                                listOptions={['Masculino', 'Feminino']} />
                             <InputAnimated
                                 placeholder='Nome'
                                 onChangeText={text => setNome(text)}
@@ -37,7 +42,7 @@ export default ({ navigation }) => {
                                 onChangeText={text => setCPF_CNPJ(text)}
                                 value={cpf_cnpj}
                             />
-                            <Dropdown
+                            <AnimatedDropDown
                                 defaultValue={sexo}
                                 placeholder="Sexo"
                                 onChangeItem={text => setSexo(text)}

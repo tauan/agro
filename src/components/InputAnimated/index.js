@@ -28,10 +28,10 @@ export default props => {
   } = props;
   const [isValid, setIsValid] = useState(true)
 
-  const animation = new Animated.Value(value === undefined ? 0 : (value.length === 0 ? 0 : 100));
+  const animation = new Animated.Value(value === undefined || value === null ? 0 : (value.length === 0 ? 0 : 100));
 
   const animateText = value => {
-    if (value === undefined || value.length === 0) {
+    if (value === undefined || value === null || value.length === 0) {
       Animated.timing(animation, {
         toValue: 100,
         duration: 200,
@@ -58,9 +58,11 @@ export default props => {
     }
   };
   return (
-    <View style={{ width, marginTop, backgroundColor: editable ? backgroundColor : "#efefef", height,
-      borderRadius}}>
-      
+    <View style={{
+      width, marginTop, backgroundColor: editable ? backgroundColor : "#efefef", height,
+      borderRadius
+    }}>
+
       <Animated.Text
         style={{
           position: 'absolute',
@@ -83,7 +85,7 @@ export default props => {
         {props.placeholder}
       </Animated.Text>
       <TextInput
-      editable={editable}
+        editable={editable}
         style={{
           backgroundColor: "transparent",
           height,

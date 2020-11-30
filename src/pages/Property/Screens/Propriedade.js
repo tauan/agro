@@ -15,9 +15,7 @@ export default props => {
     GetFederacoes()
   }, [])
   useEffect(() => {
-    let list = []
-    list.push(propriedade.cep)
-    list.length == 8 && ViaCep()
+    String(propriedade.cep).length >= 9 && ViaCep()
   }, [propriedade.cep])
 
   useEffect(() => { validateForm() }, [
@@ -113,6 +111,7 @@ export default props => {
         />
         <InputAnimated
           placeholder='CEP'
+          maxLength={9}
           keyboardType="numeric"
           onChangeText={text => setPropriedade({ ...propriedade, cep: text.replace(/(\d{5})(\d{3})/g, '$1-$2') })}
           value={propriedade.cep}

@@ -12,7 +12,7 @@ export const PropertiesProvider = ({ children }) => {
     complemento: "",
     condicoes_posse: "",
     descricao: "",
-    foto: "",
+    foto: null,
     id_agricultor: undefined,
     id_propriedade: undefined,
     latitude: "",

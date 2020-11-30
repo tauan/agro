@@ -67,7 +67,7 @@ export default ({ navigation }) => {
           console.log(resp)
           setActive(false)
         })
-        navigation.navigate("TagsScreen")
+        navigation.navigate("TagsScreen", { update: true })
       })
   }
 
@@ -127,7 +127,7 @@ export default ({ navigation }) => {
                 <Image source={{ uri: 'https://dev.renovetecnologia.org/imagens/tags.png' }} style={{ width: 200, height: 200, borderRadius: 100 }} />
                 <Text style={{ fontSize: 20, lineHeight: 48 }}>Estamos preparando tudo!</Text>
                 <ProgressBar
-                  styleAttr="Horizontal"  color="'#07AC82" style={{ width: '60%' }} />
+                  styleAttr="Horizontal" color="'#07AC82" style={{ width: '60%' }} />
                 <Text style={{ fontSize: 20, color: '#07AC82' }}>Aguarde...</Text>
               </ModalMessage>}
           </KeyboardAvoidingView>

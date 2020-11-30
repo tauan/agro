@@ -37,20 +37,11 @@ export default ({ navigation }) => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
   }, [pages]);
 
-  useEffect(() => {
-    GetDataUser()
-  }, [])
-
   let imageHidde = false
 
   const nextPage = () => {
     if (activePage !== undefined && activePage.index !== pages.length - 1) { }
     setActivePage(pages[activePage.index + 1])
-  }
-
-  const GetDataUser = async () => {
-    const { data } = await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_AGRICULTOR.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
-    setProfile(data)
   }
 
   const submitForm = async () => {

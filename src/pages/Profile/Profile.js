@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import { showMessage } from "react-native-flash-message"
-import axios from 'axios'
 import ImagePicker from 'react-native-image-picker'
+import axios from 'axios'
 import Header from '../../components/Header'
-import PropertiesContext from '../../contexs/Properties'
 import { App, Grid } from '../style'
 import UserContext from '../../contexs/User'
 import {
@@ -17,29 +16,30 @@ import {
   FixedButtonContainer
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
-import Propriedade from './Screens/Perfil'
+import Perfil from './Screens/Perfil'
 import AnimatedProgress from '../../components/AnimatedProgress'
 
 const { width } = Dimensions.get("window");
 
 export default ({ navigation }) => {
-  const { activePage, propriedade, setActivePage, setPropriedade } = useContext(PropertiesContext)
-  const { user } = useContext(UserContext)
-  const [image, setImage] = useState(undefined)
+  const { user, profile, activePage, setProfile, setActivePage } = useContext(UserContext)
   const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
   const [pages, setPages] = useState([
     {
-      route: "Propriedade",
-      textHeader: "Dados da propriedade",
-      component: Propriedade,
+      route: "",
+      textHeader: "Dados do usuário",
+      component: Perfil,
       validated: true
     },
   ])
-
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
   }, [pages]);
+
+  useEffect(() => {
+    GetDataUser()
+  }, [])
 
   let imageHidde = false
 
@@ -48,26 +48,44 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
+  const GetDataUser = async () => {
+    const { data } = await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_AGRICULTOR.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+    setProfile(data)
+  }
+
   const submitForm = async () => {
     const options = {
       method: 'POST',
       headers: { 'authorization': user.token },
-      data: Object.assign(propriedade, { id_agricultor: user.id_agricultor }),
-      url: 'https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS',
+      data: profile,
+      url: 'https://dev.renovetecnologia.org/webrunstudio/WS_AGRICULTOR.rule?sys=SIS',
     };
-    await axios(options)
-      .then(resp => {
-        showMessage({
-          message: `${resp.data.sucesso}`,
-          type: "success",
-          style: { justifyContent: 'space-between', alignItems: 'center' },
-          titleStyle: { fontSize: 16 },
-          icon: { icon: "danger", position: 'right' },
-          position: 'top',
-          duration: 3000,
-        })
-        navigation.navigate("PropertyScreen", { update: true })
-      })
+    const { data } = await axios.request(options)
+    showMessage({
+      message: `${data.sucesso}`,
+      type: "success",
+      style: { justifyContent: 'space-between', alignItems: 'center' },
+      titleStyle: { fontSize: 16 },
+      icon: { icon: "success", position: 'right' },
+      position: 'top',
+      duration: 3000,
+    })
+  }
+
+  const pickerImage = async () => {
+    ImagePicker.launchImageLibrary({
+      includeBase64: true
+    }, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        setImage(response)
+      };
+    })
   }
 
   const progress = new Animated.Value(0)
@@ -103,21 +121,6 @@ export default ({ navigation }) => {
     }
   }
 
-  const pickerImage = async () => {
-    ImagePicker.launchImageLibrary({
-      includeBase64: true
-    }, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        setImage(response)
-      };
-    })
-  }
   return (
     <>
       <Header color="#07AC82" navigation={navigation} />
@@ -143,7 +146,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: propriedade.foto }}
+                source={{ uri: 'https://images.assetsdelivery.com/compings_v2/jenjawin/jenjawin1904/jenjawin190400208.jpg' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],
@@ -170,7 +173,7 @@ export default ({ navigation }) => {
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
-              {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} propriedade={propriedade} setPropriedade={setPropriedade} />}
+              {activePage !== undefined && <activePage.component activePage={activePage} setValidation={setValidation} pages={pages} setPages={setPages} pages={pages} profile={profile} user={user} setProfile={setProfile} />}
             </PageScroll>
           </KeyboardAvoidingView>
         </CleanContainer>

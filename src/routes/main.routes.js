@@ -6,7 +6,7 @@ import { PropertiesProvider } from '../contexs/Properties'
 import { TagsProvider } from '../contexs/Tags'
 import HomeScreen from '../pages/Home';
 import ProfileScreen from '../pages/Profile';
-import ProfileForm from '../pages/Profile/Screens/Perfil';
+import ProfileForm from '../pages/Profile/Profile';
 import PropertyScreen from '../pages/Property/';
 import ProductScreen from '../pages/Products/index';
 import ProductForm from '../pages/Products/Product';

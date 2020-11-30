@@ -1,6 +1,6 @@
 
 import Styled from 'styled-components/native'
-import { Dimensions, Animated } from 'react-native'
+import { Dimensions,Animated } from 'react-native'
 
 const { width } = Dimensions.get('screen')
 
@@ -85,10 +85,6 @@ export const ImageSelect = Styled(Animated.View)`
 export const ImgBackground = Styled(Animated.Image)`
   width: 100%;
   height: 100%
-`
-export const Img = Styled.Image`
-  width: 80%;
-  height: 80%
 `
 export const Nav = Styled.View`
   width: 100%;

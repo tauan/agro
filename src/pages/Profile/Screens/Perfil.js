@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import InputAnimated from '../../../components/InputAnimated'
+import InputDate from '../../../components/InputDate'
 import { Form, Row } from '../style'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
-import UserContext from '../../../contexs/User'
 import axios from 'axios'
+import moment from 'moment'
 
 export default props => {
-  const { propriedade, setPropriedade, setValidation, activePage, pages, setPages } = props
-  const { user } = useContext(UserContext)
+  const { profile, user, setProfile, setValidation, activePage, pages, setPages } = props
   const [federacoes, setFederacoes] = useState([])
 
   useEffect(() => {
@@ -16,22 +16,21 @@ export default props => {
   }, [])
 
   useEffect(() => {
-    String(propriedade.cep).length >= 9 && ViaCep()
-  }, [propriedade.cep])
+    String(profile.cep).length >= 9 && ViaCep()
+  }, [profile.cep])
 
   useEffect(() => { validateForm() }, [
-    propriedade.cep,
-    propriedade.ccir,
-    propriedade.endereco,
-    propriedade.condicoes_posse,
-    propriedade.cidade,
-    propriedade.uf,
-    propriedade.area,
-    propriedade.nome_propriedade
+    profile.cep,
+    profile.ccir,
+    profile.endereco,
+    profile.condicoes_posse,
+    profile.cidade,
+    profile.uf,
+    profile.area,
   ])
 
   const validateForm = () => {
-    const validations = [propriedade]
+    const validations = [profile]
 
     const validForm = validations.reduce((t, a) => t && a)
 
@@ -46,20 +45,12 @@ export default props => {
     }
   }
 
-  const CondicoesPosse = () => {
+  const Sexo = () => {
     let list = []
     const condicoes = [
-      'ARRENDATÁRIO(A)',
-      'ASSENTADO(A) PELO PNRA',
-      'BENEFICIÁRIO',
-      'EXTRATIVISTA',
-      'MEEIRO(A)',
-      'PERMISSIONÁRIO DE ÁREAS PÚBLICAS',
-      'POSSEIRO(A)',
-      'PROPRIETÁRIO(A)',
-      'USO COLETIVO',
-      'OUTRA']
-    condicoes.map(item => list.push({ label: item, value: item }))
+      'MASCULINO',
+      'FEMININO']
+    condicoes.map((item, index) => list.push({ label: item, value: index + 1 }))
     return list
   }
 
@@ -71,85 +62,150 @@ export default props => {
   }
 
   const ViaCep = async () => {
-    const { data } = await axios(`https://viacep.com.br/ws/${propriedade.cep.replace('-', '')}/json/`)
-    !data.erro && propriedade.id_propriedade === undefined && setPropriedade({
-      ...propriedade,
-      complemento: data.complemento,
-      logradouro: data.logradouro,
-      bairro: data.bairro,
-      municipio: data.localidade,
-      uf: federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
-    })
+    try {
+      const cep = profile.cep_propriedade.replace('-', '')
+      const { data } = await axios.get(`http://cep.republicavirtual.com.br/web_cep.php?cep=${cep}&formato=jsonp`)
+      setProfile({
+        ...profile,
+        complemento: data.complemento,
+        logradouro_propriedade: data.logradouro,
+        bairro_propriedade: data.bairro,
+        municipio: data.cidade,
+        id_uf: federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
-
   return (
     <Form>
-      {/* <InputAnimated
-        placeholder='Nome da propriedade'
-        onChangeText={text => setPropriedade({ ...propriedade, descricao: text })}
-        value={propriedade.descricao}
+      <InputAnimated
+        placeholder='Nome'
+        onChangeText={text => setProfile({ ...profile, nome: text })}
+        value={profile.nome}
       />
       <Row>
         <InputAnimated
-          placeholder='CCIR'
-          onChangeText={text => setPropriedade({ ...propriedade, ccir: text })}
-          value={propriedade.ccir}
+          keyboardType="numeric"
+          editable={false}
+          placeholder='CPF/CNPJ'
+          onChangeText={text => setProfile({ ...profile, cpf: text.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4') })}
+          value={profile.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4')}
           width="48%"
         />
         <InputAnimated
           keyboardType="numeric"
-          placeholder='Área(ha)'
-          onChangeText={text => setPropriedade({ ...propriedade, area: text })}
-          value={propriedade.area}
+          placeholder='RG'
+          onChangeText={text => setProfile({ ...profile, rg: text })}
+          value={profile.rg}
           width="48%"
         />
+        <InputDate value={profile.data_nascimento}
+          completeDate={true}
+          placeholder="Data de nascimento"
+          width="48%"
+          onChangeDate={text =>
+            setProfile({ ...profile, data_nascimento: text })
+          } />
         <AnimatedDropDown
-          defaultValue={propriedade.condicoes_posse}
-          placeholder="Condições de posse"
-          listOptions={CondicoesPosse()}
-          onChangeItem={response => setPropriedade({ ...propriedade, condicoes_posse: response })}
-          width="100%"
+          defaultValue={profile.id_sexo}
+          placeholder="Sexo"
+          listOptions={Sexo()}
+          onChangeItem={response => setProfile({ ...profile, id_sexo: response })}
+          width="48%"
+        />
+        <InputAnimated
+          keyboardType="numeric"
+          placeholder='Reg. sanitário'
+          onChangeText={text => setProfile({ ...profile, registro_sanitario: text })}
+          value={profile.registro_sanitario}
+          width="48%"
+        />
+        <InputAnimated
+          keyboardType="numeric"
+          placeholder='Insc. Estadual'
+          onChangeText={text => setProfile({ ...profile, insc_estadual_prod: text })}
+          value={profile.insc_estadual_prod}
+          width="48%"
+        />
+        <InputAnimated
+          keyboardType="numeric"
+          placeholder='Insc. Ceasa'
+          onChangeText={text => setProfile({ ...profile, insc_ceasa: text })}
+          value={profile.insc_ceasa}
+          width="48%"
+        />
+        <InputAnimated
+          keyboardType="numeric"
+          placeholder='M.A.P.A'
+          onChangeText={text => setProfile({ ...profile, mapa: text })}
+          value={profile.mapa}
+          width="48%"
+        />
+        <InputAnimated
+          maxLength={13}
+          keyboardType="numeric"
+          placeholder='Telefone'
+          onChangeText={text => setProfile({ ...profile, telefone_1: text.replace(/(\d{2})(\d{4})(\d{4})/g, '($1) $2-$3') })}
+          value={profile.telefone_1 ? profile.telefone_1.replace(/(\d{2})(\d{4})(\d{4})/g, '($1) $2-$3') : profile.telefone_3}
+          width="48%"
+        />
+        <InputAnimated
+          maxLength={14}
+          keyboardType="numeric"
+          placeholder='Celular'
+          onChangeText={text => setProfile({ ...profile, telefone_2: text.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') })}
+          value={profile.telefone_2 ? profile.telefone_2.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') : profile.telefone_3}
+          width="48%"
+        />
+        <InputAnimated
+          maxLength={14}
+          keyboardType="numeric"
+          placeholder='WhatsApp'
+          onChangeText={text => setProfile({ ...profile, telefone_3: text.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') })}
+          value={profile.telefone_3 ? profile.telefone_3.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') : profile.telefone_3}
+          width="48%"
         />
         <InputAnimated
           placeholder='CEP'
           maxLength={9}
           keyboardType="numeric"
-          onChangeText={text => setPropriedade({ ...propriedade, cep: text.replace(/(\d{5})(\d{3})/g, '$1-$2') })}
-          value={propriedade.cep}
-          width="30.8%"
+          onChangeText={text => setProfile({ ...profile, cep_propriedade: text.replace(/(\d{5})(\d{3})/g, '$1-$2') })}
+          value={profile.cep_propriedade ? profile.cep_propriedade.replace(/(\d{5})(\d{3})/g, '$1-$2') : profile.cep_propriedade}
+          width="48%"
         />
         <AnimatedDropDown
-          defaultValue={propriedade.uf}
+          defaultValue={profile.id_uf}
           placeholder="UF"
           listOptions={federacoes}
-          onChangeItem={response => setPropriedade({ ...propriedade, uf: response })}
-          width="30.8%"
+          onChangeItem={response => setProfile({ ...profile, uf: response })}
+          width="48%"
         />
         <InputAnimated
           placeholder='Nº'
-          onChangeText={text => setPropriedade({ ...propriedade, n_logradouro: text })}
-          value={propriedade.n_logradouro}
-          width="30.8%"
+          onChangeText={text => setProfile({ ...profile, n_logradouro: text })}
+          value={profile.n_logradouro}
+          width="48%"
         />
         <InputAnimated
           placeholder='Endereço'
-          onChangeText={text => setPropriedade({ ...propriedade, logradouro: text })}
-          value={propriedade.logradouro}
+          onChangeText={text => setProfile({ ...profile, logradouro_propriedade: text })}
+          value={profile.logradouro_propriedade}
           width="100%"
         />
         <InputAnimated
           placeholder='Bairro'
-          onChangeText={text => setPropriedade({ ...propriedade, bairro: text })}
-          value={propriedade.bairro}
+          onChangeText={text => setProfile({ ...profile, bairro_propriedade: text })}
+          value={profile.bairro_propriedade}
           width="100%"
         />
         <InputAnimated
           placeholder='Cidade'
-          onChangeText={text => setPropriedade({ ...propriedade, municipio: text })}
-          value={propriedade.municipio}
+          onChangeText={text => setProfile({ ...profile, municipio: text })}
+          value={profile.municipio}
           width="100%"
         />
-      </Row> */}
+      </Row>
     </Form>
   )
 }

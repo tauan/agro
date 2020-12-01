@@ -21,7 +21,6 @@ export default ({ navigation, route, routes }) => {
 
     useEffect(() => {
         setProduto(defaultProductContext)
-        getProductList();
     }, [])
 
     useEffect(()=> {
@@ -29,6 +28,8 @@ export default ({ navigation, route, routes }) => {
             getProductList()
         }
     }, [route.params])
+
+    useEffect(() => {getProductList()}, [produto.propriedades])
 
     const defaultProductContext = {
         id_produto: null,

@@ -131,6 +131,7 @@ export default ({ navigation, route, routes }) => {
                         <Primary title="Cadastrar produto" width={150} onPress={() => { setProduto(defaultProductContext); navigation.navigate("ProductForm") }} />
                     </Container>
                     <Search value={value} onChangeText={text => setValue(text)} />
+                    {(Array.isArray(productsList) && productsList.length > 0) && 
                     <FlatList
                         data={productsList.filter(produto => produto.descricao.indexOf(value.toUpperCase()) != -1)}
                         renderItem={({ item, index }) =>
@@ -140,7 +141,15 @@ export default ({ navigation, route, routes }) => {
                         columnWrapperStyle={{ justifyContent: "space-between" }}
                         numColumns={2}
                         showsVerticalScrollIndicator={false}
-                    />
+                    />}
+                    {(!Array.isArray(productsList) || productsList.length === 0) && (
+                        <Form style={{alignItems:"center"}}>
+                            <TextStyle text-align="center">Nenhum produto cadastrado</TextStyle>
+                        </Form>
+                    )
+                    }
+
+                    
                 </Form>
                 {activeModal &&
                     <ModalMessage
@@ -152,8 +161,7 @@ export default ({ navigation, route, routes }) => {
                         }}
                         title="Deletar"
                         onPressPrimaryButton={() => deleteProduct()}
-                        setActiveModal={setActiveModal} >
-                    </ModalMessage>}
+                        setActiveModal={setActiveModal} />}
 
             </App >
         </>

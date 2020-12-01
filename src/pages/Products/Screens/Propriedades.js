@@ -6,12 +6,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from 'axios'
 
 export default props => {
-  const { propriedades, setPropriedades, produto, setProduto, user, setSplash} = props
+  const { propriedades, setPropriedades, produto, setProduto, user, setSplash, setValidation, pages, setPages, activePage} = props
   const [tempProperty, setTempProperty] = useState('')
   const [propriedadesList, setPropriedadesList] = useState([]) // lista com 2 atributos "label: descrição do produto" e "value: id_propriedade"
   const [propertiesList, setPropertiesList] = useState([]) // lista com todos os atributos que será usada para cruzar os dados e puxar a descrição de propriedades
   const [showList, setShowList] = useState([])
   const [update, setUpdate] = useState(false)
+  const [activeModal, setActiveModal] = useState(false)
 
   useEffect(()=> { 
     setSplash(false)
@@ -19,6 +20,24 @@ export default props => {
 
     return () => setSplash(true)
    }, [])
+
+
+  useEffect(() => {
+    let tempPages = pages
+    if(Array.isArray(produto.propriedades) && produto.propriedades.length > 0 ){
+      tempPages[activePage.index].validated = true
+      setValidation(true)
+      setPages(tempPages)
+    } else {
+      tempPages[activePage.index].validated = false
+      setValidation(false)
+    }
+  }, [produto.propriedades])
+
+  useEffect(() => {
+    if(tempProperty !== "")
+      addNewProperty()
+  }, [tempProperty])
 
   const addNewProperty = () => {
  //[{"descricao": "FAZENDA CANTO DO RIO", "id_propriedade": 5}, {"descricao": "FAZENDA FELIZ D'AGUA", "id_propriedade": 6}]
@@ -60,9 +79,27 @@ export default props => {
   }
 
   const deleteProperty = async idPropriedade => {
-    if(propriedades.length === 0) return
-    const list = await propriedades.filter(item => item.id_propriedade !== idPropriedade)
-    setPropriedades(list)
+    if(!Array.isArray(produto.propriedades)) return
+    if(produto.propriedades.length === 0) return
+    const list = await produto.propriedades.filter(item => item.id_propriedade !== idPropriedade)
+  
+    try{
+      const options = {
+          method: "DELETE",
+          url: "https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTO_PROPRIEDADE.rule?sys=SIS",
+          headers: {
+              authorization: user.token
+          },
+          data: {
+              id_agricultor: produto.id_agricultor,
+              id_produto: produto.id_produto,
+              id_propriedade: idPropriedade
+          }
+      }
+      await axios.request(options)
+      setProduto({...produto, propriedades: list})
+    } catch(err) {}
+
   }
 
   return(
@@ -71,10 +108,11 @@ export default props => {
         <AnimatedDropDown
             placeholder="Adicione uma propriedade"
             listOptions={propriedadesList} 
-            width="80%"
-            onChangeItem={(item)=> setTempProperty(item)}
+            width="100%"
+            onChangeItem={(item)=> {
+              setTempProperty(item)
+            }}
           />
-        <Primary width="18%" title='+' shadow={2} onPress={() => addNewProperty()} />
       </Row>
       <ContainerList>
         {produto.propriedades.length === 0 && <Subtitle>Nenhum item para ser exibido </Subtitle>}
@@ -88,7 +126,17 @@ export default props => {
           ))
         }
       </ContainerList>
-        
+      { activeModal &&
+       <ModalMessage
+       showMessage={{
+           title: 'Atenção!',
+           message: `Deseja realmente deletar o produto ${item.item} da lista?`,
+           type: 'alert',
+           icon: true
+       }}
+       title="Deletar"
+       onPressPrimaryButton={() => deleteIngrediente(item.index)}
+       setActiveModal={setActiveModal} />}
     </Form>
   )
 }

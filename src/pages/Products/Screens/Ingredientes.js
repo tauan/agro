@@ -44,7 +44,7 @@ export default props => {
     <Form>
       <Row>
         <InputAnimated
-          editable={produto.id_categoria !== "365"}
+          editable={produto.id_categoria !== 365}
           placeholder='Adicionar ingrediente'
           onChangeText={text => setTempIngrediente(text)}
           value={tempIngrediente}
@@ -56,7 +56,7 @@ export default props => {
         {(!Array.isArray(produto.in_natura) || produto.in_natura.length === 0 ) && <Subtitle>Nenhum item para ser exibido </Subtitle>}
         {(Array.isArray(produto.in_natura) && produto.in_natura.length > 0) && produto.in_natura.map((item, index) => (
           <ItemContainer key={index}>
-            <ItemText>{item}</ItemText>
+            <ItemText>{index+1} - {item}</ItemText>
             <DeleteButton>
               <Icon style={{ padding: 10 }} name="delete" color="#666666" size={20} onPress={() => { setItem({ item, index }); setActiveModal(true); }} />
             </DeleteButton>
@@ -64,20 +64,16 @@ export default props => {
         ))}
       </ContainerList>
       { activeModal &&
-        <ModalMessage
-          showMessage={{
-            title: 'Atenção!',
-            message: `Deseja realmente deletar o produto ${item.item} da lista?`,
-            type: 'alert',
-            icon: true
-          }}
-          onPressPrimaryButton={(value) => {
-            deleteIngrediente(item.index);
-            setTimeout(function () { setActiveModal(value); }, 800)
-          }}
-          onPressCancelButton={(value) => setTimeout(function () { setActiveModal(value); }, 800)}
-          visible={activeModal} >
-        </ModalMessage>}
+       <ModalMessage
+       showMessage={{
+           title: 'Atenção!',
+           message: `Deseja realmente deletar o produto ${item.item} da lista?`,
+           type: 'alert',
+           icon: true
+       }}
+       title="Deletar"
+       onPressPrimaryButton={() => deleteIngrediente(item.index)}
+       setActiveModal={setActiveModal} />}
     </Form >
 
   )

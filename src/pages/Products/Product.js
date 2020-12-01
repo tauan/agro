@@ -109,7 +109,6 @@ export default ({ navigation }) => {
         
         setTimeout(()=> navigation.navigate("ProductScreen", {update: true}), 1500)
         
-        //navigation.popToTop()
       }
     } catch (err){
       console.log(err)
@@ -169,8 +168,13 @@ export default ({ navigation }) => {
   const onPressFloatButton = () => {
     if(activePage.index !== (pages.length - 1)) {
       nextPage()
-    }  else{
-      submitForm(); 
+    } else {
+      const validate = pages.filter(item => item.validated === false)
+      if(validate.length === 0) {
+        submitForm(); 
+      }else {
+        setActivePage(validate[0])
+      }
     }
   }
 

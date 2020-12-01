@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from 'axios'
 
 export default props => {
-  const { propriedades, setPropriedades, produto, setProduto, user, setSplash} = props
+  const { propriedades, setPropriedades, produto, setProduto, user, setSplash, setValidation, pages, setPages, activePage} = props
   const [tempProperty, setTempProperty] = useState('')
   const [propriedadesList, setPropriedadesList] = useState([]) // lista com 2 atributos "label: descrição do produto" e "value: id_propriedade"
   const [propertiesList, setPropertiesList] = useState([]) // lista com todos os atributos que será usada para cruzar os dados e puxar a descrição de propriedades
@@ -19,6 +19,24 @@ export default props => {
 
     return () => setSplash(true)
    }, [])
+
+
+  useEffect(() => {
+    let tempPages = pages
+    if(Array.isArray(produto.propriedades) && produto.propriedades.length > 0 ){
+      tempPages[activePage.index].validated = true
+      setValidation(true)
+      setPages(tempPages)
+    } else {
+      tempPages[activePage.index].validated = false
+      setValidation(false)
+    }
+  }, [produto.propriedades])
+
+  useEffect(() => {
+    if(tempProperty !== "")
+      addNewProperty()
+  }, [tempProperty])
 
   const addNewProperty = () => {
  //[{"descricao": "FAZENDA CANTO DO RIO", "id_propriedade": 5}, {"descricao": "FAZENDA FELIZ D'AGUA", "id_propriedade": 6}]
@@ -71,10 +89,11 @@ export default props => {
         <AnimatedDropDown
             placeholder="Adicione uma propriedade"
             listOptions={propriedadesList} 
-            width="80%"
-            onChangeItem={(item)=> setTempProperty(item)}
+            width="100%"
+            onChangeItem={(item)=> {
+              setTempProperty(item)
+            }}
           />
-        <Primary width="18%" title='+' shadow={2} onPress={() => addNewProperty()} />
       </Row>
       <ContainerList>
         {produto.propriedades.length === 0 && <Subtitle>Nenhum item para ser exibido </Subtitle>}

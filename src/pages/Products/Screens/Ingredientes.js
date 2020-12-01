@@ -44,7 +44,7 @@ export default props => {
     <Form>
       <Row>
         <InputAnimated
-          editable={produto.id_categoria !== "365"}
+          editable={produto.id_categoria !== 365}
           placeholder='Adicionar ingrediente'
           onChangeText={text => setTempIngrediente(text)}
           value={tempIngrediente}

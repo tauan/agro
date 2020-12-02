@@ -50,7 +50,7 @@ export default ({ navigation }) => {
       method: 'POST',
       headers: { 'authorization': user.token, 'Content-Type': 'application/json; charset=utf-8;' },
       data: etiquetas,
-      url: 'http://dev.renovetecnologia.org:8049/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
+      url: 'https://dev.renovetecnologia.org/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
     };
     await axios.request(options)
       .then(resp => {

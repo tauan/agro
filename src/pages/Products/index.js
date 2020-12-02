@@ -161,6 +161,7 @@ export default ({ navigation, route, routes }) => {
                             icon: true
                         }}
                         title="Deletar"
+                        backgroundColor="#EB4D4D"
                         onPressPrimaryButton={() => deleteProduct()}
                         setActiveModal={setActiveModal} />}
 

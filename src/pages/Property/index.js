@@ -127,7 +127,7 @@ export default ({ navigation, route }) => {
                         title="Deletar"
                         backgroundColor="#EB4D4D"
                         onPressPrimaryButton={(value) => { DeleteProperty(); setActiveModal(false) }}
-                        onPressCancelButton={(value) => setActiveModal(value)} >
+                        setActiveModal={setActiveModal}  >
                     </ModalMessage>}
 
             </App >

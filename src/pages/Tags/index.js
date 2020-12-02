@@ -163,9 +163,9 @@ export default ({ navigation, route }) => {
                             icon: true
                         }}
                         title="Deletar"
+                        backgroundColor="#EB4D4D"
                         onPressPrimaryButton={() => { DeleteTag(); setActiveModal(false) }}
-                        onPressCancelButton={(value) => setActiveModal(value)} >
-                    </ModalMessage>}
+                        setActiveModal={setActiveModal} />}
                 {active &&
                     <ModalMessage
                         style={{
@@ -174,7 +174,7 @@ export default ({ navigation, route }) => {
                             width: Dimensions.get('screen').width * 0.9,
                             height: Dimensions.get('screen').height * 0.65,
                         }}
-                        onPressCancelButton={(value) => setActive(value)} >
+                        setActiveModal={setActiveModal}>
                         <Pdf
                             singlePage={true}
                             source={{ uri: `${RNFetchBlob.fs.dirs.DownloadDir}/${etiquetas.chave_identificador}.pdf` }}
@@ -215,7 +215,7 @@ export default ({ navigation, route }) => {
                             width: Dimensions.get('screen').width * 0.9,
                             height: Dimensions.get('screen').height * 0.65,
                         }}
-                        onPressCancelButton={(value) => setActive(value)} >
+                        setActiveModal={setActiveModal} >
                         <Image source={{ uri: 'https://dev.renovetecnologia.org/imagens/tags.png' }} style={{ width: 200, height: 200, borderRadius: 100 }} />
                         <Text style={{ fontSize: 20, lineHeight: 48 }}>Estamos preparando tudo!</Text>
                         <ProgressBar

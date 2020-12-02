@@ -34,7 +34,7 @@ export const Header = Styled.View`
     margin-bottom: 25px;   
     border-bottom-width: 0.5px;
     border-color: #d5d5d5;
-    padding-bottom: 25px;
+    /*padding-bottom: 25px;*/
 `
 export const IMGUser = Styled.Image.attrs({
     resizeMode: "cover",
@@ -47,7 +47,6 @@ export const Logo = Styled.Image.attrs({
 })`
     width: 150px;
     height: 42.8px;  
-    margin-top: 30px;
 `
 export const ContainerItem = Styled.TouchableOpacity.attrs({
     activityOpacity: 0.98,

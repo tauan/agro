@@ -104,7 +104,7 @@ export default props => {
         />
         <AnimatedDropDown
           defaultValue={propriedade.condicoes_posse}
-          placeholder="Condições de posse"
+          placeholder="Condições de posse e uso da terra"
           listOptions={CondicoesPosse()}
           onChangeItem={response => setPropriedade({ ...propriedade, condicoes_posse: response })}
           width="100%"

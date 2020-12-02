@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 export default props => {
   const {
     value = "",
+    disabled = false,
     placeholder = "",
     onChangeDate = () => { },
     width = "100%",
@@ -45,7 +46,7 @@ export default props => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => { setShowCalendar(true) }}>
+    <TouchableWithoutFeedback disabled={disabled} onPress={() => { setShowCalendar(true) }}>
       <View style={{
         width,
         height,

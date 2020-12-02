@@ -85,10 +85,21 @@ export default ({ navigation, route }) => {
                 params: { IDENTIFICADOR: item.chave_identificador, MODELO_ETIQUETA: item.modelo_etiqueta }
             };
             const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/IMPRESSAO_ETIQUETA_APP.rule?sys=SIS', options)
-            DownloadFile({ url: data, uuid: item.chave_identificador }).then(resp => console.log(resp))
-            setActiveTagModal(false)
+            DownloadFile({ url: data, uuid: item.chave_identificador }).then(resp => setActiveTagModal(resp.active))
+
         } catch (err) {
-            console.log(err)
+            setTimeout(function () {
+                showMessage({
+                    message: 'Não foi possível baixar o arquivo!',
+                    type: "warning",
+                    style: { justifyContent: 'space-between', alignItems: 'center' },
+                    titleStyle: { fontSize: 16 },
+                    icon: { icon: "warning", position: 'right' },
+                    position: 'top',
+                    duration: 3000,
+                })
+                setActiveTagModal(false)
+            }, 3000)
         }
     }
 
@@ -118,7 +129,6 @@ export default ({ navigation, route }) => {
             e && console.log(e)
         }
     }
-
     return (
         <>
             <Header color="#008b54" navigation={navigation} />
@@ -152,7 +162,8 @@ export default ({ navigation, route }) => {
                             columnWrapperStyle={{ justifyContent: "space-between" }}
                             numColumns={2}
                             showsVerticalScrollIndicator={false}
-                        />}
+                        />
+                    }
                 </Form>
                 {activeModal &&
                     <ModalMessage

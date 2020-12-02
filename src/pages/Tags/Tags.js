@@ -52,23 +52,37 @@ export default ({ navigation }) => {
       data: etiquetas,
       url: 'https://dev.renovetecnologia.org/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
     };
-    await axios.request(options)
-      .then(resp => {
-        resp.data && showMessage({
-          message: 'As etiquetas foram geradas com sucesso!',
-          type: "success",
+    try {
+      await axios.request(options)
+        .then(resp => {
+          DownloadFile(resp.data).then(resp => {
+            resp.data && showMessage({
+              message: 'As etiquetas foram geradas com sucesso!',
+              type: "success",
+              style: { justifyContent: 'space-between', alignItems: 'center' },
+              titleStyle: { fontSize: 16 },
+              icon: { icon: "danger", position: 'right' },
+              position: 'top',
+              duration: 3000,
+            })
+            setActive(false)
+          })
+          navigation.navigate("TagsScreen", { update: true })
+        })
+    } catch (err) {
+      setTimeout(function () {
+        showMessage({
+          message: 'Não foi possível baixar o arquivo!',
+          type: "warning",
           style: { justifyContent: 'space-between', alignItems: 'center' },
           titleStyle: { fontSize: 16 },
-          icon: { icon: "danger", position: 'right' },
+          icon: { icon: "warning", position: 'right' },
           position: 'top',
           duration: 3000,
         })
-        DownloadFile(resp.data).then(resp => {
-          console.log(resp)
-          setActive(false)
-        })
-        navigation.navigate("TagsScreen", { update: true })
-      })
+        setActive(false)
+      }, 3000)
+    }
   }
 
   const progress = new Animated.Value(0)

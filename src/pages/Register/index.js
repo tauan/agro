@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { KeyboardAvoidingView, ScrollView } from 'react-native'
-
 import AnimatedDropDown from '../../components/AnimatedDropDown'
 import InputAnimated from '../../components/InputAnimated'
 import Primary from '../../components/Buttons/Primary'
@@ -17,6 +16,33 @@ export default ({ navigation }) => {
     const [senha, setSenha] = useState()
     const [confirmar_senha, setConfirmar_Senha] = useState()
     const { navigate } = navigation
+
+    const submitForm = async () => {
+        const options = {
+            method: 'POST',
+            headers: { 'authorization': user.token },
+            data: JSON.stringify(
+                {
+                    nome,
+                    cpf_cnpj,
+                    sexo,
+                    senha,
+                    id_sindicato
+                }
+            ),
+            url: 'https://dev.renovetecnologia.org/webrunstudio/WS_AGRICULTOR.rule?sys=SIS',
+        };
+        const { data } = await axios.request(options)
+        showMessage({
+            message: `${data.sucesso}`,
+            type: "success",
+            style: { justifyContent: 'space-between', alignItems: 'center' },
+            titleStyle: { fontSize: 16 },
+            icon: { icon: "success", position: 'right' },
+            position: 'top',
+            duration: 3000,
+        })
+    }
 
     return (
         <>

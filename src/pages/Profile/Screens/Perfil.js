@@ -10,10 +10,13 @@ export default props => {
   const [federacoes, setFederacoes] = useState([])
 
   useEffect(() => {
-    console.log(profile)
     setValidation(false)
     GetFederacoes()
   }, [])
+
+  useEffect(() => {
+    profile.telefone_1 != '' || profile.telefone_2 != '' || profile.telefone_3 != '' && MaskPhone()
+  }, [profile.telefone_1, profile.telefone_2, profile.telefone_3])
 
   useEffect(() => {
     ViaCep()
@@ -56,7 +59,6 @@ export default props => {
   const ViaCep = async () => {
     const cep = profile.cep_propriedade.replace('-', '')
     const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
-    console.log(data)
     const idUF = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
     setProfile({
       ...profile,
@@ -66,6 +68,22 @@ export default props => {
       municipio: data.localidade,
       id_uf: idUF
     })
+  }
+
+  const MaskCPFCNPJ = () => {
+    if (profile.cpf.length > 14) {
+      return profile.cpf.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{4})/g, '$1.$2.$3.$3/$4-$5')
+    } else {
+      return profile.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4')
+    }
+  }
+  const MaskPhone = (value) => {
+
+    if (value != null && value.length > 10) {
+      return value.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3')
+    } else {
+      return value.replace(/(\d{2})(\d{4})(\d{4})/g, '($1) $2-$3')
+    }
   }
 
   return (
@@ -79,9 +97,9 @@ export default props => {
         <InputAnimated
           keyboardType="numeric"
           editable={false}
-          placeholder='CPF/CNPJ'
-          onChangeText={text => setProfile({ ...profile, cpf: text.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4') })}
-          value={profile.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4')}
+          placeholder={profile.cpf.length > 14 ? 'CNPJ' : 'CPF'}
+          onChangeText={text => setProfile({ ...profile, cpf: text })}
+          value={MaskCPFCNPJ()}
           width="48%"
         />
         <InputAnimated
@@ -133,27 +151,27 @@ export default props => {
           width="48%"
         />
         <InputAnimated
-          maxLength={13}
+          maxLength={14}
           keyboardType="numeric"
           placeholder='Telefone'
-          onChangeText={text => setProfile({ ...profile, telefone_1: text.replace(/(\d{2})(\d{4})(\d{4})/g, '($1) $2-$3') })}
-          value={profile.telefone_1 ? profile.telefone_1.replace(/(\d{2})(\d{4})(\d{4})/g, '($1) $2-$3') : profile.telefone_3}
+          onChangeText={text => setProfile({ ...profile, telefone_1: text })}
+          value={profile.telefone_1 != null && MaskPhone(profile.telefone_1)}
           width="48%"
         />
         <InputAnimated
-          maxLength={14}
+          maxLength={15}
           keyboardType="numeric"
           placeholder='Celular'
-          onChangeText={text => setProfile({ ...profile, telefone_2: text.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') })}
-          value={profile.telefone_2 ? profile.telefone_2.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') : profile.telefone_3}
+          onChangeText={text => setProfile({ ...profile, telefone_2: text })}
+          value={profile.telefone_2 != null &&MaskPhone(profile.telefone_2)}
           width="48%"
         />
         <InputAnimated
-          maxLength={14}
+          maxLength={15}
           keyboardType="numeric"
           placeholder='WhatsApp'
-          onChangeText={text => setProfile({ ...profile, telefone_3: text.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') })}
-          value={profile.telefone_3 ? profile.telefone_3.replace(/(\d{2})(\d{5})(\d{4})/g, '($1) $2-$3') : profile.telefone_3}
+          onChangeText={text => setProfile({ ...profile, telefone_3: text })}
+          value={profile.telefone_3 != null &&MaskPhone(profile.telefone_3)}
           width="48%"
         />
         <InputAnimated

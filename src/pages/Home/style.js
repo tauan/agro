@@ -8,15 +8,14 @@ export const Container = Styled.View`
     align-items: center;
 `
 export const ContainerIMG = Styled.View`
-    width: 120px;
-    height: 120px;
+    width: 45px;
+    height: 45px;
     overflow: hidden;
-    border-radius: 20px;
-    margin-top: 30px;
+    border-radius: 25px;
 `
 export const Body = Styled.View`
     width: 90%;
-    padding-horizontal: 30px;
+    /* padding-horizontal: 30px; */
     padding-vertical: 30px;
     border-radius: 20px;
     justify-content: center;  
@@ -31,10 +30,7 @@ export const ContainerButtons = Styled.View`
 export const Header = Styled.View`
     width: 100%;
     align-items: center; 
-    margin-bottom: 25px;   
-    border-bottom-width: 0.5px;
-    border-color: #d5d5d5;
-    /*padding-bottom: 25px;*/
+    
 `
 export const IMGUser = Styled.Image.attrs({
     resizeMode: "cover",
@@ -45,8 +41,8 @@ export const IMGUser = Styled.Image.attrs({
 export const Logo = Styled.Image.attrs({
     resizeMode: "cover",
 })`
-    width: 150px;
-    height: 42.8px;  
+    width: 133px;
+    height: 37.82px;  
 `
 export const ContainerItem = Styled.TouchableOpacity.attrs({
     activityOpacity: 0.98,
@@ -58,5 +54,13 @@ export const ContainerItem = Styled.TouchableOpacity.attrs({
     background-color: ${props => props.background ? props.background : '#ffffff'};
     border-radius: 10px;
     justify-content: space-evenly;
-    elevation: 10
+    elevation: 10;
+`
+export const CloseButton = Styled.TouchableOpacity.attrs({
+    activityOpacity: 0.8,
+})`
+    /* width: ${props => props.width ? props.width : 30+'%'}; */
+    background-color: ${props => props.background ? props.background : '#ffffff'};
+    align-items: center;
+    flex-direction: row
 `

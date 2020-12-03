@@ -104,15 +104,20 @@ export default ({ navigation, route }) => {
     }
 
     const CheckFileExist = (item) => {
-        const path = `${RNFetchBlob.fs.dirs.DownloadDir}/${item.chave_identificador}.pdf`
-        FS.exists(path).then(resp => {
-            if (resp) {
-                setActive(true)
-            } else {
-                setActiveTagModal(true)
-                GetFile(item)
-            }
-        })
+        try {
+            const path = `${RNFetchBlob.fs.dirs.DownloadDir}/${item.chave_identificador}.pdf`
+            FS.exists(path).then(resp => {
+                if (resp) {
+                    setActive(true)
+                } else {
+                    setActiveTagModal(true)
+                    GetFile(item)
+                }
+            })
+        } catch (e) {
+            console.log(e)
+            CheckFileExist()
+        }
 
     }
 

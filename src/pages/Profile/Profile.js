@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator, View } from 'react-native'
 import { showMessage } from "react-native-flash-message"
 import ImagePicker from 'react-native-image-picker'
 import axios from 'axios'
@@ -36,7 +36,7 @@ export default ({ navigation }) => {
     },
   ])
   let imageHidde = false
-  
+
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
     GetDataUser()
@@ -126,12 +126,14 @@ export default ({ navigation }) => {
       {splash === true && (
         <SplashContainer>
           <HeaderTitle style={{ width: '100%' }}>
-            <TitleStyle align="center">Aguade...</TitleStyle>
-            <ActivityIndicator size={50} color="#008b54" />
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <ActivityIndicator size={40} color="#008b54" />
+              <TitleStyle align="center">Aguade...</TitleStyle>
+            </View>
             <TextStyle fontsize={18} align="center">Estamos preparando tudo para você!</TextStyle>
           </HeaderTitle>
         </SplashContainer>
-        
+
       )
       }
       <Header color="#07AC82" navigation={navigation} />
@@ -157,7 +159,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: 'https://images.assetsdelivery.com/compings_v2/jenjawin/jenjawin1904/jenjawin190400208.jpg' }}
+                source={{ uri: user.foto ? user.foto : 'https://dev.renovetecnologia.org/imagens/image.jpg' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],

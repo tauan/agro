@@ -143,7 +143,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: propriedade.foto }}
+                source={{ uri: propriedade.url_imagem ? propriedade.url_imagem : 'https://dev.renovetecnologia.org/imagens/image.jpg' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],

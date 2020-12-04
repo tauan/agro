@@ -23,8 +23,9 @@ border-width: 1px;
 export const IMGItem = Styled.Image.attrs({
   resizeMode: "cover",
 })`
-    width: 100%;
-    height: 100%;
+    width: 85%;
+    height: 85%;
+    border-radius: 5px;
   `
 export const Title = Styled.Text`  
   padding-left: 10px;

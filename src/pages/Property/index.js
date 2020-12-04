@@ -66,16 +66,17 @@ export default ({ navigation, route }) => {
     const getPropertiesList = async (id) => {
         await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_PROPRIEDADE.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
             .then(({ data }) => {
-                const propriedades = []
-                if (Array.isArray(data)) {
-                    data.map(async item => {
-                        if (item.foto === "" && item.url != "") {
-                            item.foto = item.url
-                        }
-                        propriedades.push(item)
-                        if (propriedades.length === data.length) setPropertiesList(propriedades)
-                    })
-                }
+                setPropertiesList(data)
+                // const propriedades = []
+                // if (Array.isArray(data)) {
+                //     data.map(async item => {
+                //         if (item.foto === "" && item.url != "") {
+                //             item.foto = item.url_imagem
+                //         }
+                //         propriedades.push(item)
+                //         if (propriedades.length === data.length) setPropertiesList(propriedades)
+                //     })
+                // }
             })
     }
 

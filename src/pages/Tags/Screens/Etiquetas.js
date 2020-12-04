@@ -76,13 +76,13 @@ export default props => {
   const LimitCopy = () => {
     let pages = parseInt(qtdPage) > 10 ? 10 : parseInt(qtdPage)
     if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 35 X 35MM') {
-      setEtiquetas({ ...etiquetas, quantidade: 24 * parseInt(pages) })
+      setEtiquetas({ ...etiquetas, quantidade: 48 * parseInt(pages) })
     }
     if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 50 X 50MM' || etiquetas.modelo === 'PADRAO 50 X 50MM - CÓDIGO DE BARRAS') {
-      setEtiquetas({ ...etiquetas, quantidade: 12 * parseInt(pages) })
+      setEtiquetas({ ...etiquetas, quantidade: 24 * parseInt(pages) })
     }
     if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 100 X 50MM' || etiquetas.modelo === 'PADRAO 100 X 50MM - CÓDIGO DE BARRAS') {
-      setEtiquetas({ ...etiquetas, quantidade: 6 * parseInt(pages) })
+      setEtiquetas({ ...etiquetas, quantidade: 12 * parseInt(pages) })
     }
     if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 100 X 100MM' || etiquetas.modelo === 'PADRAO 100 X 100MM - CÓDIGO DE BARRAS') {
       setEtiquetas({ ...etiquetas, quantidade: 6 * parseInt(pages) })

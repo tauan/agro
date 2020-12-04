@@ -8,15 +8,14 @@ export const Container = Styled.View`
     align-items: center;
 `
 export const ContainerIMG = Styled.View`
-    width: 45px;
-    height: 45px;
+    width: 60px;
+    height: 60px;
     overflow: hidden;
-    border-radius: 25px;
+    border-radius: 30px;
 `
 export const Body = Styled.View`
-    width: 90%;
-    /* padding-horizontal: 30px; */
-    padding-vertical: 30px;
+    width: 100%;
+    margin-top: 50px;
     border-radius: 20px;
     justify-content: center;  
     align-items: center;
@@ -51,10 +50,12 @@ export const ContainerItem = Styled.TouchableOpacity.attrs({
     height: 120px;
     padding-vertical: 15px;
     align-items: center;
+    /* border-width: 0.5px; */
+    border-color:#E5E7E9;
     background-color: ${props => props.background ? props.background : '#ffffff'};
     border-radius: 10px;
     justify-content: space-evenly;
-    elevation: 10;
+    elevation: 1
 `
 export const CloseButton = Styled.TouchableOpacity.attrs({
     activityOpacity: 0.8,

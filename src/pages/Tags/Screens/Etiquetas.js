@@ -10,17 +10,12 @@ export default props => {
   const { etiquetas, setEtiquetas, setValidation, activePage, pages, setPages, user } = props
   const [produtos, setProdutos] = useState([])
   const [id_produto, setIDProduto] = useState()
-  const [validade, setValidade] = useState()
-  const [qtdPage, setQtdPage] = useState()
+  const [qtdPage, setQtdPage] = useState('')
 
   useEffect(() => {
     setValidation(false)
     GetProducts()
   }, [])
-
-  useEffect(() => {
-    LimitCopy()
-  }, [etiquetas.modelo, qtdPage])
 
   useEffect(() => { validateForm() }, [
     etiquetas.id_produto,
@@ -32,8 +27,8 @@ export default props => {
   ])
 
   useEffect(() => {
-    etiquetas.emissao != '' && SetValidDate()
-  }, [etiquetas.id_produto, etiquetas.emissao])
+    etiquetas.id_produto != undefined && SetValidDate()
+  }, [etiquetas.id_produto])
 
   const validateForm = () => {
     const validations = [etiquetas]
@@ -73,39 +68,35 @@ export default props => {
     return list
   }
 
-  const LimitCopy = () => {
-    let pages = parseInt(qtdPage) > 10 ? 10 : parseInt(qtdPage)
-    if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 35 X 35MM') {
-      setEtiquetas({ ...etiquetas, quantidade: 48 * parseInt(pages) })
+  const LimitCopy = (value) => {
+    const newValue = parseInt(value) > 10 ? 10 : parseInt(value)
+    if (newValue > 0 && etiquetas.modelo === 'PADRAO 35 X 35MM') {
+      setEtiquetas({ ...etiquetas, quantidade: 48 * newValue })
     }
-    if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 50 X 50MM' || etiquetas.modelo === 'PADRAO 50 X 50MM - CÓDIGO DE BARRAS') {
-      setEtiquetas({ ...etiquetas, quantidade: 24 * parseInt(pages) })
+    if (newValue > 0 && etiquetas.modelo === 'PADRAO 50 X 50MM' || etiquetas.modelo === 'PADRAO 50 X 50MM - CÓDIGO DE BARRAS') {
+      setEtiquetas({ ...etiquetas, quantidade: 24 * newValue })
     }
-    if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 100 X 50MM' || etiquetas.modelo === 'PADRAO 100 X 50MM - CÓDIGO DE BARRAS') {
-      setEtiquetas({ ...etiquetas, quantidade: 12 * parseInt(pages) })
+    if (newValue > 0 && etiquetas.modelo === 'PADRAO 100 X 50MM' || etiquetas.modelo === 'PADRAO 100 X 50MM - CÓDIGO DE BARRAS') {
+      setEtiquetas({ ...etiquetas, quantidade: 12 * newValue })
     }
-    if (qtdPage != undefined && etiquetas.modelo === 'PADRAO 100 X 100MM' || etiquetas.modelo === 'PADRAO 100 X 100MM - CÓDIGO DE BARRAS') {
-      setEtiquetas({ ...etiquetas, quantidade: 6 * parseInt(pages) })
+    if (newValue > 0 && etiquetas.modelo === 'PADRAO 100 X 100MM' || etiquetas.modelo === 'PADRAO 100 X 100MM - CÓDIGO DE BARRAS') {
+      setEtiquetas({ ...etiquetas, quantidade: 6 * newValue })
     }
   }
 
-
-  const SetValidDate = (emissao) => {
-    const validDays = produtos.filter(({ value }) => value === id_produto).map(({ dias_validade }) => dias_validade)[0]
-    if (emissao) {
-      const days = emissao.substring(0, 2) >= 10 ? emissao.substring(0, 2) : emissao.substring(0, 1)
-      const month = days < 10 ? emissao.substring(2, 4) : emissao.substring(3, 5)
-      const years = days < 10 ? emissao.substring(5, 9) : emissao.substring(6, 10)
-      const d = [years, month, days]
-      setValidade(d)
+  const SetValidDate = () => {
+    const validade = produtos.filter(({ value }) => value === id_produto).map(({ dias_validade }) => dias_validade)[0]
+    const data = etiquetas.emissao.split('/').map(resp => parseInt(resp)).reverse()
+    if (etiquetas.emissao) {
+      setEtiquetas({
+        ...etiquetas,
+        emissao: moment(data, 'YYYYMMDD').format('DD/MM/YYYY'),
+        validade: moment(data, 'YYYYMMDD').add(validade, 'days').format('DD/MM/YYYY'),
+        descricao: produtos.filter(({ value }) => value === id_produto).map(({ descricao }) => descricao)[0]
+      })
     }
-    setEtiquetas({
-      ...etiquetas,
-      emissao: moment(validade).format('DD/MM/YYYY'),
-      validade: moment(validade).add(validDays, 'days').format('DD/MM/YYYY'),
-      descricao: produtos.filter(({ value }) => value === id_produto).map(({ descricao }) => descricao)[0]
-    })
   }
+
   return (
     <Form>
       <AnimatedDropDown
@@ -135,7 +126,6 @@ export default props => {
               ...etiquetas,
               emissao: text,
             });
-            SetValidDate(text)
           }} />
         <InputDate value={etiquetas.validade}
           disabled={!etiquetas.id_produto ? true : false}
@@ -168,7 +158,10 @@ export default props => {
           maxLength={2}
           keyboardType="numeric"
           placeholder='Nº páginas (Máx. 10p)'
-          onChangeText={text => { setQtdPage(parseInt(text.replace(/[^0-9]/g, '')) > 10 ? '10' : text.replace(/[^0-9]/g, '')) }}
+          onChangeText={text => {
+            setQtdPage(parseInt(text.replace(/[^0-9]/g, '')) > 10 ? '10' : text);
+            LimitCopy(text);
+          }}
           value={qtdPage}
           width="48%"
         />

@@ -5,7 +5,7 @@ import { showMessage } from "react-native-flash-message"
 import DownloadFile from './utils/DownloadFile'
 import Header from '../../components/Header'
 import TagsContext from '../../contexs/Tags'
-import { App, Grid } from '../style'
+import { App, Grid, SplashContainer } from '../style'
 import UserContext from '../../contexs/User'
 import ModalMessage from '../../components/ModalMessage'
 import axios from 'axios'
@@ -13,7 +13,8 @@ import {
   HeaderContainer,
   PageScroll,
   CleanContainer,
-  FixedButtonContainer
+  FixedButtonContainer,
+  HeaderTitle,
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
 import Etiquetas from './Screens/Etiquetas'
@@ -24,6 +25,7 @@ export default ({ navigation }) => {
   const { user } = useContext(UserContext)
   const [validation, setValidation] = useState(false)
   const [active, setActive] = useState(false)
+  const [splash, setSplash] = useState(false)
   const [pages, setPages] = useState([
     {
       route: "Etiquetas",
@@ -32,6 +34,7 @@ export default ({ navigation }) => {
       validated: true
     },
   ])
+
   useEffect(() => {
     setEtiquetas({ ...etiquetas, id_agricultor: user.id_agricultor })
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
@@ -65,7 +68,7 @@ export default ({ navigation }) => {
               position: 'top',
               duration: 3000,
             })
-            setActive(false)
+            setSplash(false)
           })
           navigation.navigate("TagsScreen", { update: true })
         })
@@ -80,7 +83,7 @@ export default ({ navigation }) => {
           position: 'top',
           duration: 3000,
         })
-        setActive(false)
+        setSplash(false)
       }, 3000)
     }
   }
@@ -119,6 +122,16 @@ export default ({ navigation }) => {
 
   return (
     <>
+      {splash === true && (
+        <SplashContainer>
+          <Image source={{ uri: 'https://dev.renovetecnologia.org/imagens/tags.png' }} style={{ width: 200, height: 200, borderRadius: 100 }} />
+          <Text style={{ fontSize: 20, lineHeight: 48 }}>Estamos preparando tudo!</Text>
+          <ProgressBar
+            styleAttr="Horizontal" color="'#07AC82" style={{ width: '60%' }} />
+          <Text style={{ fontSize: 20, color: '#07AC82' }}>Aguarde...</Text>
+        </SplashContainer>
+      )
+      }
       <Header color="#07AC82" navigation={navigation} />
       <App>
         <HeaderContainer>
@@ -129,21 +142,6 @@ export default ({ navigation }) => {
             <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
               {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} user={user} etiquetas={etiquetas} setEtiquetas={setEtiquetas} />}
             </PageScroll>
-            {active &&
-              <ModalMessage
-                style={{
-                  elevation: 0,
-                  backgroundColor: 'transparent',
-                  width: Dimensions.get('screen').width * 0.9,
-                  height: Dimensions.get('screen').height * 0.65,
-                }}
-                onPressCancelButton={(value) => setActive(value)} >
-                <Image source={{ uri: 'https://dev.renovetecnologia.org/imagens/tags.png' }} style={{ width: 200, height: 200, borderRadius: 100 }} />
-                <Text style={{ fontSize: 20, lineHeight: 48 }}>Estamos preparando tudo!</Text>
-                <ProgressBar
-                  styleAttr="Horizontal" color="'#07AC82" style={{ width: '60%' }} />
-                <Text style={{ fontSize: 20, color: '#07AC82' }}>Aguarde...</Text>
-              </ModalMessage>}
           </KeyboardAvoidingView>
         </CleanContainer>
       </App>
@@ -151,7 +149,7 @@ export default ({ navigation }) => {
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
           <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Gerar Etiqueta")} shadow={2} onPress={() => {
-            activePage.index !== (pages.length - 1) ? nextPage() : setActive(true); submitForm();
+            activePage.index !== (pages.length - 1) ? nextPage() : setSplash(true); submitForm();
           }} />
         </Grid>
       </FixedButtonContainer>

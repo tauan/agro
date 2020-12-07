@@ -36,12 +36,11 @@ export default ({ navigation }) => {
   ])
 
   useEffect(() => {
-    setEtiquetas({ ...etiquetas, id_agricultor: user.id_agricultor })
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
   }, [pages]);
 
   let imageHidde = false
-
+  
   const nextPage = () => {
     if (activePage !== undefined && activePage.index !== pages.length - 1) { }
     setActivePage(pages[activePage.index + 1])
@@ -52,7 +51,7 @@ export default ({ navigation }) => {
     const options = {
       method: 'POST',
       headers: { 'authorization': user.token, 'Content-Type': 'application/json; charset=utf-8;' },
-      data: etiquetas,
+      data: Object.assign(etiquetas, { id_agricultor: user.id_agricultor }),
       url: 'https://dev.renovetecnologia.org/webrunstudio/WS_ETIQUETAS.rule?sys=SIS',
     };
     try {

@@ -39,7 +39,7 @@ export default props => {
     const currentDate = selectedDate || value;
     // retorna 01/01/2000 por exemplo
     const shortDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
-    const onlyMonth = months[currentDate.getMonth()] //retorna o mes em maiusculo
+    const onlyMonth = `${months[currentDate.getMonth()]}/${currentDate.getFullYear()}` //retorna o mes em maiusculo
     setShowCalendar(Platform.OS === 'ios')
     setDate(currentDate)
     completeDate ? onChangeDate(shortDate) : onChangeDate(onlyMonth)

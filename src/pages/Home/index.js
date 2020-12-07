@@ -51,7 +51,7 @@ export default ({ navigation }) => {
                     </ContainerIMG>
                     <CleanContainer style={{ top: -5 }}>
                         <TextStyle color="#707b7c" fontsize={24}>Olá, <TitleStyle color="#1E8449" fontsize={24} >{`${name[0]}`}</TitleStyle></TextStyle>
-                        <TextStyle color="#707b7c" fontsize={12}>{user.sindicato}</TextStyle>
+                        <TextStyle color="#707b7c" fontsize={12}>{user.sindicato ? user.sindicato : user.email}</TextStyle>
                     </CleanContainer>
                     <Link
                         borderRadius={5}
@@ -88,7 +88,7 @@ export default ({ navigation }) => {
                             <TextStyle align="center" color="#909497">Caderno de campo</TextStyle>
                         </ContainerItem>
                         <ContainerItem onPress={() => { }}>
-                            <MaterialIcons name="help" size={50} color="#909497" />
+                            <MaterialIcons name="help" size={60} color="#909497" />
                             <TextStyle align="center" color="#909497">sobre</TextStyle>
                         </ContainerItem>
                     </ContainerButtons>

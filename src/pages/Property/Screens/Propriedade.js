@@ -15,7 +15,7 @@ export default props => {
     GetFederacoes()
   }, [])
   useEffect(() => {
-    String(propriedade.cep).length >= 9 && ViaCep()
+    String(propriedade.cep).length >= 9 && GetCEP()
   }, [propriedade.cep])
 
   useEffect(() => { validateForm() }, [
@@ -64,13 +64,49 @@ export default props => {
 
   const GetFederacoes = async () => {
     let list = []
-    const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_FEDERACOES.rule?sys=SIS', { headers: { authorization: user.token } })
-    data.map(resp => list.push({ label: resp.sigla, value: resp.id_uf }))
-    setFederacoes(list)
+    try {
+      const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_FEDERACOES.rule?sys=SIS', { headers: { authorization: user.token } })
+      data.map(resp => list.push({ label: resp.sigla, value: resp.id_uf }))
+      setFederacoes(list)
+    } catch (e) {
+      GetFederacoes()
+    }
+  }
+
+  const GetCEP = async () => {
+
+    const options = {
+      method: 'GET',
+      url: 'https://dev.renovetecnologia.org/webrunstudio/WS_CEP.rule',
+      params: { JSON: { "cep": propriedade.cep }, sys: 'SIS' },
+      headers: {
+        Authorization: user.token
+      }
+    }
+    try {
+      const { data } = await axios.request(options)
+      const uf = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)
+      if (data.length > 0) {
+        setPropriedade({
+          ...propriedade,
+          complemento: data.complemento,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          municipio: data.localidade,
+          latitude: data.latitude,
+          longitude: data.longitude,
+          uf
+        })
+      } else {
+        ViaCep()
+      }
+    } catch (e) {
+      GetCEP()
+    }
   }
 
   const ViaCep = async () => {
-    const { data } = await axios(`https://viacep.com.br/ws/${propriedade.cep.replace('-', '')}/json/`)
+    const { data } = await axios(`https://viacep.com.br/ws/${propriedade.cep}/json/`)
     !data.erro && propriedade.id_propriedade === undefined && setPropriedade({
       ...propriedade,
       complemento: data.complemento,
@@ -146,6 +182,18 @@ export default props => {
           placeholder='Cidade'
           onChangeText={text => setPropriedade({ ...propriedade, municipio: text })}
           value={propriedade.municipio}
+          width="100%"
+        />
+        <InputAnimated
+          placeholder='Latitude'
+          onChangeText={text => setPropriedade({ ...propriedade, latitude: text })}
+          value={propriedade.latitude}
+          width="100%"
+        />
+        <InputAnimated
+          placeholder='Longitude'
+          onChangeText={text => setPropriedade({ ...propriedade, longitude: text })}
+          value={propriedade.longitude}
           width="100%"
         />
       </Row>

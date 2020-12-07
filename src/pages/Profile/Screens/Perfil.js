@@ -19,7 +19,7 @@ export default props => {
   }, [profile.telefone_1, profile.telefone_2, profile.telefone_3])
 
   useEffect(() => {
-    ViaCep()
+    GetCEP()
   }, [profile.cep_propriedade, federacoes])
 
   useEffect(() => { validateForm() }, [])
@@ -56,9 +56,40 @@ export default props => {
     setFederacoes(list)
   }
 
+  const GetCEP = async () => {
+
+    const options = {
+      method: 'GET',
+      url: 'https://dev.renovetecnologia.org/webrunstudio/WS_CEP.rule',
+      params: { JSON: { "cep": profile.cep_propriedade }, sys: 'SIS' },
+      headers: {
+        Authorization: user.token
+      }
+    }
+    try {
+      const { data } = await axios.request(options)
+      const id_uf = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
+      if (data.length > 0) {
+        setProfile({
+          ...propriedade,
+          complemento: data.complemento,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          municipio: data.localidade,
+          latitude: data.latitude,
+          longitude: data.longitude,
+          id_uf
+        })
+      } else {
+        ViaCep()
+      }
+    } catch (e) {
+      GetCEP()
+    }
+  }
+
   const ViaCep = async () => {
-    const cep = profile.cep_propriedade.replace('-', '')
-    const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+    const { data } = await axios.get(`https://viacep.com.br/ws/${profile.cep_propriedade}/json/`)
     const idUF = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
     setProfile({
       ...profile,

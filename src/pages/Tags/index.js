@@ -24,7 +24,7 @@ import ModalMessage from '../../components/ModalMessage'
 
 export default ({ navigation, route }) => {
     const [tagsList, setTagsList] = useState([])
-    const [value, setValue] = useState('')
+    const [value, setValue] = useState("")
     const [activeModal, setActiveModal] = useState(false)
     const [active, setActive] = useState(false)
     const [activeTagModal, setActiveTagModal] = useState(false)
@@ -149,7 +149,7 @@ export default ({ navigation, route }) => {
                     <Search value={value} onChangeText={text => setValue(text)} />
                     {tagsList.length > 0 &&
                         <FlatList
-                            data={tagsList.filter(produto => produto.descricao.indexOf(value.toUpperCase()) != -1)}
+                            data={tagsList.filter(({ descricao }) => descricao != -1)}
                             renderItem={({ item, index }) =>
                                 <Items item={item}
                                     index={index}

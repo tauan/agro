@@ -48,6 +48,7 @@ export default props => {
   return (
     <TouchableWithoutFeedback disabled={disabled} onPress={() => { setShowCalendar(true) }}>
       <View style={{
+        backgroundColor: disabled ? '#efefef' : '#ffffff',
         width,
         height,
         borderColor,

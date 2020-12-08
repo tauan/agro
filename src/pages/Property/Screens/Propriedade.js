@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
+import Geolocation from '@react-native-community/geolocation'
 import InputAnimated from '../../../components/InputAnimated'
-import { Form, Row } from '../style'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { Form, Row, LocationButton } from '../style'
 import AnimatedDropDown from '../../../components/AnimatedDropDown'
 import UserContext from '../../../contexs/User'
 import axios from 'axios'
@@ -14,8 +16,9 @@ export default props => {
     setValidation(false)
     GetFederacoes()
   }, [])
+
   useEffect(() => {
-    String(propriedade.cep).length >= 9 && GetCEP()
+    GetCEP()
   }, [propriedade.cep])
 
   useEffect(() => { validateForm() }, [
@@ -49,8 +52,8 @@ export default props => {
     let list = []
     const condicoes = [
       'ARRENDATÁRIO(A)',
-      'ASSENTADO(A) PELO PNRA',
-      'BENEFICIÁRIO',
+      'ASSENTADO(A) DO INCRA',
+      'BENEFICIÁRIO(A) DE PROGRAMA DE CRÉDITO FUNDIÁRIO',
       'EXTRATIVISTA',
       'MEEIRO(A)',
       'PERMISSIONÁRIO DE ÁREAS PÚBLICAS',
@@ -74,7 +77,6 @@ export default props => {
   }
 
   const GetCEP = async () => {
-
     const options = {
       method: 'GET',
       url: 'https://dev.renovetecnologia.org/webrunstudio/WS_CEP.rule',
@@ -85,8 +87,8 @@ export default props => {
     }
     try {
       const { data } = await axios.request(options)
-      const uf = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)
-      if (data.length > 0) {
+      const uf = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
+      if (String(data).length > 0) {
         setPropriedade({
           ...propriedade,
           complemento: data.complemento,
@@ -101,7 +103,6 @@ export default props => {
         ViaCep()
       }
     } catch (e) {
-      GetCEP()
     }
   }
 
@@ -114,6 +115,12 @@ export default props => {
       bairro: data.bairro,
       municipio: data.localidade,
       uf: federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
+    })
+  }
+
+  const GetLocation = async () => {
+    await Geolocation.getCurrentPosition(({ coords }) => {
+      setPropriedade({ ...propriedade, latitude: `${coords.latitude}`, longitude: `${coords.longitude}` })
     })
   }
 
@@ -188,14 +195,19 @@ export default props => {
           placeholder='Latitude'
           onChangeText={text => setPropriedade({ ...propriedade, latitude: text })}
           value={propriedade.latitude}
-          width="100%"
+          width="39%"
         />
         <InputAnimated
           placeholder='Longitude'
           onChangeText={text => setPropriedade({ ...propriedade, longitude: text })}
           value={propriedade.longitude}
-          width="100%"
+          width="39%"
         />
+        <LocationButton
+          onPress={GetLocation}
+        >
+          <MaterialIcons name="my-location" size={30} color="#fff" />
+        </LocationButton>
       </Row>
     </Form>
   )

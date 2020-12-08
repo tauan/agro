@@ -176,4 +176,13 @@ export const DeleteButton = Styled.TouchableOpacity`
   align-items: center;
   justify-content: center
 `
+export const LocationButton = Styled.TouchableOpacity`
+  background: #008b54;
+  align-items: center;
+  justify-content: center
+  height: 50px;
+  margin-top: 16px;
+  padding: 10px;
+  border-radius: 5px;
+`
 

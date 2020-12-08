@@ -43,9 +43,13 @@ export default ({ navigation }) => {
   }, [pages]);
 
   const GetDataUser = async () => {
-    const { data } = await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_AGRICULTOR.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
-    setProfile(data)
-    setSplash(false)
+    try {
+      const { data } = await axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_AGRICULTOR.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
+      setProfile(data)
+      setSplash(false)
+    } catch (e) {
+      GetDataUser()
+    }
   }
 
   const nextPage = () => {
@@ -185,7 +189,7 @@ export default ({ navigation }) => {
         </HeaderContainer>
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
-            <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
+            <PageScroll contentContainerStyle={{paddingBottom: 60}} onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
               {activePage !== undefined && <activePage.component activePage={activePage} setValidation={setValidation} pages={pages} setPages={setPages} pages={pages} profile={profile} user={user} setProfile={setProfile} />}
             </PageScroll>
           </KeyboardAvoidingView>

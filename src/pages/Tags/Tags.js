@@ -40,7 +40,7 @@ export default ({ navigation }) => {
   }, [pages]);
 
   let imageHidde = false
-  
+
   const nextPage = () => {
     if (activePage !== undefined && activePage.index !== pages.length - 1) { }
     setActivePage(pages[activePage.index + 1])
@@ -147,8 +147,8 @@ export default ({ navigation }) => {
       <FixedButtonContainer
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
-          <Primary marginTop={0} width="100%" title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Gerar Etiqueta")} shadow={2} onPress={() => {
-            activePage.index !== (pages.length - 1) ? nextPage() : setSplash(true); submitForm();
+          <Primary marginTop={0} width="100%" title="Gerar Etiqueta" shadow={2} onPress={() => {
+            setSplash(true); submitForm();
           }} />
         </Grid>
       </FixedButtonContainer>

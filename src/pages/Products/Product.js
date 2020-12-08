@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Animated, Dimensions, KeyboardAvoidingView, TouchableOpacity, ActivityIndicator, View } from 'react-native'
 import { showMessage } from "react-native-flash-message"
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import ProductContext from '../../contexs/ProductContext'
-import { App, Grid, SplashContainer } from '../style'
+import { App, Grid, SplashContainer, TitleStyle, TextStyle  } from '../style'
 import UserContext from '../../contexs/User'
 import {
   HeaderContainer,
@@ -14,7 +14,6 @@ import {
   ButtonImageContainer,
   CleanContainer,
   FixedButtonContainer,
-  TextSplash,
   Row
 } from './style'
 import Primary from '../../components/Buttons/PrimaryTouchable'
@@ -65,15 +64,15 @@ export default ({ navigation }) => {
 
   useEffect(() => {
     pages[0] !== undefined ? setActivePage(pages[0]) : ""
-    checkProduct() 
+    checkProduct()
   }, []);
 
   let imageHidde = false
 
   const checkProduct = () => {
-    if(produto.id_produto) {
+    if (produto.id_produto) {
       const tempPages = pages.map(item => {
-        item.validated = true 
+        item.validated = true
         return item
       })
       setPages(tempPages)
@@ -85,18 +84,18 @@ export default ({ navigation }) => {
     setActivePage(pages[activePage.index + 1])
   }
 
-  const submitForm = async () => { 
+  const submitForm = async () => {
     try {
       const options = {
         url: "https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS.rule?sys=SIS",
-        method: "POST", 
+        method: "POST",
         data: produto,
         headers: {
           authorization: user.token
         }
       }
       const response = await axios.request(options)
-      if(response.data.sucesso !== undefined) {
+      if (response.data.sucesso !== undefined) {
         showMessage({
           message: response.data.sucesso,
           type: "success",
@@ -106,11 +105,11 @@ export default ({ navigation }) => {
           position: 'top',
           duration: 1500,
         })
-        
-        setTimeout(()=> navigation.navigate("ProductScreen", {update: true}), 1500)
-        
+
+        setTimeout(() => navigation.navigate("ProductScreen", { update: true }), 1500)
+
       }
-    } catch (err){
+    } catch (err) {
       console.log(err)
       console.log("Erro ao salvar produto no servidor")
     }
@@ -166,13 +165,13 @@ export default ({ navigation }) => {
   }
 
   const onPressFloatButton = () => {
-    if(activePage.index !== (pages.length - 1)) {
+    if (activePage.index !== (pages.length - 1)) {
       nextPage()
     } else {
       const validate = pages.filter(item => item.validated === false)
-      if(validate.length === 0) {
-        submitForm(); 
-      }else {
+      if (validate.length === 0) {
+        submitForm();
+      } else {
         setActivePage(validate[0])
       }
     }
@@ -185,9 +184,12 @@ export default ({ navigation }) => {
   return (
     <>
       {splash === true && (<SplashContainer>
-        <TextSplash>Estamos preparando tudo para você</TextSplash>
-        <ActivityIndicator size="large" color="#ccc" />
-      </SplashContainer>)
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <ActivityIndicator size={40} color="#008b54" />
+            <TitleStyle align="center">Aguade...</TitleStyle>
+          </View>
+          <TextStyle fontsize={18} align="center">Estamos preparando tudo para você!</TextStyle>
+        </SplashContainer>)
       }
       <Header color="#07AC82" navigation={navigation} />
       <App>
@@ -212,7 +214,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: produto.url_imagem ? produto.url_imagem : 'https://freeiconshop.com/wp-content/uploads/edd/camera-flat.png' }}
+                source={{ uri: produto.url_imagem ? produto.url_imagem : 'https://dev.renovetecnologia.org/imagens/image.jpg' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],
@@ -248,8 +250,8 @@ export default ({ navigation }) => {
         style={{ transform: [{ translateY: validation === true ? Dimensions.get("window").height - 74 - 10 : Dimensions.get("window").height + 10 }] }}>
         <Grid>
           <Row>
-            {(activePage !== undefined && activePage.index > 0) && <Primary marginTop={0} title="<" width="15%" onPress={()=>goBack()} />}
-            
+            {(activePage !== undefined && activePage.index > 0) && <Primary marginTop={0} title="<" width="15%" onPress={() => goBack()} />}
+
             <Primary marginTop={0} width={(activePage !== undefined && activePage.index > 0) ? "82%" : "100%"} title={activePage === undefined ? " " : (activePage.index !== (pages.length - 1) ? "Proximo" : "Finalizar")} shadow={2} onPress={() => { onPressFloatButton() }} />
           </Row>
         </Grid>

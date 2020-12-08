@@ -169,7 +169,7 @@ export default ({ navigation }) => {
         </HeaderContainer>
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
-            <PageScroll onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
+            <PageScroll contentContainerStyle={{paddingBottom: 60}} onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
               {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} propriedade={propriedade} setPropriedade={setPropriedade} />}
             </PageScroll>
           </KeyboardAvoidingView>

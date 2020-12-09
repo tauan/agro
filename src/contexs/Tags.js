@@ -7,6 +7,7 @@ export const TagsProvider = ({ children }) => {
   const [etiquetas, setEtiquetas] = useState({
     id_agricultor: undefined,
     id_produto: undefined,
+    id_propriedade: undefined,
     emissao: "",
     validade: "",
     descricao: "",
@@ -20,7 +21,7 @@ export const TagsProvider = ({ children }) => {
     <Tags.Provider
       value={{
         activePage,
-        etiquetas, 
+        etiquetas,
         setActivePage,
         setEtiquetas,
       }}

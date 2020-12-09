@@ -95,11 +95,12 @@ export default props => {
           logradouro: data.logradouro,
           bairro: data.bairro,
           municipio: data.localidade,
-          latitude: data.latitude,
-          longitude: data.longitude,
+          // latitude: data.latitude,
+          // longitude: data.longitude,
           uf
         })
       } else {
+        console.log('Aqui')
         ViaCep()
       }
     } catch (e) {
@@ -119,8 +120,21 @@ export default props => {
   }
 
   const GetLocation = async () => {
+
+    function toDegreesMinutesAndSeconds(coordinate) {
+      var absolute = Math.abs(coordinate);
+      var degrees = Math.floor(absolute);
+      var minutesNotTruncated = (absolute - degrees) * 60;
+      var minutes = Math.floor(minutesNotTruncated);
+      var seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+      return degrees + "º " + minutes + "' " + seconds + "\" ";
+    }
     await Geolocation.getCurrentPosition(({ coords }) => {
-      setPropriedade({ ...propriedade, latitude: `${coords.latitude}`, longitude: `${coords.longitude}` })
+      setPropriedade({
+        ...propriedade,
+        latitude: `${toDegreesMinutesAndSeconds(coords.latitude)} ${coords.latitude >= 0 ? "N" : "S"}`,
+        longitude: `${toDegreesMinutesAndSeconds(coords.longitude)} ${coords.longitude >= 0 ? "E" : "W"}`
+      })
     })
   }
 
@@ -186,7 +200,7 @@ export default props => {
           width="100%"
         />
         <InputAnimated
-          placeholder='Cidade'
+          placeholder='Município'
           onChangeText={text => setPropriedade({ ...propriedade, municipio: text })}
           value={propriedade.municipio}
           width="100%"

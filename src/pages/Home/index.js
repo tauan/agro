@@ -33,7 +33,7 @@ export default ({ navigation }) => {
     const img = user.foto != null ? user.foto : 'https://dev.renovetecnologia.org/imagens/image.jpg'
 
     useEffect(() => { CheckSession(user.token, logoutWithoutAuthorization); }, [])
-    const name = user.nome.split(" ")
+    const name = user.nome != null && user.nome.split(" ")
     return (
         <LinearGradient colors={['#F4F6F7', '#F4F6F7']} start={{ x: 0.30, y: 0.25 }} end={{ x: 0.0, y: 1.2 }} style={{ flex: 1, justifyContent: 'center' }}>
             <Header style={{ height: 100, justifyContent: 'center', alignItems: 'flex-end' }}>

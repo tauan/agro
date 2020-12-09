@@ -9,6 +9,7 @@ import moment from 'moment'
 export default props => {
   const { etiquetas, setEtiquetas, setValidation, activePage, pages, setPages, user } = props
   const [produtos, setProdutos] = useState([])
+  const [propriedades, setPropriedades] = useState([])
   const [id_produto, setIDProduto] = useState()
   const [qtdPage, setQtdPage] = useState('')
 
@@ -28,6 +29,7 @@ export default props => {
 
   useEffect(() => {
     etiquetas.id_produto != undefined && SetValidDate()
+    GetPropriedades()
   }, [etiquetas.id_produto])
 
   const validateForm = () => {
@@ -48,9 +50,15 @@ export default props => {
     const list = []
     axios.get(`https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS.rule?sys=SIS&JSON=%7B%20%22id_agricultor%22%3A%20${user.id_agricultor}%20%7D`, { headers: { authorization: user.token } })
       .then(({ data }) => {
-        data.map(item => list.push({ label: item.descricao, value: item.id_produto, dias_validade: item.dias_validade, descricao: item.descricao }))
+        data.map(item => list.push({ label: item.descricao, value: item.id_produto, dias_validade: item.dias_validade, propriedades: item.propriedades }))
       })
     setProdutos(list)
+  }
+
+  const GetPropriedades = () => {
+    let list = []
+    produtos.filter(({ value }) => value === id_produto).map(({ propriedades }) => propriedades.map(value => list.push({ label: value.descricao, value: value.id_propriedade })))[0]
+    setPropriedades(list)
   }
 
   const TagModels = () => {
@@ -92,17 +100,18 @@ export default props => {
         ...etiquetas,
         emissao: moment(data, 'YYYYMMDD').format('DD/MM/YYYY'),
         validade: moment(data, 'YYYYMMDD').add(validade, 'days').format('DD/MM/YYYY'),
-        descricao: produtos.filter(({ value }) => value === id_produto).map(({ descricao }) => descricao)[0]
+        descricao: produtos.filter(({ value }) => value === id_produto).map(({ label }) => label)[0]
       })
     }
   }
+  console.log(etiquetas)
 
   return (
     <Form>
       <AnimatedDropDown
         controll={true}
         defaultValue={etiquetas.id_produto}
-        placeholder={"Produtos"}
+        placeholder={"Selecionar produto"}
         listOptions={produtos}
         onChangeItem={response => {
           setIDProduto(response)
@@ -139,9 +148,24 @@ export default props => {
           disabled={!etiquetas.id_produto ? true : false}
           controll={true}
           defaultValue={etiquetas.modelo}
-          placeholder={"Modelo de Etiqueta"}
+          placeholder={"Selecionar modelo de etiqueta"}
           listOptions={TagModels()}
           onChangeItem={response => setEtiquetas({ ...etiquetas, modelo: response })}
+          width="100%"
+        />
+        <AnimatedDropDown
+          disabled={!etiquetas.id_produto ? true : false}
+          controll={true}
+          defaultValue={etiquetas.id_propriedade}
+          placeholder={"Selecionar propriedade"}
+          listOptions={propriedades}
+          onChangeItem={response => {
+            setIDProduto(response)
+            setEtiquetas({
+              ...etiquetas,
+              id_propriedade: response
+            })
+          }}
           width="100%"
         />
         <InputAnimated

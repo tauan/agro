@@ -149,7 +149,7 @@ export default ({ navigation, route }) => {
                     <Search value={value} onChangeText={text => setValue(text)} />
                     {tagsList.length > 0 &&
                         <FlatList
-                            data={tagsList.filter(({ descricao }) => descricao != -1)}
+                            data={tagsList.filter(({ descricao }) => descricao.indexOf(value.toUpperCase()) != -1)}
                             renderItem={({ item, index }) =>
                                 <Items item={item}
                                     index={index}

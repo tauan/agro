@@ -12,19 +12,19 @@ export default props => {
   const [disabled, setDisabled] = useState(false)
   const [defaultValue, setDefaultValue] = useState()
 
-  useEffect(() => { 
-    checkProductId() 
+  useEffect(() => {
+    checkProductId()
     return () => setSplash(true)
   }, [])
 
-  useEffect(()=>{
-    if(produto.id_categoria)
+  useEffect(() => {
+    if (produto.id_categoria)
       getProdutoBase(produto.id_categoria)
-  },[produto.id_categoria])
+  }, [produto.id_categoria])
 
-  const checkProductId = () => { 
+  const checkProductId = () => {
     setValidation(false)
-    if(produto.id_produto_base){ 
+    if (produto.id_produto_base) {
       getProdutoBase(produto.id_produto_base)
     }
     getCategorias()
@@ -67,7 +67,7 @@ export default props => {
   const getCategorias = async () => {
     try {
       const result = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_CATEGORIAS.rule?sys=SIS', { headers: { authorization: user.token } })
-      if(result.data !== undefined && Array.isArray(result.data)){
+      if (result.data !== undefined && Array.isArray(result.data)) {
         const list = await result.data.map(item => {
           return { label: item.descricao, value: parseInt(item.id_categoria) }
         })
@@ -82,24 +82,24 @@ export default props => {
     try {
       const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_PRODUTOS_BASE.rule?sys=SIS', { headers: { authorization: user.token } })
       const list = []
-      if(data && Array.isArray(data)) 
+      if (data && Array.isArray(data))
         data.filter(categoria => categoria.id_categoria === id || categoria.id_categoria == produto.id_categoria).map(item => {
           list.push({ label: item.descricao, value: parseInt(item.id_produto_base), url: item.url, })
         })
       setProductList(list)
-    }catch (err) {
+    } catch (err) {
       getProdutoBase(id)
     }
   }
 
   const getDescription = async id => {
     const description = await productList.filter(item => item.value === id)
-    description.length === 1 ? setProduto({...produto, id_produto_base: id, descricao: description[0].label, url_imagem: description[0].url }) : console.log("O produto base selecionado é invalido.")
+    description.length === 1 ? setProduto({ ...produto, id_produto_base: id, descricao: description[0].label, url_imagem: description[0].url }) : console.log("O produto base selecionado é invalido.")
   }
 
   const getUnidadeMedida = async () => {
     try {
-      const {data} = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
+      const { data } = await axios.get('https://dev.renovetecnologia.org/webrunstudio/WS_UNID_MEDIDA.rule?sys=SIS', { headers: { authorization: user.token } })
       const list = data.map(item => {
         return {
           label: item.descricao,
@@ -107,10 +107,10 @@ export default props => {
         }
       })
       setUnidadeMedida(list)
-    } catch(err) {
+    } catch (err) {
       getUnidadeMedida()
     }
-    setTimeout(()=> setSplash(false), 300)
+    setTimeout(() => setSplash(false), 300)
   }
   return (
     <Form>
@@ -122,7 +122,7 @@ export default props => {
         listOptions={listCategoria}
         onChangeItem={response => {
           setProduto({ ...produto, id_categoria: response, id_produto_base: undefined });
-          
+
         }}
         width="100%"
       />
@@ -180,6 +180,7 @@ export default props => {
           keyboardType="numeric"
         />
         <InputAnimated
+          maxLength={13}
           placeholder='Codigo de barras'
           onChangeText={text => setProduto({ ...produto, codigo_barras: text })}
           value={`${produto.codigo_barras}`}

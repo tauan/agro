@@ -11,6 +11,8 @@ export default props => {
   const { propriedade, setPropriedade, setValidation, activePage, pages, setPages } = props
   const { user } = useContext(UserContext)
   const [federacoes, setFederacoes] = useState([])
+  const [longitude, setLongitude] = useState('')
+  const [latitude, setLatitude] = useState('')
 
   useEffect(() => {
     setValidation(false)
@@ -85,25 +87,23 @@ export default props => {
         Authorization: user.token
       }
     }
-    try {
-      const { data } = await axios.request(options)
-      const uf = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
-      if (String(data).length > 0) {
-        setPropriedade({
-          ...propriedade,
-          complemento: data.complemento,
-          logradouro: data.logradouro,
-          bairro: data.bairro,
-          municipio: data.localidade,
-          // latitude: data.latitude,
-          // longitude: data.longitude,
-          uf
-        })
-      } else {
-        console.log('Aqui')
-        ViaCep()
-      }
-    } catch (e) {
+    const { data } = await axios.request(options)
+    console.log(data)
+    const uf = federacoes.filter(resp => resp.label == data.uf).map(({ value }) => value)[0]
+    if (String(data).length > 0) {
+      setPropriedade({
+        ...propriedade,
+        complemento: data.complemento,
+        logradouro: data.logradouro,
+        bairro: data.bairro,
+        municipio: data.localidade,
+        // latitude: data.latitude,
+        // longitude: data.longitude,
+        uf
+      })
+    } else {
+      console.log('Aqui')
+      ViaCep()
     }
   }
 
@@ -127,15 +127,24 @@ export default props => {
       var minutesNotTruncated = (absolute - degrees) * 60;
       var minutes = Math.floor(minutesNotTruncated);
       var seconds = Math.floor((minutesNotTruncated - minutes) * 60);
-      return degrees + "º " + minutes + "' " + seconds + "\" ";
+      return degrees + "º " + minutes + "' " + seconds + "\"";
     }
-    await Geolocation.getCurrentPosition(({ coords }) => {
+    Geolocation.getCurrentPosition(({ coords }) => {
       setPropriedade({
         ...propriedade,
         latitude: `${toDegreesMinutesAndSeconds(coords.latitude)} ${coords.latitude >= 0 ? "N" : "S"}`,
         longitude: `${toDegreesMinutesAndSeconds(coords.longitude)} ${coords.longitude >= 0 ? "E" : "W"}`
       })
     })
+  }
+
+  const MaskCoords = (value = '') => {
+    const coord = value.replace(/[^a-z\d]/i, '')
+      .replace(/(\d{2})(\d)/, '$1º $2')
+      .replace(/(\d{2})(\d)/, '$1\' $2')
+      .replace(/(\d{2})(\d)/, '$1,$2')
+      .replace(/(\d{2},)(\d{2})/, '$1$2"')
+    return coord
   }
 
   return (
@@ -207,11 +216,12 @@ export default props => {
         />
         <InputAnimated
           placeholder='Latitude'
-          onChangeText={text => setPropriedade({ ...propriedade, latitude: text })}
+          onChangeText={text => setPropriedade({ ...propriedade, latitude: MaskCoords(text) })}
           value={propriedade.latitude}
           width="39%"
         />
         <InputAnimated
+          // maxLength={7}
           placeholder='Longitude'
           onChangeText={text => setPropriedade({ ...propriedade, longitude: text })}
           value={propriedade.longitude}

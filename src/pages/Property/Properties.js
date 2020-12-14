@@ -26,14 +26,13 @@ export default ({ navigation }) => {
   const { activePage, propriedade, setActivePage, setPropriedade } = useContext(PropertiesContext)
   const { user } = useContext(UserContext)
   const [image, setImage] = useState(undefined)
-  const [infoButton, setInfoButton] = useState({ title: "Proximo", onPress: () => nextPage() })
   const [validation, setValidation] = useState(false)
   const [pages, setPages] = useState([
     {
       route: "Propriedade",
       textHeader: "Dados da propriedade",
       component: Propriedade,
-      validated: true
+      validated: false
     },
   ])
 
@@ -80,7 +79,6 @@ export default ({ navigation }) => {
     }).start()
   }
 
-
   const openImage = () => {
     Animated.timing(progress, {
       toValue: 0,
@@ -104,7 +102,8 @@ export default ({ navigation }) => {
   }
 
   const pickerImage = async () => {
-    ImagePicker.launchImageLibrary({
+    // ImagePicker.launchImageLibrary({
+    ImagePicker.launchCamera({
       includeBase64: true
     }, (response) => {
       if (response.didCancel) {
@@ -115,6 +114,7 @@ export default ({ navigation }) => {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         setImage(response)
+        setPropriedade({ ...propriedade, foto: response.data })
       };
     })
   }
@@ -143,7 +143,7 @@ export default ({ navigation }) => {
             }}>
               <ImgBackground
                 resizeMode="cover"
-                source={{ uri: propriedade.url_imagem ? propriedade.url_imagem : 'https://dev.renovetecnologia.org/imagens/image.jpg' }}
+                source={{ uri: image ? `data:image/jpg;base64,${image.data}` : propriedade.url_imagem ? propriedade.url_imagem : 'https://dev.renovetecnologia.org/imagens/image.jpg' }}
                 style={{
                   opacity: progress.interpolate({
                     inputRange: [0, 50, 100],
@@ -169,7 +169,7 @@ export default ({ navigation }) => {
         </HeaderContainer>
         <CleanContainer>
           <KeyboardAvoidingView style={{ flex: 1 }}>
-            <PageScroll contentContainerStyle={{paddingBottom: 60}} onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
+            <PageScroll contentContainerStyle={{ paddingBottom: 60 }} onScroll={e => toggleAnimation(e.nativeEvent.velocity.y)} scrollEventThrottle={16}>
               {activePage !== undefined && <activePage.component activePage={activePage} setPages={setPages} pages={pages} setValidation={setValidation} propriedade={propriedade} setPropriedade={setPropriedade} />}
             </PageScroll>
           </KeyboardAvoidingView>

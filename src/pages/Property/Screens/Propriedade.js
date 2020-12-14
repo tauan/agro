@@ -11,8 +11,6 @@ export default props => {
   const { propriedade, setPropriedade, setValidation, activePage, pages, setPages } = props
   const { user } = useContext(UserContext)
   const [federacoes, setFederacoes] = useState([])
-  const [longitude, setLongitude] = useState('')
-  const [latitude, setLatitude] = useState('')
 
   useEffect(() => {
     setValidation(false)
@@ -24,18 +22,35 @@ export default props => {
   }, [propriedade.cep])
 
   useEffect(() => { validateForm() }, [
-    propriedade.cep,
-    propriedade.ccir,
-    propriedade.endereco,
-    propriedade.condicoes_posse,
-    propriedade.cidade,
-    propriedade.uf,
     propriedade.area,
-    propriedade.nome_propriedade
+    propriedade.bairro,
+    propriedade.ccir,
+    propriedade.cep,
+    propriedade.complemento,
+    propriedade.condicoes_posse,
+    propriedade.descricao,
+    propriedade.latitude,
+    propriedade.logradouro,
+    propriedade.longitude,
+    propriedade.municipio,
+    propriedade.n_logradouro,
+    propriedade.uf
   ])
 
   const validateForm = () => {
-    const validations = [propriedade]
+    const validations = []
+    validations.push(propriedade.area)
+    validations.push(propriedade.bairro)
+    validations.push(propriedade.ccir)
+    validations.push(propriedade.cep)
+    validations.push(propriedade.condicoes_posse)
+    validations.push(propriedade.descricao)
+    validations.push(propriedade.latitude)
+    validations.push(propriedade.logradouro)
+    validations.push(propriedade.longitude)
+    validations.push(propriedade.municipio)
+    validations.push(propriedade.n_logradouro)
+    validations.push(propriedade.uf)
 
     const validForm = validations.reduce((t, a) => t && a)
 
@@ -97,8 +112,6 @@ export default props => {
         logradouro: data.logradouro,
         bairro: data.bairro,
         municipio: data.localidade,
-        // latitude: data.latitude,
-        // longitude: data.longitude,
         uf
       })
     } else {
@@ -126,25 +139,35 @@ export default props => {
       var degrees = Math.floor(absolute);
       var minutesNotTruncated = (absolute - degrees) * 60;
       var minutes = Math.floor(minutesNotTruncated);
-      var seconds = Math.floor((minutesNotTruncated - minutes) * 60);
-      return degrees + "º " + minutes + "' " + seconds + "\"";
+      var seconds = (minutesNotTruncated - minutes) * 60;
+      return degrees + "º " + minutes + "' " + seconds.toFixed(2).replace('.', ',') + "\"";
     }
     Geolocation.getCurrentPosition(({ coords }) => {
       setPropriedade({
         ...propriedade,
         latitude: `${toDegreesMinutesAndSeconds(coords.latitude)} ${coords.latitude >= 0 ? "N" : "S"}`,
-        longitude: `${toDegreesMinutesAndSeconds(coords.longitude)} ${coords.longitude >= 0 ? "E" : "W"}`
+        longitude: `${toDegreesMinutesAndSeconds(coords.longitude)} ${coords.longitude >= 0 ? "L" : "O"}`
       })
     })
   }
 
-  const MaskCoords = (value = '') => {
-    const coord = value.replace(/[^a-z\d]/i, '')
-      .replace(/(\d{2})(\d)/, '$1º $2')
-      .replace(/(\d{2})(\d)/, '$1\' $2')
-      .replace(/(\d{2})(\d)/, '$1,$2')
-      .replace(/(\d{2},)(\d{2})/, '$1$2"')
-    return coord
+  const MaskCoords = (value) => {
+    value = value.replace(/\W/g, '').replace(/([NSLO])[a-zA-z0-9]+?$/, '$1')
+    if (value.replace(/\D/g, '').length > 8) {
+      return value
+        .replace(/\W/g, '')
+        .replace(/(\d{3})(\d{2})/, '$1° $2\'')
+        .replace(/(\d{3}°\s\d{2}')(\d{2})/, '$1 $2,')
+        .replace(/(\d{3}°\s\d{2}'\s\d{2},)(\d{2})/, '$1$2')
+        .replace(/(\d{3}°\s\d{2}'\s\d{2},\d{2})([NSLO])/, '$1" $2')
+    } else {
+      return value
+        .replace(/\W/g, '')
+        .replace(/(\d{2})(\d{2})/, '$1° $2\'')
+        .replace(/(\d{2}°\s\d{2}')(\d{2})/, '$1 $2,')
+        .replace(/(\d{2}°\s\d{2}'\s\d{2},)(\d{2})/, '$1$2')
+        .replace(/(\d{2}°\s\d{2}'\s\d{2},\d{2})([NSLO])/, '$1" $2')
+    }
   }
 
   return (
@@ -209,6 +232,12 @@ export default props => {
           width="100%"
         />
         <InputAnimated
+          placeholder='Complemento'
+          onChangeText={text => setPropriedade({ ...propriedade, complemento: text })}
+          value={propriedade.complemento}
+          width="100%"
+        />
+        <InputAnimated
           placeholder='Município'
           onChangeText={text => setPropriedade({ ...propriedade, municipio: text })}
           value={propriedade.municipio}
@@ -216,14 +245,14 @@ export default props => {
         />
         <InputAnimated
           placeholder='Latitude'
-          onChangeText={text => setPropriedade({ ...propriedade, latitude: MaskCoords(text) })}
+          onChangeText={text => setPropriedade({ ...propriedade, latitude: MaskCoords(text.toUpperCase()) })}
           value={propriedade.latitude}
           width="39%"
         />
         <InputAnimated
           // maxLength={7}
           placeholder='Longitude'
-          onChangeText={text => setPropriedade({ ...propriedade, longitude: text })}
+          onChangeText={text => setPropriedade({ ...propriedade, longitude: MaskCoords(text.toUpperCase()) })}
           value={propriedade.longitude}
           width="39%"
         />

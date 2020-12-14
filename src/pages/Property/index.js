@@ -81,7 +81,25 @@ export default ({ navigation, route }) => {
                             <TextStyle>Cadastrar, excluir e editar locais de produção</TextStyle>
                         </HeaderTitle>
                         <Primary title={`Cadastrar Local`} width={150} onPress={() => {
-                            setPropriedade({});
+                            setPropriedade({
+                                area: undefined,
+                                bairro: "",
+                                ccir: "",
+                                cep: "",
+                                complemento: "",
+                                condicoes_posse: "",
+                                descricao: "",
+                                foto: null,
+                                id_agricultor: undefined,
+                                id_propriedade: undefined,
+                                latitude: "",
+                                logradouro: "",
+                                longitude: "",
+                                municipio: "",
+                                n_logradouro: "",
+                                uf: undefined,
+                                url: ""
+                            });
                             navigation.navigate("PropertiesForm")
                         }} />
                     </Container>
